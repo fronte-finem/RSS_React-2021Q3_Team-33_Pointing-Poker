@@ -2,6 +2,7 @@
   "name": "vite-project",
   "version": "0.0.0",
   "scripts": {
+    "prepare": "husky install",
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
@@ -36,6 +37,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.25.1",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^7.0.2",
     "jest": "^27.1.0",
     "postcss": "^8.3.6",
     "postcss-nested": "^5.0.6",
