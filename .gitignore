@@ -1,0 +1,26 @@
+# Node files
+node_modules
+
+# Log files
+logs
+*.log
+*.log*
+
+# Lock files
+# package-lock.json
+# pnpm-lock.yaml
+# yarn.lock
+
+# IDE files
+.idea
+.vscode
+
+# Cache files
+.eslintcache
+
+# dotenv environment variables files
+.env
+.env.test
+
+# Test coverage files
+coverage
