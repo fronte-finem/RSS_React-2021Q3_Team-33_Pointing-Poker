@@ -34,5 +34,9 @@ module.exports = {
       'always',
       { exceptAfterOverload: true, exceptAfterSingleLine: true },
     ],
+    '@typescript-eslint/explicit-member-accessibility': [
+      'error',
+      { overrides: { constructors: 'no-public' } },
+    ],
   },
 };
