@@ -1,6 +1,10 @@
 # Node files
 node_modules
 
+# Build files
+dist
+dist-ssr
+
 # Log files
 logs
 *.log
@@ -24,3 +28,7 @@ logs
 
 # Test coverage files
 coverage
+
+# others
+.DS_Store
+*.local
