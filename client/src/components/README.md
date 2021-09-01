@@ -8,6 +8,7 @@ Components hierarchy:
   - Shared components
 
 Directories structure:
+
 ```text
 client/src/components
 │
