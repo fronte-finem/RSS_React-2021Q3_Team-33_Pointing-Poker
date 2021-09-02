@@ -12,7 +12,7 @@ export const App: React.FC = () => {
         <Header />
         <main className={classes.main}>
           <Switch>
-            <Route path="/" exact component={PageExample} />
+            <Route path="/example" exact component={PageExample} />
           </Switch>
         </main>
         <Footer />
