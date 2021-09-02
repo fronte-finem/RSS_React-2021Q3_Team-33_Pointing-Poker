@@ -12,12 +12,15 @@ export function PageExample() {
         <img src={logo} className={classes.exampleLogo} alt="logo" />
         <p>Hello Vite + React!</p>
         <p>
-          <button type="button" onClick={() => setCount((prev) => prev + 1)}>
+          <button
+            type="button"
+            className={classes.exampleButton}
+            onClick={() => setCount((prev) => prev + 1)}>
             count is: {count}
           </button>
         </p>
         <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
+          Edit <code>example.tsx</code> and save to test HMR updates.
         </p>
         <p>
           <ExternalLink url="https://reactjs.org">Learn React</ExternalLink>

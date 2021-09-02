@@ -37,6 +37,7 @@
   }
 }
 
-button {
+.example-button {
+  color: #282c34;
   font-size: calc(10px + 2vmin);
 }
