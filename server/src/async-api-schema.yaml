@@ -3,7 +3,7 @@ asyncapi: 2.1.0
 info:
   title: Pointing Poker
   version: 1.0.0
-  description: 'This service is in charge of processing user signups :rocket:'
+  description: 'This service provide processing game and chat'
 
 servers:
   demo:
@@ -109,21 +109,23 @@ components:
           result:
             $ref: '#/components/schemas/RoundResult'
 
+    CardSet:
+      oneOf:
+        - type: string
+          enum:
+            - fibb
+            - pow2
+        - type: array
+          items:
+            $ref: '#/components/schemas/Score'
+
     GameSettings:
       type: object
       properties:
         dealerGamer:
           type: boolean
         cardsSet:
-          type: string
-          enum:
-            - fibb
-            - pow2
-            - custom
-        customCardSet:
-          type: [array, 'null']
-          items:
-            $ref: '#/components/schemas/Score'
+          $ref: '#/components/schemas/CardSet'
         autoJoinToGame:
           type: boolean
         autoOpenCards:
@@ -289,8 +291,6 @@ components:
 
     StartRound:
       name: 'start round'
-      payload:
-        $ref: '#/components/schemas/GameSettings'
 
     RoundStarted:
       name: 'start round'
