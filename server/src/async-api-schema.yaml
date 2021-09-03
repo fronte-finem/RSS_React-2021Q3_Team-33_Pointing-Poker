@@ -1,0 +1,306 @@
+asyncapi: 2.1.0
+
+info:
+  title: Pointing Poker
+  version: 1.0.0
+  description: 'This service is in charge of processing user signups :rocket:'
+
+servers:
+  demo:
+    url: localhost
+    protocol: wss
+
+channels:
+  /:
+    publish:
+      message:
+        oneOf:
+          - $ref: '#/components/messages/CreateGame'
+          - $ref: '#/components/messages/JoinGame'
+          - $ref: '#/components/messages/AddUser'
+          - $ref: '#/components/messages/KickUser'
+          - $ref: '#/components/messages/KickVote'
+          - $ref: '#/components/messages/NewMessage'
+          - $ref: '#/components/messages/AddIssue'
+          - $ref: '#/components/messages/AddGameSettings'
+          - $ref: '#/components/messages/StartGame'
+          - $ref: '#/components/messages/CancelGame'
+          - $ref: '#/components/messages/EndGame'
+          - $ref: '#/components/messages/StartRound'
+          - $ref: '#/components/messages/AddScore'
+
+    subscribe:
+      message:
+        oneOf:
+          - $ref: '#/components/messages/UserJoined'
+          - $ref: '#/components/messages/UsersList'
+          - $ref: '#/components/messages/KickVoteStarted'
+          - $ref: '#/components/messages/KickVoteEnded'
+          - $ref: '#/components/messages/UserKickResult'
+          - $ref: '#/components/messages/NewMessageReceived'
+          - $ref: '#/components/messages/MessagesList'
+          - $ref: '#/components/messages/IssueAdded'
+          - $ref: '#/components/messages/IssuesList'
+          - $ref: '#/components/messages/GameStarted'
+          - $ref: '#/components/messages/GameCanceled'
+          - $ref: '#/components/messages/GameEnded'
+          - $ref: '#/components/messages/RoundStarted'
+          - $ref: '#/components/messages/RoundEnded'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: [string, 'null']
+        jobPosition:
+          type: [string, 'null']
+        avatar:
+          type: [string, 'null']
+        role:
+          type: string
+          enum:
+            - 'dealer'
+            - 'gamer'
+            - 'spectator'
+
+    ChatMessage:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        message:
+          type: string
+
+    Issue:
+      type: object
+      properties:
+        title:
+          type: string
+        priority:
+          type: string
+          enum:
+            - high
+            - low
+
+    Score:
+      type: [number, string]
+
+    RoundResult:
+      type: array
+      items:
+        type: object
+        properties:
+          user:
+            $ref: '#/components/schemas/User'
+          score:
+            $ref: '#/components/schemas/Score'
+
+    GameResult:
+      type: array
+      items:
+        type: object
+        properties:
+          issue:
+            $ref: '#/components/schemas/Issue'
+          result:
+            $ref: '#/components/schemas/RoundResult'
+
+    GameSettings:
+      type: object
+      properties:
+        dealerGamer:
+          type: boolean
+        cardsSet:
+          type: string
+          enum:
+            - fibb
+            - pow2
+            - custom
+        customCardSet:
+          type: [array, 'null']
+          items:
+            $ref: '#/components/schemas/Score'
+        autoJoinToGame:
+          type: boolean
+        autoOpenCards:
+          type: boolean
+        changeAfterRoundEnd:
+          type: boolean
+        timeout:
+          type: [number, 'null']
+
+  messages:
+    CreateGame:
+      name: 'create game'
+      x-ack: # Result - new game ID or error
+        args:
+          type: object
+          properties:
+            gameId:
+              type: [string, 'null']
+            error:
+              type: [string, 'null']
+
+    JoinGame:
+      name: 'join game'
+      payload:
+        description: game-ID
+        type: string
+      x-ack: # Validation on join to game by given ID
+        args:
+          type: object
+          properties:
+            error:
+              type: [string, 'null']
+
+    AddUser:
+      name: 'add user'
+      payload:
+        type: object
+        properties:
+          user:
+            $ref: '#/components/schemas/User'
+      x-ack: # Validation on add user
+        args:
+          type: object
+          properties:
+            error:
+              type: [string, 'null']
+
+    UserJoined:
+      name: 'user joined'
+      payload:
+        type: object
+        properties:
+          user:
+            $ref: '#/components/schemas/User'
+          numUsers:
+            type: integer
+
+    UsersList:
+      name: 'users list'
+      payload:
+        type: array
+        items:
+          $ref: '#/components/schemas/User'
+
+    KickUser:
+      name: 'kick user'
+      payload:
+        type: object
+        properties:
+          user:
+            $ref: '#/components/schemas/User'
+
+    KickVoteStarted:
+      name: 'kick vote started'
+      payload:
+        type: object
+        properties:
+          initiator:
+            description: user started vote
+            $ref: '#/components/schemas/User'
+          user:
+            description: user requested to be kiked
+            $ref: '#/components/schemas/User'
+
+    KickVoteEnded:
+      name: 'kick vote ended'
+
+    KickVote:
+      name: 'kick vote'
+      payload:
+        type: boolean
+
+    UserKickResult:
+      name: 'kick user result'
+      payload:
+        type: object
+        properties:
+          user:
+            $ref: '#/components/schemas/User'
+          kiked:
+            type: boolean
+
+    NewMessage:
+      name: 'new message'
+      payload:
+        type: string
+
+    NewMessageReceived:
+      name: 'new message'
+      payload:
+        $ref: '#/components/schemas/ChatMessage'
+
+    MessagesList:
+      name: 'messages list'
+      payload:
+        type: array
+        items:
+          $ref: '#/components/schemas/ChatMessage'
+
+    AddIssue:
+      name: 'add issue'
+      payload:
+        $ref: '#/components/schemas/Issue'
+
+    IssueAdded:
+      name: 'add issue'
+      payload:
+        $ref: '#/components/schemas/Issue'
+
+    IssuesList:
+      name: 'issues list'
+      payload:
+        type: array
+        items:
+          $ref: '#/components/schemas/Issue'
+
+    AddGameSettings:
+      name: 'add game settings'
+      payload:
+        $ref: '#/components/schemas/GameSettings'
+
+    StartGame:
+      name: 'start game'
+
+    GameStarted:
+      name: 'start game'
+      payload:
+        $ref: '#/components/schemas/GameSettings'
+
+    CancelGame:
+      name: 'cancel game'
+
+    GameCanceled:
+      name: 'cancel game'
+
+    EndGame:
+      name: 'end game'
+
+    GameEnded:
+      name: 'end game'
+      payload:
+        $ref: '#/components/schemas/GameResult'
+
+    StartRound:
+      name: 'start round'
+      payload:
+        $ref: '#/components/schemas/GameSettings'
+
+    RoundStarted:
+      name: 'start round'
+
+    RoundEnded:
+      name: 'end round'
+      payload:
+        $ref: '#/components/schemas/RoundResult'
+
+    AddScore:
+      name: 'add score'
+      payload:
+        $ref: '#/components/schemas/Score'
