@@ -25,7 +25,6 @@ channels:
           - $ref: '#/components/messages/KickVote'
           - $ref: '#/components/messages/NewMessage'
           - $ref: '#/components/messages/AddIssue'
-          - $ref: '#/components/messages/AddGameSettings'
           - $ref: '#/components/messages/StartGame'
           - $ref: '#/components/messages/CancelGame'
           - $ref: '#/components/messages/EndGame'
@@ -94,7 +93,7 @@ components:
             - low
 
     Score:
-      description: Значение игровой карты (число и названи особенной карты)
+      description: Значение игровой карты (число или названи особенной карты)
       type: [number, string]
 
     UserScore:
@@ -160,7 +159,9 @@ components:
   messages:
     CreateGame:
       name: 'create game'
-      x-ack: # Result - new game ID or error
+      description: Запрос на создание игры (комнаты в терминологии socket.io)
+      x-ack:
+        description: ответ сервера в колбеке (в случае успеха - айди игры, иначе описание ошибки)
         args:
           type: object
           properties:
@@ -171,10 +172,12 @@ components:
 
     JoinGame:
       name: 'join game'
+      description: Запрос на присоединение к игре по айди
       payload:
         description: game-ID
         type: string
-      x-ack: # Validation on join to game by given ID
+      x-ack:
+        description: ответ сервера в колбеке (в случае неуспешной валидации - ошибка)
         args:
           type: object
           properties:
@@ -183,12 +186,11 @@ components:
 
     AddUser:
       name: 'add user'
+      description: Запрос на создание пользователя
       payload:
-        type: object
-        properties:
-          user:
-            $ref: '#/components/schemas/User'
-      x-ack: # Validation on add user
+        $ref: '#/components/schemas/User'
+      x-ack:
+        description: ответ сервера после валидации
         args:
           type: object
           properties:
@@ -197,16 +199,13 @@ components:
 
     UserJoined:
       name: 'user joined'
+      description: Сообщение от сервера о новом участнике
       payload:
-        type: object
-        properties:
-          user:
-            $ref: '#/components/schemas/User'
-          numUsers:
-            type: integer
+        $ref: '#/components/schemas/User'
 
     UsersList:
       name: 'users list'
+      description: Список ползовотелей отсылаемый сервером после каждого изменения
       payload:
         type: array
         items:
@@ -214,6 +213,7 @@ components:
 
     KickUser:
       name: 'kick user'
+      description: Запрос на удаление пользователя (в зависимости от роли инициатора запускает голосование или сразу удаляет)
       payload:
         type: object
         properties:
@@ -222,6 +222,7 @@ components:
 
     KickVoteStarted:
       name: 'kick vote started'
+      description: Сообщение о старте голосования по удалению участника
       payload:
         type: object
         properties:
@@ -234,14 +235,17 @@ components:
 
     KickVoteEnded:
       name: 'kick vote ended'
+      description: Сообщение о завершении голосования по удалению участника
 
     KickVote:
+      description: Запрос с голосом по удалению участника
       name: 'kick vote'
       payload:
         type: boolean
 
     UserKickResult:
       name: 'kick user result'
+      description: Сообщение об удаленом участнике
       payload:
         type: object
         properties:
@@ -252,16 +256,19 @@ components:
 
     NewMessage:
       name: 'new message'
+      description: Запрос с сообщением в чат
       payload:
         type: string
 
     NewMessageReceived:
       name: 'new message'
+      description: Оповещение от сервера о новом сообщении в чате
       payload:
         $ref: '#/components/schemas/ChatMessage'
 
     MessagesList:
       name: 'messages list'
+      description: Событие от сервера со списком сообщений чата
       payload:
         type: array
         items:
@@ -269,60 +276,70 @@ components:
 
     AddIssue:
       name: 'add issue'
+      description: Запрос на добавление новой задачи
       payload:
         $ref: '#/components/schemas/Issue'
 
     IssueAdded:
       name: 'add issue'
+      description: Собщение от сервера о добавленой задаче
       payload:
         $ref: '#/components/schemas/Issue'
 
     IssuesList:
       name: 'issues list'
+      description: Событие от сервера со списком задач
       payload:
         type: array
         items:
           $ref: '#/components/schemas/Issue'
 
-    AddGameSettings:
-      name: 'add game settings'
+    StartGame:
+      name: 'start game'
+      description: Запрос на запуск игры с выбранными настройками
       payload:
         $ref: '#/components/schemas/GameSettings'
 
-    StartGame:
-      name: 'start game'
-
     GameStarted:
       name: 'start game'
+      description: Собщение от сервера о запуске игры с выбранными настройками
       payload:
         $ref: '#/components/schemas/GameSettings'
 
     CancelGame:
       name: 'cancel game'
+      description: Запрос на отмену игры
 
     GameCanceled:
       name: 'cancel game'
+      description: Собщение от сервера об отмене игры
 
     EndGame:
       name: 'end game'
+      description: Запрос на остановку игры
 
     GameEnded:
       name: 'end game'
+      description: Собщение от сервера о конце игры с результатами оценок
       payload:
         $ref: '#/components/schemas/GameResult'
 
     StartRound:
       name: 'start round'
+      description: Запрос на запуск раунда оценок
 
     RoundStarted:
       name: 'start round'
+      description: Собщение от сервера о запущенном раунде по оценке задачи
 
     RoundEnded:
       name: 'end round'
+      description: Собщение от сервера о конце раунда, после получения всех оценок или по таймеру
       payload:
         $ref: '#/components/schemas/RoundResult'
 
     AddScore:
       name: 'add score'
+      description: Запрос на выставление задаче оценки из выбранной карты
       payload:
         $ref: '#/components/schemas/Score'
