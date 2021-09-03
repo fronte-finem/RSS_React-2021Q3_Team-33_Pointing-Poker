@@ -3,7 +3,9 @@ asyncapi: 2.1.0
 info:
   title: Pointing Poker
   version: 1.0.0
-  description: 'This service provide processing game and chat'
+  description: |
+    Приложение для проведения сессий по оценке сложности предстоящей работы или
+    относительного объёма решаемых задач при разработке программного обеспечения
 
 servers:
   demo:
@@ -13,6 +15,7 @@ servers:
 channels:
   /:
     publish:
+      summary: Набор событий инициируемых клиентом
       message:
         oneOf:
           - $ref: '#/components/messages/CreateGame'
@@ -30,6 +33,7 @@ channels:
           - $ref: '#/components/messages/AddScore'
 
     subscribe:
+      summary: Набор событий инициируемыех сервером
       message:
         oneOf:
           - $ref: '#/components/messages/UserJoined'
@@ -50,6 +54,7 @@ channels:
 components:
   schemas:
     User:
+      description: Объект пользователя игры (дилер/игрок/набдюдатель)
       type: object
       properties:
         firstName:
@@ -68,6 +73,7 @@ components:
             - 'spectator'
 
     ChatMessage:
+      description: Обект сообщения чата
       type: object
       properties:
         user:
@@ -76,6 +82,7 @@ components:
           type: string
 
     Issue:
+      description: Обект задачи для оценки в процессе игры
       type: object
       properties:
         title:
@@ -87,19 +94,26 @@ components:
             - low
 
     Score:
+      description: Значение игровой карты (число и названи особенной карты)
       type: [number, string]
 
+    UserScore:
+      description: Объект оценки поставленной игроком
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        score:
+          $ref: '#/components/schemas/Score'
+
     RoundResult:
+      description: Массив оценок выставленных игроками
       type: array
       items:
-        type: object
-        properties:
-          user:
-            $ref: '#/components/schemas/User'
-          score:
-            $ref: '#/components/schemas/Score'
+        $ref: '#/components/schemas/UserScore'
 
     GameResult:
+      description: Массив всех оценённых задач
       type: array
       items:
         type: object
@@ -110,6 +124,7 @@ components:
             $ref: '#/components/schemas/RoundResult'
 
     CardSet:
+      description: Тип набора карт - числа Фибоначчи, степени двойки или массив собственной последовательности
       oneOf:
         - type: string
           enum:
@@ -120,19 +135,26 @@ components:
             $ref: '#/components/schemas/Score'
 
     GameSettings:
+      description: Набор настроек игры
       type: object
       properties:
         dealerGamer:
+          description: будет ли дилер принимать участие в игре
           type: boolean
         cardsSet:
+          description: какой набор карточек будет использоваться
           $ref: '#/components/schemas/CardSet'
         autoJoinToGame:
+          description: впускать автоматически всех новых участников, если игра уже началась или впускать через механизм admit/reject
           type: boolean
         autoOpenCards:
+          description: будут ли карты переворачиваться автоматически как только все проголосуют
           type: boolean
         changeAfterRoundEnd:
+          description: можно ли менять свой выбор после того как все карты уже перевернуты
           type: boolean
         timeout:
+          description: конфигурации времени таймера или null если он ненужен
           type: [number, 'null']
 
   messages:
