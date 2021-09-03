@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import App from '@client/components/app/app';
+import { App } from '@client/components/app/app';
 
 describe('Main', () => {
   it('should switch routes', () => {
