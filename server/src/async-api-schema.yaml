@@ -22,8 +22,8 @@ channels:
           - $ref: '#/components/messages/JoinGame'
           - $ref: '#/components/messages/AddUser'
           - $ref: '#/components/messages/KickUser'
-          - $ref: '#/components/messages/KickVote'
-          - $ref: '#/components/messages/NewMessage'
+          - $ref: '#/components/messages/VoteKick'
+          - $ref: '#/components/messages/AddChatMessage'
           - $ref: '#/components/messages/AddIssue'
           - $ref: '#/components/messages/StartGame'
           - $ref: '#/components/messages/CancelGame'
@@ -39,8 +39,8 @@ channels:
           - $ref: '#/components/messages/UsersList'
           - $ref: '#/components/messages/KickVoteStarted'
           - $ref: '#/components/messages/KickVoteEnded'
-          - $ref: '#/components/messages/UserKickResult'
-          - $ref: '#/components/messages/NewMessageReceived'
+          - $ref: '#/components/messages/UserKicked'
+          - $ref: '#/components/messages/ChatMessageAdded'
           - $ref: '#/components/messages/MessagesList'
           - $ref: '#/components/messages/IssueAdded'
           - $ref: '#/components/messages/IssuesList'
@@ -237,14 +237,14 @@ components:
       name: 'kick vote ended'
       description: Сообщение о завершении голосования по удалению участника
 
-    KickVote:
+    VoteKick:
       description: Запрос с голосом по удалению участника
-      name: 'kick vote'
+      name: 'vote kick'
       payload:
         type: boolean
 
-    UserKickResult:
-      name: 'kick user result'
+    UserKicked:
+      name: 'user kicked'
       description: Сообщение об удаленом участнике
       payload:
         type: object
@@ -254,14 +254,14 @@ components:
           kiked:
             type: boolean
 
-    NewMessage:
-      name: 'new message'
+    AddChatMessage:
+      name: 'add chat message'
       description: Запрос с сообщением в чат
       payload:
         type: string
 
-    NewMessageReceived:
-      name: 'new message'
+    ChatMessageAdded:
+      name: 'chat message added'
       description: Оповещение от сервера о новом сообщении в чате
       payload:
         $ref: '#/components/schemas/ChatMessage'
@@ -281,7 +281,7 @@ components:
         $ref: '#/components/schemas/Issue'
 
     IssueAdded:
-      name: 'add issue'
+      name: 'issue added'
       description: Собщение от сервера о добавленой задаче
       payload:
         $ref: '#/components/schemas/Issue'
@@ -301,7 +301,7 @@ components:
         $ref: '#/components/schemas/GameSettings'
 
     GameStarted:
-      name: 'start game'
+      name: 'game started'
       description: Собщение от сервера о запуске игры с выбранными настройками
       payload:
         $ref: '#/components/schemas/GameSettings'
@@ -311,7 +311,7 @@ components:
       description: Запрос на отмену игры
 
     GameCanceled:
-      name: 'cancel game'
+      name: 'game canceled'
       description: Собщение от сервера об отмене игры
 
     EndGame:
@@ -319,7 +319,7 @@ components:
       description: Запрос на остановку игры
 
     GameEnded:
-      name: 'end game'
+      name: 'game ended'
       description: Собщение от сервера о конце игры с результатами оценок
       payload:
         $ref: '#/components/schemas/GameResult'
@@ -329,11 +329,11 @@ components:
       description: Запрос на запуск раунда оценок
 
     RoundStarted:
-      name: 'start round'
+      name: 'round started'
       description: Собщение от сервера о запущенном раунде по оценке задачи
 
     RoundEnded:
-      name: 'end round'
+      name: 'round ended'
       description: Собщение от сервера о конце раунда, после получения всех оценок или по таймеру
       payload:
         $ref: '#/components/schemas/RoundResult'
