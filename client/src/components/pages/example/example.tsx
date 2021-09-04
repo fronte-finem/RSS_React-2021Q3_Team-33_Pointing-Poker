@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
 import { ExternalLink } from '@client/components/shared/link/external-link';
+import { Avatar } from '@client/components/shared/avatar/avatar';
 import classes from './example.module.css';
 import logo from './logo.svg';
 
 export function PageExample() {
   const [count, setCount] = useState(0);
+  const avatarContent = {
+    firstName: 'John',
+    lastName: 'Dorian',
+  };
+  const avatarModifications = {
+    size: 83,
+    // src: logo,
+  };
 
   return (
     <div className={classes.example}>
       <header className={classes.exampleHeader}>
         <img src={logo} className={classes.exampleLogo} alt="logo" />
         <p>Hello Vite + React!</p>
+        <Avatar content={avatarContent} mod={avatarModifications} />
         <p>
           <button
             type="button"
