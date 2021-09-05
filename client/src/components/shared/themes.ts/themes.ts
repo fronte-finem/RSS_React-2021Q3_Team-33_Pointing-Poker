@@ -2,13 +2,13 @@ import { DefaultTheme } from 'styled-components';
 
 export const lightTheme: DefaultTheme = {
   bg: '#FFFFFF',
-  buttonColor: '#2B3A67',
-  buttonHover: '#607FDD',
-  fontButtonColor: '#FFFFFF',
+  componentColor: '#2B3A67',
+  componentHover: '#607FDD',
+  fontComponentColor: '#FFFFFF',
 };
 export const darkTheme: DefaultTheme = {
   bg: '#2B3A67',
-  buttonColor: '#FFFFFF',
-  buttonHover: '#607FDD',
-  fontButtonColor: '#2B3A67',
+  componentColor: '#FFFFFF',
+  componentHover: '#607FDD',
+  fontComponentColor: '#2B3A67',
 };

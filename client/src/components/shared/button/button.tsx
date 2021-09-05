@@ -5,12 +5,12 @@ import styled from 'styled-components';
 
 const StyledButton = styled(AntButton)`
   background-color: ${(props) =>
-    props.type === 'default' ? 'transparent' : props.theme.buttonColor};
+    props.type === 'default' ? 'transparent' : props.theme.componentColor};
   color: ${(props) =>
     props.type === 'default'
-      ? props.theme.buttonColor
-      : props.theme.fontButtonColor};
-  border: 1px solid ${(props) => props.theme.buttonColor};
+      ? props.theme.componentColor
+      : props.theme.fontComponentColor};
+  border: 1px solid ${(props) => props.theme.componentColor};
   font-style: normal;
   font-weight: bold;
   line-height: 30px;
@@ -24,23 +24,23 @@ const StyledButton = styled(AntButton)`
   &:active {
     background-color: ${(props) =>
       props.type === 'default'
-        ? props.theme.fontButtonColor
-        : props.theme.buttonHover};
+        ? props.theme.fontComponentColor
+        : props.theme.componentHover};
     color: ${(props) =>
-      props.type === 'default' ? props.theme.buttonHover : props.theme.bg};
-    border: 1px solid ${(props) => props.theme.buttonHover};
+      props.type === 'default' ? props.theme.componentHover : props.theme.bg};
+    border: 1px solid ${(props) => props.theme.componentHover};
   }
 
   &:focus {
     background-color: ${(props) =>
       props.type === 'default'
-        ? props.theme.fontButtonColor
-        : props.theme.buttonColor};
+        ? props.theme.fontComponentColor
+        : props.theme.componentColor};
     color: ${(props) =>
       props.type === 'default'
-        ? props.theme.buttonColor
-        : props.theme.fontButtonColor};
-    border: 1px solid ${(props) => props.theme.buttonColor};
+        ? props.theme.componentColor
+        : props.theme.fontComponentColor};
+    border: 1px solid ${(props) => props.theme.componentColor};
   }
 `;
 
