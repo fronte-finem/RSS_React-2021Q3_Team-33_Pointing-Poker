@@ -1,0 +1,7 @@
+# Ignore project configs
+/.*
+/*config.js
+/*config.ts
+
+# Ignore generated html-api-doc
+/server/doc/**/*
