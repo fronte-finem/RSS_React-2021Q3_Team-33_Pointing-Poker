@@ -3,6 +3,8 @@ import { Button } from '@client/components/shared/button/button';
 import { Input } from '@client/components/shared/input/input';
 import { Toggle } from '@client/components/shared/toggle/toggle';
 import { Select } from '@client/components/shared/select/select';
+import { InputFile } from '@client/components/shared/inputfile/inpitfile';
+import { GameCard } from '@client/components/shared/GameCard/GameCard';
 import classes from './example.module.css';
 
 export function PageExample() {
@@ -18,6 +20,8 @@ export function PageExample() {
       <Input size="large" />
       <Toggle />
       <Select options={options} />
+      <InputFile />
+      <GameCard score={42} scoreType="SP" />
     </div>
   );
 }
