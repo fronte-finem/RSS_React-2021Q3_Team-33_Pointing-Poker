@@ -5,6 +5,7 @@ import { Toggle } from '@client/components/shared/toggle/toggle';
 import { Select } from '@client/components/shared/select/select';
 import { InputFile } from '@client/components/shared/inputfile/inpitfile';
 import { GameCard } from '@client/components/shared/GameCard/GameCard';
+import { AddingGameCard } from '@client/components/shared/GameCard/AddingGameCard';
 import classes from './example.module.css';
 
 export function PageExample() {
@@ -22,6 +23,7 @@ export function PageExample() {
       <Select options={options} />
       <InputFile />
       <GameCard score={42} scoreType="SP" />
+      <AddingGameCard />
     </div>
   );
 }
