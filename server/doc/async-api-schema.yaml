@@ -38,6 +38,7 @@ channels:
           - $ref: '#/components/messages/JoinGame'
           - $ref: '#/components/messages/AddUser'
           - $ref: '#/components/messages/IsUserJoinAllowed'
+          - $ref: '#/components/messages/Disconnect'
           - $ref: '#/components/messages/PostMessage'
           - $ref: '#/components/messages/KickUser'
           - $ref: '#/components/messages/VoteToKickUser'
@@ -63,6 +64,7 @@ channels:
           - $ref: '#/components/messages/LoginError'
           - $ref: '#/components/messages/LoggedIn'
           - $ref: '#/components/messages/UserJoined'
+          - $ref: '#/components/messages/UserDisconnected'
           - $ref: '#/components/messages/PostMessageFailed'
           - $ref: '#/components/messages/MessagePosted'
           - $ref: '#/components/messages/KickUserFailed'
@@ -437,6 +439,22 @@ components:
         Уведомление всем сокетам в игре - присоединился новый пользователь.
       payload:
         $ref: '#/components/schemas/User'
+
+    Disconnect:
+      name: 'disconnect'
+      description: |
+        Уведомление от сокета к серверу о разрыве связи.\
+        Если это сокет дилера - игра отменяется,\
+        иначе сервер сообщает всем сокетам в игре что пользователь покинул игру.
+
+    UserDisconnected:
+      name: 'user disconnected'
+      description: |
+        Уведомление всем сокетам в игре - пользователь покинул игру.\
+      payload:
+        description: |
+          user-id
+        type: string
 
     PostMessage:
       name: 'post message'
