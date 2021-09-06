@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@client/components/shared/button/button';
 import { Input } from '@client/components/shared/input/input';
 import { Toggle } from '@client/components/shared/toggle/toggle';
@@ -6,6 +6,7 @@ import { Select } from '@client/components/shared/select/select';
 import { InputFile } from '@client/components/shared/inputfile/inpitfile';
 import { GameCard } from '@client/components/shared/GameCard/GameCard';
 import { AddingGameCard } from '@client/components/shared/GameCard/AddingGameCard';
+import { Modal } from '@client/components/shared/modal/modal';
 import classes from './example.module.css';
 
 export function PageExample() {
@@ -14,6 +15,12 @@ export function PageExample() {
     { value: 'Middle', label: 'Middle' },
     { value: 'Hight', label: 'Hight' },
   ];
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
   return (
     <div className={classes.example}>
       <Button>Confirm</Button>
@@ -24,6 +31,14 @@ export function PageExample() {
       <InputFile />
       <GameCard score={42} scoreType="SP" />
       <AddingGameCard />
+      <Button onClick={showModal}>Confirm</Button>
+      <Modal
+        title="Title"
+        visible={isModalVisible}
+        okText="Confirm"
+        cancelText="Cancel"
+        content="Are you really want to remove playe David Blane from game session?"
+      />
     </div>
   );
 }
