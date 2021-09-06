@@ -14,15 +14,12 @@ const StyledTimerWrapper = styled.div`
   line-height: 64px;
 `;
 
-/* const StyledColon = styled.p`
+export const StyledColon = styled.p`
   position: absolute;
   top: 50%;
   right: 50%;
-
-  font-size: 24px;
-  line-height: 30px;
   transform: translate(-50%, -50%);
-`; */
+`;
 
 export const TimerWrapper: React.FC<any> = (props) => {
   return <StyledTimerWrapper {...props} />;

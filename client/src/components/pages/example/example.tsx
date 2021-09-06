@@ -40,7 +40,7 @@ export function PageExample() {
         cancelText="Cancel"
         content="Are you really want to remove playe David Blane from game session?"
       />
-      <Timer />
+      <Timer time={62} />
     </div>
   );
 }

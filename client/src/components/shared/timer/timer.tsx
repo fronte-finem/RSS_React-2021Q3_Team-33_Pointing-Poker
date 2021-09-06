@@ -1,21 +1,47 @@
-import React from 'react';
-import { TimerWrapper } from './timerwrapper';
+import React, { useEffect, useState } from 'react';
+import { StyledColon, TimerWrapper } from './timerwrapper';
 
-export const Timer: React.FC<any> = () => {
-  /* const [seconds, setSeconds] = useState(60); */
+export const Timer: React.FC<{ time: number }> = (props) => {
+  const { time } = props;
 
-  const seconds = 60;
+  const [minutes, setMinutes] = useState(Math.floor(time / 60));
+  const [seconds, setSeconds] = useState(time - minutes * 60);
+
+  useEffect(() => {
+    const interval = setInterval((): void => {
+      if (seconds === 0) {
+        if (minutes !== 0) {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+        }
+      } else {
+        setSeconds(seconds - 1);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  });
 
   return (
     <TimerWrapper>
+      {' '}
       <p
         style={{
-          position: 'relative',
+          position: 'absolute',
           top: '0px',
-          right: '-35px',
+          left: '20px',
           margin: '0',
         }}>
-        {seconds}
+        {minutes}
+      </p>
+      <StyledColon>:</StyledColon>
+      <p
+        style={{
+          position: 'absolute',
+          top: '0px',
+          right: '5px',
+          margin: '0',
+        }}>
+        {seconds > 10 ? seconds : `0${seconds}`}
       </p>
     </TimerWrapper>
   );
