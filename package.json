@@ -9,8 +9,10 @@
     "lint": "pretty-quick --staged && eslint ./ --ext .ts,.tsx --fix",
     "test": "jest",
     "test:cover": "jest --coverage",
-    "npx:generate:api-doc": "npx del-cli --force ./server/doc/html && npx -p @asyncapi/generator ag ./server/doc/async-api-schema.yaml @asyncapi/html-template -o ./server/doc/html",
-    "pnpx:generate:api-doc": "pnpx del-cli --force ./server/doc/html && pnpx -p @asyncapi/generator ag ./server/doc/async-api-schema.yaml @asyncapi/html-template -o ./server/doc/html"
+    "generate:api-types": "npx ts-json-schema-generator --path ./shared/api-types/*.ts --unstable --no-type-check --out ./server/doc/api-types.schema.json",
+    "pnpx:generate:api-types": "pnpx ts-json-schema-generator --path ./shared/api-types/*.ts --unstable --no-type-check --out ./server/doc/api-types.schema.json",
+    "generate:api-doc-html": "npx -p @asyncapi/generator ag ./server/doc/async-api.schema.json @asyncapi/html-template --force-write -o ./server/doc/html",
+    "pnpx:generate:api-doc-html": "pnpx -p @asyncapi/generator ag ./server/doc/async-api.schema.json @asyncapi/html-template --force-write -o ./server/doc/html"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.4",
