@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ExternalLink } from '@client/components/shared/link/external-link';
-import { UserCard } from '@client/components/shared/card/user-card/user-card';
+import { Message } from '@client/components/shared/message/message';
 import classes from './example.module.css';
 import logo from './logo.svg';
 
@@ -12,14 +12,21 @@ export function PageExample() {
       <header className={classes.exampleHeader}>
         <img src={logo} className={classes.exampleLogo} alt="logo" />
         <p>Hello Vite + React!</p>
-        <UserCard
-          content={{
-            firstName: 'John',
-            lastName: 'Dorian',
-            position: 'lead software engineer',
-            isOwner: true,
-            isDelete: true,
-          }}
+        <Message
+          firstName="Mark"
+          lastName="Single"
+          position="junior software engineer"
+          isOwner={false}
+          isDelete
+          message="Hi all! :)"
+        />
+        <Message
+          firstName="John"
+          lastName="Dorian"
+          position="lead software engineer"
+          isOwner
+          isDelete
+          message="Hello Mark :) What do you thing about issue 1934? How many time would you spend to fix it?"
         />
         <p>
           <button

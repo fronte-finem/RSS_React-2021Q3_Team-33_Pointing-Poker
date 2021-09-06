@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { StopOutlined } from '@ant-design/icons';
 import { Avatar } from '../../avatar/avatar';
 
-interface CardContent {
+interface UserCardContent {
   firstName: string;
   lastName: string;
   position: string;
@@ -13,7 +13,7 @@ interface CardContent {
 }
 
 interface UserCardProps {
-  content: CardContent;
+  content: UserCardContent;
   mod?: AntCardProps;
 }
 
