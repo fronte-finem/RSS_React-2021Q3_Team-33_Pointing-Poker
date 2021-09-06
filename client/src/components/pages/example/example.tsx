@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
 import { ExternalLink } from '@client/components/shared/link/external-link';
-import { Avatar } from '@client/components/shared/avatar/avatar';
+import { UserCard } from '@client/components/shared/card/user-card/user-card';
 import classes from './example.module.css';
 import logo from './logo.svg';
 
 export function PageExample() {
   const [count, setCount] = useState(0);
-  const avatarContent = {
-    firstName: 'John',
-    lastName: 'Dorian',
-  };
 
   return (
     <div className={classes.example}>
       <header className={classes.exampleHeader}>
         <img src={logo} className={classes.exampleLogo} alt="logo" />
         <p>Hello Vite + React!</p>
-        <Avatar content={avatarContent} mod={{ size: 83 }} />
+        <UserCard
+          content={{
+            firstName: 'John',
+            lastName: 'Dorian',
+            position: 'lead software engineer',
+            isOwner: true,
+            isDelete: true,
+          }}
+        />
         <p>
           <button
             type="button"
