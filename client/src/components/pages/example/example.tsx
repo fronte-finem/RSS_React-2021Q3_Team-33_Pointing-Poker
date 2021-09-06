@@ -10,17 +10,13 @@ export function PageExample() {
     firstName: 'John',
     lastName: 'Dorian',
   };
-  const avatarModifications = {
-    size: 83,
-    // src: logo,
-  };
 
   return (
     <div className={classes.example}>
       <header className={classes.exampleHeader}>
         <img src={logo} className={classes.exampleLogo} alt="logo" />
         <p>Hello Vite + React!</p>
-        <Avatar content={avatarContent} mod={avatarModifications} />
+        <Avatar content={avatarContent} mod={{ size: 83 }} />
         <p>
           <button
             type="button"

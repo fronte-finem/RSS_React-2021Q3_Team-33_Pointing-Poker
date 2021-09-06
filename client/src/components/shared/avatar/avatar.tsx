@@ -13,19 +13,22 @@ interface AvatarProps {
 }
 
 const StyleAvatar = styled(AntAvatar)`
-  background: #60dabf;
-  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 48px;
-  line-height: 56px;
   display: flex;
   align-items: center;
-  text-align: center;
-  color: #ffffff;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background: #60dabf;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   cursor: default;
+
+  .ant-avatar-string {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 48px;
+    line-height: 56px;
+    text-align: center;
+    color: #ffffff;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const Avatar: React.FC<AvatarProps> = ({ content, mod }) => {
