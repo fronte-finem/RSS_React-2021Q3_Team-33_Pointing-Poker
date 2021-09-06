@@ -7,6 +7,7 @@ import { InputFile } from '@client/components/shared/inputfile/inpitfile';
 import { GameCard } from '@client/components/shared/GameCard/GameCard';
 import { AddingGameCard } from '@client/components/shared/GameCard/AddingGameCard';
 import { Modal } from '@client/components/shared/modal/modal';
+import { Timer } from '@client/components/shared/timer/timer';
 import classes from './example.module.css';
 
 export function PageExample() {
@@ -39,6 +40,7 @@ export function PageExample() {
         cancelText="Cancel"
         content="Are you really want to remove playe David Blane from game session?"
       />
+      <Timer />
     </div>
   );
 }
