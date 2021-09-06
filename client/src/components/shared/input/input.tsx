@@ -7,6 +7,7 @@ const StyledInput = styled(AntInput)`
   border-radius: 0px 0px 0px 10px;
   background: transparent;
   color: ${(props) => props.theme.componentColor};
+  font-size: 24px;
 `;
 
 export const Input: React.FC<InputProps> = (props) => {
