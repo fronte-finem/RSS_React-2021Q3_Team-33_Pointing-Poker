@@ -1,0 +1,992 @@
+{
+  "asyncapi": "2.1.0",
+  "info": {
+    "title": "Pointing Poker",
+    "version": "1.0.0",
+    "description": "Приложение для проведения сессий по оценке сложности предстоящей работы или\\\nотносительного объёма решаемых задач при разработке программного обеспечения\n---\nПри подключении нового сокета, сервер ожидает от него два вида запросов:\n- `create game` - в случае успешной валидации:\n    - создает игру;\n    - назначает сокету роль дилера;\n    - начинает слушать запросы для этого сокета:\n       - на участие в чате\n       - на управление игрой\n       - на участие в игре (если выбрана опция в настройках)\n- `join game` - в случае успешной валидации:\n    - подключает к игре этот сокет под ролью игрока или зрителя;\n    - начинает слушать запросы для этого сокет:\n       - на участие в чате\n       - на участие в игре (если роль - игрок)\n"
+  },
+  "servers": {
+    "demo": {
+      "url": "localhost",
+      "protocol": "ws"
+    }
+  },
+  "tags": [
+    {
+      "name": "From Dealer Socket",
+      "description": "Запрос с сокета дилера."
+    },
+    {
+      "name": "To Dealer Socket",
+      "description": "Уведомление на сокета дилера."
+    },
+    {
+      "name": "From User Socket",
+      "description": "Запрос с сокета пользователя."
+    },
+    {
+      "name": "To User Socket",
+      "description": "Уведомление на сокета пользователя."
+    },
+    {
+      "name": "To All Room Sockets",
+      "description": "Уведомление на все сокеты в комнате."
+    }
+  ],
+  "channels": {
+    "/": {
+      "publish": {
+        "description": "## Набор событий инициируемых клиентом.",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          },
+          {
+            "name": "From User Socket"
+          }
+        ],
+        "message": {
+          "oneOf": [
+            {
+              "$ref": "#/components/messages/CreateGame"
+            },
+            {
+              "$ref": "#/components/messages/CancelGame"
+            },
+            {
+              "$ref": "#/components/messages/ChangeGameTitle"
+            },
+            {
+              "$ref": "#/components/messages/JoinGame"
+            },
+            {
+              "$ref": "#/components/messages/AddUser"
+            },
+            {
+              "$ref": "#/components/messages/IsUserJoinAllowed"
+            },
+            {
+              "$ref": "#/components/messages/Disconnect"
+            },
+            {
+              "$ref": "#/components/messages/PostMessage"
+            },
+            {
+              "$ref": "#/components/messages/KickUser"
+            },
+            {
+              "$ref": "#/components/messages/VoteToKickUser"
+            },
+            {
+              "$ref": "#/components/messages/AddIssue"
+            },
+            {
+              "$ref": "#/components/messages/DeleteIssue"
+            },
+            {
+              "$ref": "#/components/messages/EditIssue"
+            },
+            {
+              "$ref": "#/components/messages/StartGame"
+            },
+            {
+              "$ref": "#/components/messages/EndGame"
+            },
+            {
+              "$ref": "#/components/messages/StartRound"
+            },
+            {
+              "$ref": "#/components/messages/EndRound"
+            },
+            {
+              "$ref": "#/components/messages/AddScore"
+            }
+          ]
+        }
+      },
+      "subscribe": {
+        "description": "## Набор событий инициируемых сервером.",
+        "tags": [
+          {
+            "name": "To Dealer Socket",
+            "description": "Уведомление на сокета дилера."
+          },
+          {
+            "name": "To User Socket",
+            "description": "Уведомление на сокета пользователя."
+          },
+          {
+            "name": "To All Room Sockets",
+            "description": "Уведомление на все сокеты в комнате."
+          }
+        ],
+        "message": {
+          "oneOf": [
+            {
+              "$ref": "#/components/messages/CreateGameFailed"
+            },
+            {
+              "$ref": "#/components/messages/GameCreated"
+            },
+            {
+              "$ref": "#/components/messages/CancelGameFailed"
+            },
+            {
+              "$ref": "#/components/messages/GameCanceled"
+            },
+            {
+              "$ref": "#/components/messages/ChangeGameTitleFailed"
+            },
+            {
+              "$ref": "#/components/messages/GameTitleChanged"
+            },
+            {
+              "$ref": "#/components/messages/JoinGameFailed"
+            },
+            {
+              "$ref": "#/components/messages/ReadyToAddUser"
+            },
+            {
+              "$ref": "#/components/messages/AllowUserJoin"
+            },
+            {
+              "$ref": "#/components/messages/LoginError"
+            },
+            {
+              "$ref": "#/components/messages/LoggedIn"
+            },
+            {
+              "$ref": "#/components/messages/UserJoined"
+            },
+            {
+              "$ref": "#/components/messages/UserDisconnected"
+            },
+            {
+              "$ref": "#/components/messages/PostMessageFailed"
+            },
+            {
+              "$ref": "#/components/messages/MessagePosted"
+            },
+            {
+              "$ref": "#/components/messages/KickUserFailed"
+            },
+            {
+              "$ref": "#/components/messages/KickVoteStarted"
+            },
+            {
+              "$ref": "#/components/messages/VoteToKickUserFailed"
+            },
+            {
+              "$ref": "#/components/messages/UserKickResult"
+            },
+            {
+              "$ref": "#/components/messages/Kicked"
+            },
+            {
+              "$ref": "#/components/messages/AddIssueFailed"
+            },
+            {
+              "$ref": "#/components/messages/IssueAdded"
+            },
+            {
+              "$ref": "#/components/messages/DeleteIssueFailed"
+            },
+            {
+              "$ref": "#/components/messages/IssueDeleted"
+            },
+            {
+              "$ref": "#/components/messages/EditIssueFailed"
+            },
+            {
+              "$ref": "#/components/messages/IssueEdited"
+            },
+            {
+              "$ref": "#/components/messages/StartGameFailed"
+            },
+            {
+              "$ref": "#/components/messages/GameStarted"
+            },
+            {
+              "$ref": "#/components/messages/EndGameFailed"
+            },
+            {
+              "$ref": "#/components/messages/GameEnded"
+            },
+            {
+              "$ref": "#/components/messages/StartRoundFailed"
+            },
+            {
+              "$ref": "#/components/messages/RoundStarted"
+            },
+            {
+              "$ref": "#/components/messages/EndRoundFailed"
+            },
+            {
+              "$ref": "#/components/messages/RoundEnded"
+            },
+            {
+              "$ref": "#/components/messages/AddScoreFailed"
+            },
+            {
+              "$ref": "#/components/messages/ScoreAdded"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DealerToJoin": {
+        "$ref": "./api-types.schema.json#/definitions/DealerToJoin"
+      },
+      "UserToJoin": {
+        "$ref": "./api-types.schema.json#/definitions/UserToJoin"
+      },
+      "InitDealer": {
+        "$ref": "./api-types.schema.json#/definitions/InitDealer"
+      },
+      "InitUser": {
+        "$ref": "./api-types.schema.json#/definitions/InitUser"
+      },
+      "User": {
+        "$ref": "./api-types.schema.json#/definitions/User"
+      },
+      "ChatMessage": {
+        "$ref": "./api-types.schema.json#/definitions/ChatMessage"
+      },
+      "IssueBase": {
+        "$ref": "./api-types.schema.json#/definitions/IssueBase"
+      },
+      "Issue": {
+        "$ref": "./api-types.schema.json#/definitions/Issue"
+      },
+      "CardScore": {
+        "$ref": "./api-types.schema.json#/definitions/CardScore"
+      },
+      "RoundResult": {
+        "$ref": "./api-types.schema.json#/definitions/RoundResult"
+      },
+      "GameResult": {
+        "$ref": "./api-types.schema.json#/definitions/GameResult"
+      },
+      "GameSettings": {
+        "$ref": "./api-types.schema.json#/definitions/GameSettings"
+      },
+      "KickVoteInit": {
+        "$ref": "./api-types.schema.json#/definitions/KickVoteInit"
+      },
+      "KickResult": {
+        "$ref": "./api-types.schema.json#/definitions/KickResult"
+      }
+    },
+    "messages": {
+      "CreateGame": {
+        "name": "create game",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          }
+        ],
+        "description": "Запрос на создание игры (комнаты в терминологии socket.io).\\\nНеобходим валидный объект пользователя-дилера.\n",
+        "payload": {
+          "$ref": "#/components/schemas/DealerToJoin"
+        }
+      },
+      "CreateGameFailed": {
+        "name": "create game failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера.\\\nВалидация объекта пользователя-дилера не прошла.\\\nИгра не создана, например по причине:\n- пустое имя дилера;\n",
+        "payload": {
+          "description": "описание причины проваленной валидации\n",
+          "type": "string",
+          "example": "dealer name required!"
+        }
+      },
+      "GameCreated": {
+        "name": "game created",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера.\\\nВалидация объекта пользователя-дилера прошла.\\\nИгра создана.\n",
+        "payload": {
+          "$ref": "#/components/schemas/InitDealer"
+        }
+      },
+      "CancelGame": {
+        "name": "cancel game",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          }
+        ],
+        "description": "Запрос на отмену игры принимается только от сокета дилера.\\\nПроходит валидацию на активность игры для полученного ID.\n",
+        "payload": {
+          "description": "`game-id`",
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "CancelGameFailed": {
+        "name": "cancel game failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера.\\\nОтменить не получилось, например по причине:\n- игра не активна;\n",
+        "payload": {
+          "description": "описание причины отказа в отмене игры\n",
+          "type": "string",
+          "example": "Game already not active!"
+        }
+      },
+      "GameCanceled": {
+        "name": "game canceled",
+        "tags": [
+          {
+            "name": "To All Room Sockets"
+          }
+        ],
+        "description": "Уведомление на все сокеты в игре.\\\nИгра - отменена.\n"
+      },
+      "ChangeGameTitle": {
+        "name": "change game title",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          }
+        ],
+        "description": "Запрос на смену названия для игры, принимается только от сокета дилера.",
+        "payload": {
+          "description": "название для игры",
+          "type": "string"
+        }
+      },
+      "ChangeGameTitleFailed": {
+        "name": "change game title failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера - смена названия игры не удалась.",
+        "payload": {
+          "description": "описание причины неудачной смены имени",
+          "type": "string",
+          "example": "Empty title pointless!"
+        }
+      },
+      "GameTitleChanged": {
+        "name": "game title changed",
+        "tags": [
+          {
+            "name": "To All Room Sockets"
+          }
+        ],
+        "description": "Уведомление на все сокеты в игре - название игры сменилось.",
+        "payload": {
+          "description": "название для игры",
+          "type": "string"
+        }
+      },
+      "JoinGame": {
+        "name": "join game",
+        "tags": [
+          {
+            "name": "From User Socket"
+          }
+        ],
+        "description": "Запрос на присоединение к игре по `game-id`.\\\nЕсли валидация прошла ожидается запрос на создание пользователя от этого сокета\n",
+        "payload": {
+          "description": "`game-id`",
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "JoinGameFailed": {
+        "name": "join game failed",
+        "tags": [
+          {
+            "name": "To User Socket"
+          }
+        ],
+        "description": "Уведомление на сокет запросившего присоединение.\\\nПрисоединение к игре не получилось, например по причине:\n- игры с `game-id` не существует;\n- игра с `game-id` уже не активна;\n",
+        "payload": {
+          "description": "описание причины проваленной валидации\n",
+          "type": "string",
+          "example": "Game already not active!"
+        }
+      },
+      "ReadyToAddUser": {
+        "name": "ready to add user",
+        "tags": [
+          {
+            "name": "To User Socket"
+          }
+        ],
+        "description": "Уведомление на сокет запросившего присоединение.\\\nВалидация `game-id` пройдена.\\\nСервер готов обработать запрос на создание участника игры от этого сокета.\n"
+      },
+      "AddUser": {
+        "name": "add user",
+        "tags": [
+          {
+            "name": "From User Socket"
+          }
+        ],
+        "description": "Запрос на создание пользователя от сокета прошедшего валидацию на присоединение к игре.\\\nЕсли игра уже стартовала, и дилер установил подтверждение на вход - на сокет дилера\\\nприходит уведомление `AllowUserJoin`\n",
+        "payload": {
+          "$ref": "#/components/schemas/UserToJoin"
+        }
+      },
+      "AllowUserJoin": {
+        "name": "allow user join",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера о присоединении пользователя, если игра уже идет,\\\nи стоит настройка пускать только после подтверждения.\n",
+        "payload": {
+          "$ref": "#/components/schemas/UserToJoin"
+        }
+      },
+      "IsUserJoinAllowed": {
+        "name": "is user join allowed",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          }
+        ],
+        "description": "Запрос от сокета дилера с разрешением или запретом присоединении пользователя,\\\nесли игра уже идет, и стоит настройка пускать только после подтверждения.\n",
+        "payload": {
+          "type": "boolean"
+        }
+      },
+      "LoginError": {
+        "name": "login error",
+        "tags": [
+          {
+            "name": "To User Socket"
+          }
+        ],
+        "description": "Уведомление на сокет запросившего присоединение и создание пользователя.\\\nВалидация не прошла, например по причине:\n- пустое имя пользователя;\n- пользователь с такими же данными уже участвует;\n- дилер запретил вход в уже идущую игру;\n",
+        "payload": {
+          "description": "описание причины проваленной валидации\n",
+          "type": "string",
+          "example": "Game started, dealer rejected your join!"
+        }
+      },
+      "LoggedIn": {
+        "name": "logged in",
+        "tags": [
+          {
+            "name": "To User Socket"
+          }
+        ],
+        "description": "Уведомление на сокет запросившего присоединение и создание пользователя.\\\nВалидация прошла успешно.\n",
+        "payload": {
+          "$ref": "#/components/schemas/InitUser"
+        }
+      },
+      "UserJoined": {
+        "name": "user joined",
+        "tags": [
+          {
+            "name": "To All Room Sockets"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре - присоединился новый пользователь.\n",
+        "payload": {
+          "$ref": "#/components/schemas/User"
+        }
+      },
+      "Disconnect": {
+        "name": "disconnect",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          },
+          {
+            "name": "From User Socket"
+          }
+        ],
+        "description": "Уведомление от сокета к серверу о разрыве связи.\\\nЕсли это сокет дилера - игра отменяется,\\\nиначе сервер сообщает всем сокетам в игре что пользователь покинул игру.\n"
+      },
+      "UserDisconnected": {
+        "name": "user disconnected",
+        "tags": [
+          {
+            "name": "To All Room Sockets"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре - пользователь покинул игру.\\\n",
+        "payload": {
+          "description": "`user-id`",
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "PostMessage": {
+        "name": "post message",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          },
+          {
+            "name": "From User Socket"
+          }
+        ],
+        "description": "Запрос с сообщением в чат.\n",
+        "payload": {
+          "type": "string"
+        }
+      },
+      "PostMessageFailed": {
+        "name": "post message failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          },
+          {
+            "name": "To User Socket"
+          }
+        ],
+        "description": "Уведомление на сокет отправившего сообщение в чат.\\\nВалидация не прошла, например по причине:\n- пустое сообщение;\n- слишком длинное сообщение;\n",
+        "payload": {
+          "description": "описание причины проваленной валидации\n",
+          "type": "string",
+          "example": "Empty messages not allowed!"
+        }
+      },
+      "MessagePosted": {
+        "name": "chat message added",
+        "tags": [
+          {
+            "name": "to-all-room-socket"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре.\\\nВ чате новое сообщение.\n",
+        "payload": {
+          "$ref": "#/components/schemas/ChatMessage"
+        }
+      },
+      "KickUser": {
+        "name": "kick user",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          },
+          {
+            "name": "From User Socket"
+          }
+        ],
+        "description": "Запрос на удаление пользователя.\\\nОбработка зависит от роли пользователя на запросившем сокете:\n- дилер - сразу удаляет;\n- игрок/наблюдатель - запускает голосование;\n",
+        "payload": {
+          "description": "`user-id`",
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "KickUserFailed": {
+        "name": "kick user failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          },
+          {
+            "name": "To User Socket"
+          }
+        ],
+        "description": "Уведомление на сокет запросившего удаление о неудачной валидации, например:\n- себя удалить нельзя;\n- дилера удалить нельзя;\n- в лобби менее 3 человек, не считая дилера;\n- этого пользователя уже нет в игре;\n- в данный момент уже идет голосование;\n",
+        "payload": {
+          "description": "описание причины проваленной валидации\n",
+          "type": "string",
+          "example": "Not enough users for start kick vote!"
+        }
+      },
+      "KickVoteStarted": {
+        "name": "kick vote started",
+        "tags": [
+          {
+            "name": "to-all-room-socket"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре.\\\nНачато голосование на удаление пользователя.\n",
+        "payload": {
+          "$ref": "#/components/schemas/KickVoteInit"
+        }
+      },
+      "VoteToKickUser": {
+        "tags": [
+          {
+            "name": "From User Socket"
+          }
+        ],
+        "description": "Запрос с голосом по удалению участника:\n- `true` - за удаление;\n- `false` - против удаления;\n",
+        "name": "vote to kick user",
+        "payload": {
+          "type": "boolean"
+        }
+      },
+      "VoteToKickUserFailed": {
+        "name": "kick user failed",
+        "tags": [
+          {
+            "name": "To User Socket"
+          }
+        ],
+        "description": "Уведомление на сокет отправивший голос по удалению о неудачной обработке запроса,\\\nвозможные причины:\n- голосование уже закончено;\n- голос от виновника не принимается;\n- голос с данного сокета уже учтен;\n",
+        "payload": {
+          "description": "описание причины не прошедшего голоса\n",
+          "type": "string",
+          "example": "Kick vote ended!"
+        }
+      },
+      "UserKickResult": {
+        "name": "kick result",
+        "tags": [
+          {
+            "name": "to-all-room-socket"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре.\\\nБыл или нет удален пользователь и сообщение о причине, например:\n- удален дилером;\n- удален (не удален) большинством голосов;\n",
+        "payload": {
+          "$ref": "#/components/schemas/KickResult"
+        }
+      },
+      "Kicked": {
+        "name": "kicked",
+        "tags": [
+          {
+            "name": "To User Socket"
+          }
+        ],
+        "description": "Уведомление на сокет удаленного пользователя.\n",
+        "payload": {
+          "description": "описание причины удаления\n",
+          "type": "string",
+          "example": "Kicked by dealer"
+        }
+      },
+      "AddIssue": {
+        "name": "add issue",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          }
+        ],
+        "description": "Запрос на добавление новой задачи.\\\nСервер ожидает его только от сокета дилера.\n",
+        "payload": {
+          "$ref": "#/components/schemas/IssueBase"
+        }
+      },
+      "AddIssueFailed": {
+        "name": "add issue failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка добавить задачу, например по причинам:\n- пустое название;\n- дубль, такая задача уже есть;\n",
+        "payload": {
+          "description": "описание причины отказа в добавлении задачи\n",
+          "type": "string",
+          "example": "Same issue already exist"
+        }
+      },
+      "IssueAdded": {
+        "name": "issue added",
+        "tags": [
+          {
+            "name": "to-all-room-socket"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре.\\\nНовая задача успешно добавлена.\n",
+        "payload": {
+          "$ref": "#/components/schemas/Issue"
+        }
+      },
+      "DeleteIssue": {
+        "name": "delete issue",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          }
+        ],
+        "description": "Запрос на удаление задачи.\\\nСервер ожидает его только от сокета дилера.",
+        "payload": {
+          "description": "issue-id",
+          "type": "string"
+        }
+      },
+      "DeleteIssueFailed": {
+        "name": "delete issue failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка удалить задачу, например по причинам:\n- задача с таки id не найдена;\n",
+        "payload": {
+          "description": "описание причины отказа в удалении задачи\n",
+          "type": "string",
+          "example": "Issue with this id not exist"
+        }
+      },
+      "IssueDeleted": {
+        "name": "issue deleted",
+        "tags": [
+          {
+            "name": "to-all-room-socket"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре.\\\nЗадача удалена.\n",
+        "payload": {
+          "description": "issue-id",
+          "type": "string"
+        }
+      },
+      "EditIssue": {
+        "name": "edit issue",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          }
+        ],
+        "description": "Запрос на сохранение отредактированной задачи.\\\nСервер ожидает его только от сокета дилера.\n",
+        "payload": {
+          "$ref": "#/components/schemas/Issue"
+        }
+      },
+      "EditIssueFailed": {
+        "name": "edit issue failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка сохранить отредактированную задачу, например по причинам:\n- пустое название;\n- дубль, такая задача уже есть;\n",
+        "payload": {
+          "description": "описание причины отказа в сохранении отредактированной задачи\n",
+          "type": "string",
+          "example": "Same issue already exist"
+        }
+      },
+      "IssueEdited": {
+        "name": "issue edited",
+        "tags": [
+          {
+            "name": "to-all-room-socket"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре.\\\nЗадача отредактирована.\n",
+        "payload": {
+          "$ref": "#/components/schemas/Issue"
+        }
+      },
+      "StartGame": {
+        "name": "start game",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          }
+        ],
+        "description": "Запрос на запуск игры с выбранными настройками.\\\nСервер ожидает его только от сокета дилера.\n",
+        "payload": {
+          "$ref": "#/components/schemas/GameSettings"
+        }
+      },
+      "StartGameFailed": {
+        "name": "start game failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка запустить игру, например по причинам:\n- нет задач для оценивания\n- нет игроков\n",
+        "payload": {
+          "description": "описание причины отказа в запуске игры\n",
+          "type": "string",
+          "example": "No gamers!"
+        }
+      },
+      "GameStarted": {
+        "name": "game started",
+        "tags": [
+          {
+            "name": "to-all-room-socket"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре.\\\nИгра запущена с настройками в ответе.\n",
+        "payload": {
+          "$ref": "#/components/schemas/GameSettings"
+        }
+      },
+      "EndGame": {
+        "name": "end game",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          }
+        ],
+        "description": "Запрос на остановку игры.\\\nСервер ожидает его только от сокета дилера.\n"
+      },
+      "EndGameFailed": {
+        "name": "end game failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка остановить игру, например по причинам:\n- игра уже остановлена;\n",
+        "payload": {
+          "description": "описание причины отказа в остановке игры\n",
+          "type": "string",
+          "example": "No active game!"
+        }
+      },
+      "GameEnded": {
+        "name": "game ended",
+        "tags": [
+          {
+            "name": "to-all-room-socket"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре.\\\nИгра закончена с результатами оценок в ответе.\n",
+        "payload": {
+          "$ref": "#/components/schemas/GameResult"
+        }
+      },
+      "StartRound": {
+        "name": "start round",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          }
+        ],
+        "description": "Запрос на запуск раунда оценок.\\\nСервер ожидает его только от сокета дилера.\n",
+        "payload": {
+          "description": "`issue-id`",
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "StartRoundFailed": {
+        "name": "start round failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка запустить раунд оценок, например по причинам:\n- предыдущий раунд еще не закончен;\n",
+        "payload": {
+          "description": "описание причины отказа в остановке игры\n",
+          "type": "string",
+          "example": "Another round active now!"
+        }
+      },
+      "RoundStarted": {
+        "name": "round started",
+        "tags": [
+          {
+            "name": "to-all-room-socket"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре.\\\nРаунде по оценке задачи запущен.\n",
+        "payload": {
+          "description": "`issue-id`",
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "EndRound": {
+        "name": "end round",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          }
+        ],
+        "description": "Запрос на остановку раунда оценок.\\\nСервер ожидает его только от сокета дилера.\n"
+      },
+      "EndRoundFailed": {
+        "name": "end round failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка остановить раунд оценок, например по причинам:\n- нет активного раунда;\n",
+        "payload": {
+          "description": "описание причины отказа в остановке игры\n",
+          "type": "string",
+          "example": "No active round!"
+        }
+      },
+      "RoundEnded": {
+        "name": "round ended",
+        "tags": [
+          {
+            "name": "to-all-room-socket"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре.\\\nРаунд закончен (после получения всех оценок или по таймеру или дилером).\n",
+        "payload": {
+          "$ref": "#/components/schemas/RoundResult"
+        }
+      },
+      "AddScore": {
+        "name": "add score",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          },
+          {
+            "name": "From User Socket"
+          }
+        ],
+        "description": "Запрос на выставление задаче оценки из выбранной карты.\n",
+        "payload": {
+          "$ref": "#/components/schemas/CardScore"
+        }
+      },
+      "AddScoreFailed": {
+        "name": "add score failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          },
+          {
+            "name": "To User Socket"
+          }
+        ],
+        "description": "Уведомление на сокет запросившего выставление оценки.\\\nВалидация не пройдена, например по причинам:\n- сокет не имеет роли игрок\n- если это дилер, и не была включена опция, разрешающая принимать ему участие в игре\n",
+        "payload": {
+          "description": "описание причины не пройденной валидации\n",
+          "type": "string",
+          "example": "You need to have role - gamer!"
+        }
+      },
+      "ScoreAdded": {
+        "name": "score added",
+        "tags": [
+          {
+            "name": "to-all-room-socket"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре.\\\nПользователь с `user-id` в ответе выставил оценку.\n",
+        "payload": {
+          "description": "`user-id`",
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    }
+  }
+}
