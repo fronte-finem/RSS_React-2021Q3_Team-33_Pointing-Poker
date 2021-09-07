@@ -81,6 +81,12 @@
               "$ref": "#/components/messages/AddIssue"
             },
             {
+              "$ref": "#/components/messages/DeleteIssue"
+            },
+            {
+              "$ref": "#/components/messages/EditIssue"
+            },
+            {
               "$ref": "#/components/messages/StartGame"
             },
             {
@@ -181,6 +187,18 @@
             },
             {
               "$ref": "#/components/messages/IssueAdded"
+            },
+            {
+              "$ref": "#/components/messages/DeleteIssueFailed"
+            },
+            {
+              "$ref": "#/components/messages/IssueDeleted"
+            },
+            {
+              "$ref": "#/components/messages/EditIssueFailed"
+            },
+            {
+              "$ref": "#/components/messages/IssueEdited"
             },
             {
               "$ref": "#/components/messages/StartGameFailed"
@@ -691,6 +709,84 @@
           }
         ],
         "description": "Уведомление всем сокетам в игре.\\\nНовая задача успешно добавлена.\n",
+        "payload": {
+          "$ref": "#/components/schemas/Issue"
+        }
+      },
+      "DeleteIssue": {
+        "name": "delete issue",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          }
+        ],
+        "description": "Запрос на удаление задачи.\\\nСервер ожидает его только от сокета дилера.",
+        "payload": {
+          "description": "issue-id",
+          "type": "string"
+        }
+      },
+      "DeleteIssueFailed": {
+        "name": "delete issue failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка удалить задачу, например по причинам:\n- задача с таки id не найдена;\n",
+        "payload": {
+          "description": "описание причины отказа в удалении задачи\n",
+          "type": "string",
+          "example": "Issue with this id not exist"
+        }
+      },
+      "IssueDeleted": {
+        "name": "issue deleted",
+        "tags": [
+          {
+            "name": "to-all-room-socket"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре.\\\nЗадача удалена.\n",
+        "payload": {
+          "description": "issue-id",
+          "type": "string"
+        }
+      },
+      "EditIssue": {
+        "name": "edit issue",
+        "tags": [
+          {
+            "name": "From Dealer Socket"
+          }
+        ],
+        "description": "Запрос на сохранение отредактированной задачи.\\\nСервер ожидает его только от сокета дилера.\n",
+        "payload": {
+          "$ref": "#/components/schemas/Issue"
+        }
+      },
+      "EditIssueFailed": {
+        "name": "edit issue failed",
+        "tags": [
+          {
+            "name": "To Dealer Socket"
+          }
+        ],
+        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка сохранить отредактированную задачу, например по причинам:\n- пустое название;\n- дубль, такая задача уже есть;\n",
+        "payload": {
+          "description": "описание причины отказа в сохранении отредактированной задачи\n",
+          "type": "string",
+          "example": "Same issue already exist"
+        }
+      },
+      "IssueEdited": {
+        "name": "issue edited",
+        "tags": [
+          {
+            "name": "to-all-room-socket"
+          }
+        ],
+        "description": "Уведомление всем сокетам в игре.\\\nЗадача отредактирована.\n",
         "payload": {
           "$ref": "#/components/schemas/Issue"
         }

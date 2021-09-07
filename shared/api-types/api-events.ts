@@ -64,6 +64,14 @@ export const enum ApiClientEvents {
    */
   ADD_ISSUE = 'add issue',
   /**
+   * payload: {@link String} - issue-id
+   */
+  DELETE_ISSUE = 'delete issue',
+  /**
+   * payload: {@link Issue Issue '@shared/api-types/issue'}
+   */
+  EDIT_ISSUE = 'edit issue',
+  /**
    * payload: {@link GameSettings GameSettings '@shared/api-types/game-settings'}
    */
   START_GAME = 'start game',
@@ -177,6 +185,22 @@ export const enum ApiServerEvents {
    * payload: {@link Issue Issue '@shared/api-types/issue'}
    */
   ISSUE_ADDED = 'issue added',
+  /**
+   * payload: {@link String} - fail description
+   */
+  DELETE_ISSUE_FAILED = 'delete issue failed',
+  /**
+   * payload: {@link String} - issue-id
+   */
+  ISSUE_DELETED = 'issue deleted',
+  /**
+   * payload: {@link String} - fail description
+   */
+  EDIT_ISSUE_FAILED = 'edit issue failed',
+  /**
+   * payload: {@link Issue Issue '@shared/api-types/issue'}
+   */
+  ISSUE_EDITED = 'issue edited',
   /**
    * payload: {@link String} - fail description
    */
