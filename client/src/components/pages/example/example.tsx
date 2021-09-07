@@ -1,46 +1,35 @@
 import React, { useState } from 'react';
-import { Button } from '@client/components/shared/button/button';
-import { Input } from '@client/components/shared/input/input';
-import { Toggle } from '@client/components/shared/toggle/toggle';
-import { Select } from '@client/components/shared/select/select';
-import { InputFile } from '@client/components/shared/inputfile/inpitfile';
-import { GameCard } from '@client/components/shared/GameCard/GameCard';
-import { AddingGameCard } from '@client/components/shared/GameCard/AddingGameCard';
-import { Modal } from '@client/components/shared/modal/modal';
-import { Timer } from '@client/components/shared/timer/timer';
+import { ExternalLink } from '@client/components/shared/link/external-link';
 import classes from './example.module.css';
+import logo from './logo.svg';
 
 export function PageExample() {
-  const options = [
-    { value: 'Low', label: 'Low' },
-    { value: 'Middle', label: 'Middle' },
-    { value: 'Hight', label: 'Hight' },
-  ];
+  const [count, setCount] = useState(0);
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
   return (
     <div className={classes.example}>
-      <Button>Confirm</Button>
-      <Button type="default">Cancel</Button>
-      <Input size="large" />
-      <Toggle />
-      <Select options={options} />
-      <InputFile />
-      <GameCard score={42} scoreType="SP" />
-      <AddingGameCard />
-      <Button onClick={showModal}>Confirm</Button>
-      <Modal
-        title="Title"
-        visible={isModalVisible}
-        okText="Confirm"
-        cancelText="Cancel"
-        content="Are you really want to remove playe David Blane from game session?"
-      />
-      <Timer time={62} />
+      <header className={classes.exampleHeader}>
+        <img src={logo} className={classes.exampleLogo} alt="logo" />
+        <p>Hello Vite + React!</p>
+        <p>
+          <button
+            type="button"
+            className={classes.exampleButton}
+            onClick={() => setCount((prev) => prev + 1)}>
+            count is: {count}
+          </button>
+        </p>
+        <p>
+          Edit <code>example.tsx</code> and save to test HMR updates.
+        </p>
+        <p>
+          <ExternalLink url="https://reactjs.org">Learn React</ExternalLink>
+          {' | '}
+          <ExternalLink url="https://vitejs.dev/guide/features.html">
+            Vite Docs
+          </ExternalLink>
+        </p>
+      </header>
     </div>
   );
 }

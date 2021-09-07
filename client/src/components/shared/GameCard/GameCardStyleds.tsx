@@ -10,7 +10,7 @@ export const StyledGameCard = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${(props) => props.theme.componentColor};
+  color: ${(props) => props.theme.fontColor};
 `;
 
 export const StyledCardScore = styled.p`

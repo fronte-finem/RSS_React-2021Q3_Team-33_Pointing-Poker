@@ -8,12 +8,17 @@ const StyledSelect = styled(AntSelect)`
   text-align: left;
 `;
 
-export const Select: React.FC<any> = (props) => {
+interface IOption {
+  value: string;
+  label: string;
+}
+
+export const Select: React.FC<{ options: IOption[] }> = (props) => {
   const { options } = props;
 
   return (
     <StyledSelect defaultValue={options[0].value} {...props}>
-      {options.map((option: { value: string; label: string }) => (
+      {options.map((option: IOption) => (
         <StyledSelect.Option value={option.value} key={option.value}>
           {option.label}
         </StyledSelect.Option>
