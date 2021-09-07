@@ -1,48 +1,43 @@
 import React, { useEffect, useState } from 'react';
-import { StyledColon, TimerWrapper } from './timerwrapper';
+import { StyledColon, TimerSection, TimerWrapper } from './timer-wrapper';
+
+const formatTime = (time: number): { minutes: number; seconds: number } => {
+  const minutes = Math.floor(time / 60);
+  const seconds = time % 60;
+  return { minutes, seconds };
+};
+
+const decreaseOrStopTimer = (timerId: number) => (time: number) => {
+  if (time > 0) return time - 1;
+  window.clearInterval(timerId);
+  return 0;
+};
+
+export const useTimer = (initialTime: number) => {
+  const [time, setTime] = useState(initialTime);
+
+  useEffect(() => {
+    const interval = window.setInterval(
+      () => setTime(decreaseOrStopTimer(interval)),
+      1000
+    );
+    return () => window.clearInterval(interval);
+  }, [initialTime]);
+
+  return time;
+};
 
 export const Timer: React.FC<{ time: number }> = (props) => {
   const { time } = props;
-
-  const [minutes, setMinutes] = useState(Math.floor(time / 60));
-  const [seconds, setSeconds] = useState(time - minutes * 60);
-
-  useEffect(() => {
-    const interval = setInterval((): void => {
-      if (seconds === 0) {
-        if (minutes !== 0) {
-          setSeconds(59);
-          setMinutes(minutes - 1);
-        }
-      } else {
-        setSeconds(seconds - 1);
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  });
+  const { minutes, seconds } = formatTime(useTimer(time));
 
   return (
     <TimerWrapper>
-      {' '}
-      <p
-        style={{
-          position: 'absolute',
-          top: '0px',
-          left: '20px',
-          margin: '0',
-        }}>
-        {minutes}
-      </p>
+      <TimerSection>{minutes}</TimerSection>
       <StyledColon>:</StyledColon>
-      <p
-        style={{
-          position: 'absolute',
-          top: '0px',
-          right: '5px',
-          margin: '0',
-        }}>
-        {seconds > 10 ? seconds : `0${seconds}`}
-      </p>
+      <TimerSection isSeconds>
+        {seconds > 9 ? seconds : `0${seconds}`}
+      </TimerSection>
     </TimerWrapper>
   );
 };
