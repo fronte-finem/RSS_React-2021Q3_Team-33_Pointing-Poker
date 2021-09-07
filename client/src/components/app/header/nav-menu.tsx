@@ -1,18 +1,16 @@
 import React from 'react';
 import { Menu } from 'antd';
 import { NavLink } from 'react-router-dom';
+import { routes } from '@client/components/app/routes';
 
 export const NavMenu: React.FC = () => (
-  <Menu>
-    <Menu.Item>
-      <NavLink to="/" exact>
-        Home
-      </NavLink>
-    </Menu.Item>
-    <Menu.Item>
-      <NavLink to="/example" exact>
-        Example
-      </NavLink>
-    </Menu.Item>
+  <Menu mode="horizontal">
+    {routes.map(({ path, name }) => (
+      <Menu.Item key={name}>
+        <NavLink to={path} exact>
+          {name}
+        </NavLink>
+      </Menu.Item>
+    ))}
   </Menu>
 );
