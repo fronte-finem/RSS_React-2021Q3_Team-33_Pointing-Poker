@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ExternalLink } from '@client/components/shared/link/external-link';
-import { Message } from '@client/components/shared/message/message';
+import { IssueCard } from '@client/components/shared/card/issue-card/issue-card';
 import classes from './example.module.css';
 import logo from './logo.svg';
 
@@ -12,21 +12,11 @@ export function PageExample() {
       <header className={classes.exampleHeader}>
         <img src={logo} className={classes.exampleLogo} alt="logo" />
         <p>Hello Vite + React!</p>
-        <Message
-          firstName="Mark"
-          lastName="Single"
-          position="junior software engineer"
-          isOwner={false}
-          isDelete
-          message="Hi all! :)"
-        />
-        <Message
-          firstName="John"
-          lastName="Dorian"
-          position="lead software engineer"
-          isOwner
-          isDelete
-          message="Hello Mark :) What do you thing about issue 1934? How many time would you spend to fix it?"
+        <IssueCard
+          title="Issue 542"
+          priority="Low property"
+          isGame
+          isCurrent={false}
         />
         <p>
           <button
