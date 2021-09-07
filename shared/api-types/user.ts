@@ -1,6 +1,3 @@
-// type Role = 'gamer' | 'spectator';
-// type FullRole = Role | 'dealer';
-
 /**
  * Все возможные роли пользователя игры.
  */
