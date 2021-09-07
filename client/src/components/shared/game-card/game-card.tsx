@@ -4,7 +4,7 @@ import {
   StyledCardScore,
   StyledCardScoreType,
   StyledGameCard,
-} from './GameCardStyleds';
+} from './game-card-styles';
 
 export const GameCard: React.FC<{ score: number; scoreType: string }> = (
   props
