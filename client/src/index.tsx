@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import './index.css';
 import { ThemeProvider } from 'styled-components';
 import { App } from './components/app/app';
-import { lightTheme } from './components/shared/themes/themes';
+import { lightTheme } from './themes/themes';
 
 ReactDOM.render(
   <React.StrictMode>
