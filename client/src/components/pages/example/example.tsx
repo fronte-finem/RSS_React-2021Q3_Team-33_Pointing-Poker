@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { ExternalLink } from '@client/components/shared/link/external-link';
-import { IssueCard } from '@client/components/shared/card/issue-card/issue-card';
-import { IssueButton } from '@client/components/shared/button/issue-button';
 import classes from './example.module.css';
 import logo from './logo.svg';
 
@@ -13,13 +11,6 @@ export function PageExample() {
       <header className={classes.exampleHeader}>
         <img src={logo} className={classes.exampleLogo} alt="logo" />
         <p>Hello Vite + React!</p>
-        <IssueCard
-          title="Issue 542"
-          priority="Low property"
-          isGame
-          isCurrent={false}
-        />
-        <IssueButton />
         <p>
           <button
             type="button"

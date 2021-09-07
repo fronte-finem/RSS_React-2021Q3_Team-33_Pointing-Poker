@@ -15,6 +15,7 @@ interface AvatarProps {
 const StyleAvatar = styled(AntAvatar)`
   display: flex;
   align-items: center;
+  justify-content: center;
   background: #60dabf;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   cursor: default;

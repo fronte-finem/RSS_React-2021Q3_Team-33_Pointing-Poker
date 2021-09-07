@@ -9,6 +9,7 @@ interface MessageProps {
   isOwner: boolean;
   isDelete: boolean;
   message: string;
+  avatar: string;
 }
 
 const StyleMessage = styled.div`
@@ -37,19 +38,19 @@ const StyleMessageBody = styled.div`
 `;
 
 export const Message: React.FC<MessageProps> = (props) => {
-  const { firstName, lastName, position, isOwner, isDelete, message } = props;
+  const { firstName, lastName, position, isOwner, isDelete, message, avatar } =
+    props;
 
   return (
     <StyleMessage>
       <StyleMessageBody>{message}</StyleMessageBody>
       <UserCard
-        content={{
-          firstName,
-          lastName,
-          position,
-          isOwner,
-          isDelete,
-        }}
+        firstName={firstName}
+        lastName={lastName}
+        position={position}
+        isOwner={isOwner}
+        isDelete={isDelete}
+        avatar={avatar}
       />
     </StyleMessage>
   );

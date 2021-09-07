@@ -1,20 +1,16 @@
 import React from 'react';
-import { Card as AntCard, CardProps as AntCardProps } from 'antd';
+import { Card as AntCard } from 'antd';
 import styled from 'styled-components';
 import { StopOutlined } from '@ant-design/icons';
 import { Avatar } from '../../avatar/avatar';
 
-interface UserCardContent {
+interface UserCardProps {
   firstName: string;
   lastName: string;
   position: string;
   isOwner: boolean;
   isDelete: boolean;
-}
-
-interface UserCardProps {
-  content: UserCardContent;
-  mod?: AntCardProps;
+  avatar: string;
 }
 
 const StyleCard = styled(AntCard)`
@@ -88,11 +84,14 @@ const deleteUser = () => {
   // TODO: add delete user
 };
 
-export const UserCard: React.FC<UserCardProps> = ({ content, mod }) => {
-  const { firstName, lastName, position, isOwner, isDelete } = content;
+export const UserCard: React.FC<UserCardProps> = (props) => {
+  const { firstName, lastName, position, isOwner, isDelete, avatar } = props;
   const card = (
-    <StyleCard {...mod}>
-      <Avatar content={{ firstName, lastName }} mod={{ size: 83 }} />
+    <StyleCard>
+      <Avatar
+        content={{ firstName, lastName }}
+        mod={{ size: 83, src: avatar }}
+      />
       <StyleCardWrapper>
         {isOwner ? <StyleCardOwner>It&prime;s you</StyleCardOwner> : ''}
         <StyleCardTitle>
