@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Header } from '@client/components/app/header/header';
 import { Footer } from '@client/components/app/footer/footer';
-import { PageExample } from '@client/components/pages/example/example';
+import { routes } from '@client/components/app/routes';
 import classes from './app.module.css';
 
 export const App: React.FC = () => {
@@ -12,7 +12,9 @@ export const App: React.FC = () => {
         <Header />
         <main className={classes.main}>
           <Switch>
-            <Route path="/example" exact component={PageExample} />
+            {routes.map(({ path, name, component }) => (
+              <Route exact key={name} path={path} component={component} />
+            ))}
           </Switch>
         </main>
         <Footer />

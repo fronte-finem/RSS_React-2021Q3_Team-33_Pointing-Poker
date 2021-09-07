@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StyledGameCard } from './GameCardStyleds';
+import { StyledGameCard } from './game-card-styles';
 
 export const AddingGameCard = () => {
   return (
