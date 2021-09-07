@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ExternalLink } from '@client/components/shared/link/external-link';
 import { IssueCard } from '@client/components/shared/card/issue-card/issue-card';
+import { IssueButton } from '@client/components/shared/button/issue-button';
 import classes from './example.module.css';
 import logo from './logo.svg';
 
@@ -18,6 +19,7 @@ export function PageExample() {
           isGame
           isCurrent={false}
         />
+        <IssueButton />
         <p>
           <button
             type="button"
