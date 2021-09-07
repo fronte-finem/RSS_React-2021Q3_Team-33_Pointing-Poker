@@ -11,6 +11,11 @@ export const StyledGameCard = styled.div`
   justify-content: center;
   align-items: center;
   color: ${(props) => props.theme.fontColor};
+
+  :hover {
+    cursor: pointer;
+    box-shadow: 0px 8px 8px rgba(47, 16, 185, 0.25);
+  }
 `;
 
 export const StyledCardScore = styled.p`
