@@ -2,6 +2,10 @@ import React from 'react';
 import { PageExample } from '@client/components/pages/example/example';
 import { PageTimerDemo } from '@client/components/pages/demo/timer';
 import { PageGameCardDemo } from '@client/components/pages/demo/game-card';
+import { PageAvatarDemo } from '@client/components/pages/demo/avatar';
+import { PageIssueDemo } from '@client/components/pages/demo/issue';
+import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
+import { PageMessageDemo } from '@client/components/pages/demo/message';
 
 interface RouteConf {
   path: string;
@@ -29,5 +33,25 @@ export const routes: RouteConf[] = [
     path: '/demo/game-card',
     name: 'Game-Card Demo',
     component: PageGameCardDemo,
+  },
+  {
+    path: '/demo/avatar',
+    name: 'Avatar Demo',
+    component: PageAvatarDemo,
+  },
+  {
+    path: '/demo/issue',
+    name: 'Issue Demo',
+    component: PageIssueDemo,
+  },
+  {
+    path: '/demo/user-card',
+    name: 'User-Card Demo',
+    component: PageUserCardDemo,
+  },
+  {
+    path: '/demo/message',
+    name: 'Message Demo',
+    component: PageMessageDemo,
   },
 ];

@@ -1,6 +1,6 @@
 {
-  "name": "vite-project",
-  "version": "0.0.0",
+  "name": "pointing-poker",
+  "private": true,
   "scripts": {
     "prepare": "husky install",
     "dev": "vite",
@@ -8,7 +8,11 @@
     "serve": "vite preview",
     "lint": "pretty-quick --staged && eslint ./ --ext .ts,.tsx --fix",
     "test": "jest",
-    "test:cover": "jest --coverage"
+    "test:cover": "jest --coverage",
+    "generate:api-types": "npx ts-json-schema-generator --path ./shared/api-types/*.ts --unstable --no-type-check --out ./server/doc/api-types.schema.json",
+    "pnpx:generate:api-types": "pnpx ts-json-schema-generator --path ./shared/api-types/*.ts --unstable --no-type-check --out ./server/doc/api-types.schema.json",
+    "generate:api-doc-html": "npx -p @asyncapi/generator ag ./server/doc/async-api.schema.json @asyncapi/html-template --force-write -o ./server/doc/html",
+    "pnpx:generate:api-doc-html": "pnpx -p @asyncapi/generator ag ./server/doc/async-api.schema.json @asyncapi/html-template --force-write -o ./server/doc/html"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.4",
@@ -23,7 +27,6 @@
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^7.0.2",
     "@types/jest": "^27.0.1",
-    "@types/node": "^16.7.10",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.1.8",

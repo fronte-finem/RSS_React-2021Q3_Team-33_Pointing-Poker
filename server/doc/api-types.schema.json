@@ -1,0 +1,393 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "ChatMessage": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "message": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "message", "date"],
+      "additionalProperties": false,
+      "description": "Объект сообщения чата рассылаемый сервером"
+    },
+    "ChatMessagesList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ChatMessage"
+      },
+      "description": "Массив сообщений чата."
+    },
+    "KickVoteInit": {
+      "type": "object",
+      "properties": {
+        "badUserId": {
+          "type": "string",
+          "description": "пользователь на удаление",
+          "format": "uuid"
+        },
+        "initiatorId": {
+          "type": "string",
+          "description": "пользователь начавший голосование",
+          "format": "uuid"
+        }
+      },
+      "required": ["badUserId", "initiatorId"],
+      "additionalProperties": false,
+      "description": "Объект для уведомления о начале голосования по удалению пользователя."
+    },
+    "KickResult": {
+      "type": "object",
+      "properties": {
+        "badUserId": {
+          "type": "string",
+          "description": "пользователь на удаление",
+          "format": "uuid"
+        },
+        "kicked": {
+          "type": "boolean",
+          "description": "был пользователь удален или нет"
+        },
+        "reason": {
+          "type": "string",
+          "description": "описание причины по которой был удален (не удален) пользователь"
+        }
+      },
+      "required": ["badUserId", "kicked", "reason"],
+      "additionalProperties": false,
+      "description": "Объект для уведомления о результате решения по удалению пользователя."
+    },
+    "CardsSetDefault": {
+      "type": "string",
+      "enum": ["fibonacci", "pow 2"],
+      "description": "Стандартный тип набора карт: числа Фибоначчи, степени двойки"
+    },
+    "CardScore": {
+      "type": ["number", "string"],
+      "description": "Значение игровой карты (число или название особенной карты)."
+    },
+    "CardsSetCustom": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/CardScore"
+      },
+      "description": "Массив набора карт собственной последовательности."
+    },
+    "CardsSet": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/CardsSetDefault"
+        },
+        {
+          "$ref": "#/definitions/CardsSetCustom"
+        }
+      ],
+      "description": "Тип набора карт: числа Фибоначчи, степени двойки или массив собственной последовательности."
+    },
+    "GameSettings": {
+      "type": "object",
+      "properties": {
+        "dealerGamer": {
+          "type": "boolean",
+          "description": "Будет ли дилер принимать участие в игре."
+        },
+        "cardsSet": {
+          "$ref": "#/definitions/CardsSet",
+          "description": "Какой набор карточек будет использоваться."
+        },
+        "autoJoinToGame": {
+          "type": "boolean",
+          "description": "Если игра уже началась: впускать автоматически всех новых участников или впускать через механизм admit/reject."
+        },
+        "autoOpenCards": {
+          "type": "boolean",
+          "description": "Будут ли карты переворачиваться автоматически, как только все проголосуют."
+        },
+        "changeAfterRoundEnd": {
+          "type": "boolean",
+          "description": "Можно ли менять свой выбор после того, как все карты уже перевернуты."
+        },
+        "timeout": {
+          "type": "number",
+          "description": "Конфигурация времени таймера если он ненужен."
+        }
+      },
+      "required": [
+        "dealerGamer",
+        "cardsSet",
+        "autoJoinToGame",
+        "autoOpenCards",
+        "changeAfterRoundEnd"
+      ],
+      "additionalProperties": false,
+      "description": "Набор настроек игры."
+    },
+    "Role": {
+      "type": "string",
+      "enum": ["dealer", "gamer", "spectator"],
+      "description": "Все возможные роли пользователя игры."
+    },
+    "RoleUserToJoin": {
+      "type": "string",
+      "enum": ["gamer", "spectator"],
+      "description": "Роли возможные для пользователя присоединяющегося к игре."
+    },
+    "UserBase": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "jobPosition": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        }
+      },
+      "required": ["firstName"],
+      "additionalProperties": false,
+      "description": "Базовый объект пользователя без определенной роли"
+    },
+    "DealerToJoin": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "jobPosition": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "gameTitle": {
+          "type": "string"
+        }
+      },
+      "required": ["firstName", "gameTitle"],
+      "additionalProperties": false,
+      "description": "Объект, ожидаемый сервером при запросе создания игры."
+    },
+    "UserToJoin": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "jobPosition": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/definitions/RoleUserToJoin"
+        }
+      },
+      "required": ["firstName", "role"],
+      "additionalProperties": false,
+      "description": "Объект, ожидаемый сервером при запросе присоединения к игре."
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "jobPosition": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "role": {
+          "$ref": "#/definitions/Role"
+        }
+      },
+      "required": ["firstName", "id", "role"],
+      "additionalProperties": false,
+      "description": "Объект пользователя игры (дилер/игрок/наблюдатель),  возвращаемый сервером при различных событиях."
+    },
+    "UsersList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/User"
+      },
+      "description": "Массив пользователей в игре."
+    },
+    "Priority": {
+      "type": "string",
+      "enum": ["high", "middle", "low"],
+      "description": "Приоритет задачи"
+    },
+    "IssueBase": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "link": {
+          "type": "string",
+          "format": "uri"
+        },
+        "priority": {
+          "$ref": "#/definitions/Priority"
+        }
+      },
+      "required": ["title", "link", "priority"],
+      "additionalProperties": false,
+      "description": "Объект задачи для оценки в процессе игры (приходит от дилера на сервер)."
+    },
+    "Issue": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "link": {
+          "type": "string",
+          "format": "uri"
+        },
+        "priority": {
+          "$ref": "#/definitions/Priority"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": ["id", "link", "priority", "title"],
+      "additionalProperties": false,
+      "description": "Объект задачи для оценки в процессе игры (приходит с сервера пользователям)."
+    },
+    "IssuesList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Issue"
+      },
+      "description": "Массив задач добавленных дилером для последующей оценки."
+    },
+    "UserScore": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "score": {
+          "$ref": "#/definitions/CardScore"
+        }
+      },
+      "required": ["userId", "score"],
+      "additionalProperties": false,
+      "description": "Объект оценки поставленной задаче игроком."
+    },
+    "RoundResult": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/UserScore"
+      },
+      "description": "Массив оценок поставленных задаче игроками."
+    },
+    "IssueScore": {
+      "type": "object",
+      "properties": {
+        "issueId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scores": {
+          "$ref": "#/definitions/RoundResult"
+        }
+      },
+      "required": ["issueId", "scores"],
+      "additionalProperties": false,
+      "description": "Объект оценок поставленных задаче игроками."
+    },
+    "GameResult": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/IssueScore"
+      },
+      "description": "Массив всех оценённых задач."
+    },
+    "InitDealer": {
+      "type": "object",
+      "properties": {
+        "gameId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "gameSettings": {
+          "$ref": "#/definitions/GameSettings"
+        },
+        "users": {
+          "$ref": "#/definitions/UsersList"
+        }
+      },
+      "required": ["gameId", "gameSettings", "users"],
+      "additionalProperties": false,
+      "description": "Начальный объект, присылаемый сервером дилеру."
+    },
+    "InitUser": {
+      "type": "object",
+      "properties": {
+        "gameId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "gameTitle": {
+          "type": "string"
+        },
+        "users": {
+          "$ref": "#/definitions/UsersList"
+        },
+        "messages": {
+          "$ref": "#/definitions/ChatMessagesList",
+          "description": "Если игра уже началась - `undefined`, иначе массив всех (или N последних) сообщений."
+        },
+        "issues": {
+          "$ref": "#/definitions/IssuesList",
+          "description": "Если игра еще не началась - `undefined`, иначе список задач для оценивания."
+        },
+        "gameSettings": {
+          "$ref": "#/definitions/GameSettings",
+          "description": "Если игра еще не началась - `undefined`, иначе выбранные дилером настройки."
+        },
+        "gameResult": {
+          "$ref": "#/definitions/GameResult",
+          "description": "Если игра еще не началась - `undefined`, результаты пройденных раундов."
+        }
+      },
+      "required": ["gameId", "gameTitle", "users"],
+      "additionalProperties": false,
+      "description": "Начальный объект, присылаемый сервером игроку/наблюдателю."
+    }
+  }
+}
