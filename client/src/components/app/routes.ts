@@ -1,5 +1,7 @@
 import React from 'react';
 import { PageExample } from '@client/components/pages/example/example';
+import { PageTimerDemo } from '@client/components/pages/demo/timer';
+import { PageGameCardDemo } from '@client/components/pages/demo/game-card';
 import { PageAvatarDemo } from '@client/components/pages/demo/avatar';
 import { PageIssueDemo } from '@client/components/pages/demo/issue';
 import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
@@ -21,6 +23,16 @@ export const routes: RouteConf[] = [
     path: '/example',
     name: 'Example',
     component: PageExample,
+  },
+  {
+    path: '/demo/timer',
+    name: 'Timer Demo',
+    component: PageTimerDemo,
+  },
+  {
+    path: '/demo/game-card',
+    name: 'Game-Card Demo',
+    component: PageGameCardDemo,
   },
   {
     path: '/demo/avatar',
