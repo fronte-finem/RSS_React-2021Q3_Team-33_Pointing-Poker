@@ -11,10 +11,15 @@ export const StyledGameCard = styled.div`
   justify-content: center;
   align-items: center;
   color: ${(props) => props.theme.fontColor};
+  transition: all 0.3s;
 
   :hover {
     cursor: pointer;
-    box-shadow: 0px 8px 8px rgba(47, 16, 185, 0.25);
+    box-shadow: 8px 8px 8px rgba(47, 16, 185, 0.25);
+  }
+
+  &:hover ${'svg'} {
+    fill-opacity: 1;
   }
 `;
 
