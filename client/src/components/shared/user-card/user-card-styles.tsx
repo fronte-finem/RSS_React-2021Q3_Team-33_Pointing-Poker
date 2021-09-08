@@ -25,6 +25,9 @@ export const StyleCardWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  width: 100%;
+  max-width: 300px;
+  overflow-x: clip;
 `;
 
 export const StyleCardOwner = styled.p`
@@ -44,9 +47,10 @@ export const StyleCardOwner = styled.p`
 export const StyleCardTitle = styled.h3`
   margin: 0;
   padding: 0;
+  height: 100%;
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
-  font-size: 48px;
+  font-size: 3em;
   line-height: 56px;
   color: #000000;
 `;
@@ -62,6 +66,8 @@ export const StyleCardText = styled.p`
 `;
 
 export const StyleStopOutlined = styled(StopOutlined)`
+  display: flex;
+  flex-shrink: 0;
   font-size: 47px;
   margin-left: auto;
   margin-right: 3px;

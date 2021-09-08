@@ -14,6 +14,7 @@ export const StyleIssueCard = styled(AntCard)`
     margin: 0;
     padding: 19px;
     display: flex;
+    flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
   }

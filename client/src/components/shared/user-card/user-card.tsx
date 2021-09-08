@@ -1,5 +1,6 @@
 import React from 'react';
 import { Avatar } from '@client/components/shared/avatar/avatar';
+import { Tooltip } from 'antd';
 import {
   StyleCard,
   StyleCardOwner,
@@ -33,11 +34,13 @@ export const UserCard: React.FC<UserCardProps> = (props) => {
       />
       <StyleCardWrapper>
         {isOwner ? <StyleCardOwner>It&prime;s you</StyleCardOwner> : ''}
-        <StyleCardTitle>
-          {firstName}
-          {lastName === '' ? '' : ' '}
-          {lastName}
-        </StyleCardTitle>
+        <Tooltip title={`${firstName} ${lastName}`} placement="bottom">
+          <StyleCardTitle>
+            {firstName}
+            {lastName === '' ? '' : ' '}
+            {lastName}
+          </StyleCardTitle>
+        </Tooltip>
         <StyleCardText>{position}</StyleCardText>
       </StyleCardWrapper>
       {isDelete ? <StyleStopOutlined rotate={90} onClick={deleteUser} /> : ''}
