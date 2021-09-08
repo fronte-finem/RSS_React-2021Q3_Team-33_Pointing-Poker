@@ -129,9 +129,6 @@
               "$ref": "#/components/messages/GameCreated"
             },
             {
-              "$ref": "#/components/messages/CancelGameFailed"
-            },
-            {
               "$ref": "#/components/messages/GameCanceled"
             },
             {
@@ -326,26 +323,7 @@
             "name": "From Dealer Socket"
           }
         ],
-        "description": "Запрос на отмену игры принимается только от сокета дилера.\\\nПроходит валидацию на активность игры для полученного ID.\n",
-        "payload": {
-          "description": "`game-id`",
-          "type": "string",
-          "format": "uuid"
-        }
-      },
-      "CancelGameFailed": {
-        "name": "cancel game failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
-          }
-        ],
-        "description": "Уведомление на сокет дилера.\\\nОтменить не получилось, например по причине:\n- игра не активна;\n",
-        "payload": {
-          "description": "описание причины отказа в отмене игры\n",
-          "type": "string",
-          "example": "Game already not active!"
-        }
+        "description": "Запрос на отмену игры принимается только от сокета дилера."
       },
       "GameCanceled": {
         "name": "game canceled",

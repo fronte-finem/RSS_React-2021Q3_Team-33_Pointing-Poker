@@ -24,7 +24,7 @@ export const enum ApiClientEvents {
    */
   CREATE_GAME = 'create game',
   /**
-   * payload: {@link String} - game-id
+   * no payload
    */
   CANCEL_GAME = 'cancel game',
   /**
@@ -105,10 +105,6 @@ export const enum ApiServerEvents {
    * payload: {@link InitDealer InitDealer '@shared/api-types/init'}
    */
   GAME_CREATED = 'game created',
-  /**
-   * payload: {@link String} - fail description
-   */
-  CANCEL_GAME_FAILED = 'cancel game failed',
   /**
    * no payload
    */
