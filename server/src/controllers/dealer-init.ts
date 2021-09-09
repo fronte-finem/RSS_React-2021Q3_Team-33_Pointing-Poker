@@ -5,16 +5,21 @@ import { DealerToJoin } from '@shared/api-types/user';
 import { validateDealerToJoin } from '@shared/api-validators/user';
 import { GAME_ROOMS } from '@server/store/game-rooms';
 import { setDealerListeners } from '@server/controllers/dealer-controller';
-import { PointingPokerServer, PointingPokerServerSocket } from '@server/types';
+import {
+  PointingPokerServer,
+  PointingPokerServerSocket,
+} from 'types/server-socket';
+
+const validate = (dealerToJoin: DealerToJoin): string | null => {
+  if (!dealerToJoin.gameTitle) return ApiFailMessage.GAME_NEED_TITLE;
+  if (!validateDealerToJoin(dealerToJoin)) return ApiFailMessage.USER_NEED_NAME;
+  return null;
+};
 
 export const getDealerInitHandler =
   (server: PointingPokerServer, socket: PointingPokerServerSocket) =>
   (dealerToJoin: DealerToJoin) => {
-    let failMessage = '';
-    if (!dealerToJoin.gameTitle) failMessage = ApiFailMessage.GAME_NEED_TITLE;
-    if (!validateDealerToJoin(dealerToJoin))
-      failMessage = ApiFailMessage.USER_NEED_NAME;
-
+    const failMessage = validate(dealerToJoin);
     if (failMessage) {
       socket.emit(ApiServerEvents.CREATE_GAME_FAILED, failMessage);
       return;
