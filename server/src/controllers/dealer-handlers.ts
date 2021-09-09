@@ -2,7 +2,7 @@ import { GameService } from '@server/services/game-service';
 import { ApiFailMessage } from '@server/api-fail-message';
 import { ApiServerEvents } from '@shared/api-types/api-events';
 import { GAME_ROOMS } from '@server/store/game-rooms';
-import { PointingPokerServerSocket } from '@server/types';
+import { PointingPokerServerSocket } from 'types/server-socket';
 
 export const getChangeGameTitleHandler =
   (socket: PointingPokerServerSocket, game: GameService) => (title: string) => {

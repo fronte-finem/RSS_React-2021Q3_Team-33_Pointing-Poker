@@ -5,7 +5,7 @@ import {
   getDisconnectHandler,
   getPostMessageHandler,
 } from '@server/controllers/user-handlers';
-import { PointingPokerServerSocket } from '@server/types';
+import { PointingPokerServerSocket } from 'types/server-socket';
 
 export const setUserListeners = (
   socket: PointingPokerServerSocket,

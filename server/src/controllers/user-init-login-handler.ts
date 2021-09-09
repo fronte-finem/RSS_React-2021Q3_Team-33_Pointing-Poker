@@ -4,7 +4,7 @@ import { validateUserToJoin } from '@shared/api-validators/user';
 import { ApiFailMessage } from '@server/api-fail-message';
 import { ApiClientEvents, ApiServerEvents } from '@shared/api-types/api-events';
 import { setUserListeners } from '@server/controllers/user-controller';
-import { PointingPokerServerSocket } from '@server/types';
+import { PointingPokerServerSocket } from 'types/server-socket';
 
 export const getLoginHandler =
   (socket: PointingPokerServerSocket, game: GameService) =>

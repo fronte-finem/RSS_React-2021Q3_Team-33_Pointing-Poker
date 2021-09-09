@@ -5,7 +5,7 @@ import {
   getCancelGameHandler,
 } from '@server/controllers/dealer-handlers';
 import { getPostMessageHandler } from '@server/controllers/user-handlers';
-import { PointingPokerServerSocket } from '@server/types';
+import { PointingPokerServerSocket } from 'types/server-socket';
 
 export function setDealerListeners(
   socket: PointingPokerServerSocket,
