@@ -15,7 +15,9 @@
     "generate:api-types": "npx ts-json-schema-generator --path ./shared/api-types/*.ts --unstable --no-type-check --out ./server/doc/api-types.schema.json",
     "pnpx:generate:api-types": "pnpx ts-json-schema-generator --path ./shared/api-types/*.ts --unstable --no-type-check --out ./server/doc/api-types.schema.json",
     "generate:api-doc-html": "npx -p @asyncapi/generator ag ./server/doc/async-api.schema.json @asyncapi/html-template --force-write -o ./server/doc/html",
-    "pnpx:generate:api-doc-html": "pnpx -p @asyncapi/generator ag ./server/doc/async-api.schema.json @asyncapi/html-template --force-write -o ./server/doc/html"
+    "pnpx:generate:api-doc-html": "pnpx -p @asyncapi/generator ag ./server/doc/async-api.schema.json @asyncapi/html-template --force-write -o ./server/doc/html",
+    "server:dev:start": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register ./server/src/index.ts",
+    "server:start": "ts-node ./server/src/index.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.4",
@@ -58,6 +60,9 @@
     "prettier": "^2.3.2",
     "pretty-quick": "^3.1.1",
     "ts-jest": "^27.0.5",
+    "ts-node": "^10.2.1",
+    "ts-node-dev": "^1.1.8",
+    "tsconfig-paths": "^3.11.0",
     "typescript": "^4.4.2",
     "vite": "^2.5.2",
     "vite-plugin-checker": "^0.3.4",
