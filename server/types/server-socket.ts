@@ -7,10 +7,7 @@ import {
 
 export type PointingPokerServer = Server<DefaultEventsMap, DefaultEventsMap>;
 
-type ServerListenEvents = PointingPokerClientToServerEvents;
-type ServerEmitEvents = PointingPokerServerToClientEvents;
+type ListenEvents = PointingPokerClientToServerEvents;
+type EmitEvents = PointingPokerServerToClientEvents;
 
-export type PointingPokerServerSocket = Socket<
-  ServerListenEvents,
-  ServerEmitEvents
->;
+export type PointingPokerServerSocket = Socket<ListenEvents, EmitEvents>;
