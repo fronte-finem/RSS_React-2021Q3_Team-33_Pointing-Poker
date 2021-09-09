@@ -41,7 +41,7 @@ export interface UserToJoin extends UserBase {
  */
 export interface User extends UserBase {
   /**
-   * @format uuid
+   * `user.id` === `socket.id`
    */
   id: string;
   role: Role;

@@ -11,6 +11,7 @@ export interface InitDealer {
    * @format uuid
    */
   gameId: string;
+  gameTitle: string;
   gameSettings: GameSettings;
   users: UsersList;
 }
