@@ -9,7 +9,10 @@ import {
 import { InitDealer, InitUser } from '@shared/api-types/init';
 import { CardsSetDefault, GameSettings } from '@shared/api-types/game-settings';
 import { randomUUID } from 'crypto';
-import { PointingPokerServer, PointingPokerServerSocket } from '@server/types';
+import {
+  PointingPokerServer,
+  PointingPokerServerSocket,
+} from 'types/server-socket';
 import { ChatMessage, ChatMessagesList } from '@shared/api-types/chat';
 import { ChatService, IChatService } from '@server/services/chat-service';
 
@@ -33,14 +36,18 @@ export class GameService implements IChatService {
   constructor(
     private _server: PointingPokerServer,
     private _dealer: PointingPokerServerSocket,
-    dealerToJoin: DealerToJoin
+    { gameTitle, ...userBase }: DealerToJoin
   ) {
-    this._title = dealerToJoin.gameTitle;
-    this.addUser(dealerToJoin, _dealer.id, Role.DEALER);
+    this._title = gameTitle;
+    this.addUser(userBase, _dealer.id, Role.DEALER);
   }
 
   public get room(): string {
     return this._room;
+  }
+
+  public get title(): string {
+    return this._title;
   }
 
   public get server(): PointingPokerServer {
@@ -98,6 +105,7 @@ export class GameService implements IChatService {
   public initDealer(): InitDealer {
     return {
       gameId: this._room,
+      gameTitle: this._title,
       users: this._userService.getUsers(),
       gameSettings: { ...this._gameSettings },
     };
