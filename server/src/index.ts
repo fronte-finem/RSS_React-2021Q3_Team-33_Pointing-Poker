@@ -1,19 +1,10 @@
+import { initSocketServer } from '@server/init-socket-server';
 import { createServer } from 'http';
-import { Server } from 'socket.io';
-import { ApiClientEvents } from '@shared/api-types/api-events';
-import { getDealerInitHandler } from '@server/controllers/dealer-init';
-import { PointingPokerServer, PointingPokerServerSocket } from '@server/types';
-import { getUserInitHandler } from '@server/controllers/user-init';
+
+const PORT = process.env.PORT || 42424;
 
 const httpServer = createServer();
-const io: PointingPokerServer = new Server(httpServer, {
-  path: '/api/',
-});
+initSocketServer(httpServer);
+httpServer.listen(PORT);
 
-io.on('connection', (socket: PointingPokerServerSocket) => {
-  socket.on(ApiClientEvents.CREATE_GAME, getDealerInitHandler(io, socket));
-
-  socket.on(ApiClientEvents.JOIN_GAME, getUserInitHandler(socket));
-});
-
-httpServer.listen(3000);
+console.log(`Server started at: ws://localhost:${PORT}`);
