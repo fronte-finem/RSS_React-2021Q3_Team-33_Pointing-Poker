@@ -50,7 +50,7 @@ const userToJoinSchema: JSONSchemaType<UserToJoin> = {
 const userSchema: JSONSchemaType<User> = {
   type: 'object',
   properties: {
-    id: { type: 'string', format: 'uuid' },
+    id: { type: 'string', minLength: 1 },
     firstName: { type: 'string', minLength: 1 },
     lastName: { type: 'string', nullable: true },
     jobPosition: { type: 'string', nullable: true },
