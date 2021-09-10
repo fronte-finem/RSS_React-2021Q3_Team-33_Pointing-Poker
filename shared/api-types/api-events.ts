@@ -109,6 +109,10 @@ export const enum ApiClientEvents {
  */
 export const enum ApiServerEvents {
   /**
+   * no payload
+   */
+  DISCONNECT = 'disconnect',
+  /**
    * - no payload
    */
   GAME_CANCELED = 'game canceled',

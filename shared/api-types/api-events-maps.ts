@@ -103,6 +103,7 @@ export interface PointingPokerClientToServerEvents extends ApiClientEventsMap {
 
 export interface PointingPokerServerToClientEvents extends ApiServerEventsMap {
   [ApiServerEvents.GAME_TITLE_CHANGED]: (title: string) => void;
+  [ApiServerEvents.DISCONNECT]: () => void;
   [ApiServerEvents.GAME_CANCELED]: () => void;
   [ApiServerEvents.ALLOW_USER_JOIN]: (
     user: UserToJoin,
