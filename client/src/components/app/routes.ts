@@ -6,6 +6,7 @@ import { PageAvatarDemo } from '@client/components/pages/demo/avatar';
 import { PageIssueDemo } from '@client/components/pages/demo/issue';
 import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
 import { PageMessageDemo } from '@client/components/pages/demo/message';
+import { MainPage } from '../pages/main-page/main-page';
 
 interface RouteConf {
   path: string;
@@ -53,5 +54,10 @@ export const routes: RouteConf[] = [
     path: '/demo/message',
     name: 'Message Demo',
     component: PageMessageDemo,
+  },
+  {
+    path: '/demo/main-page',
+    name: 'Main Page',
+    component: MainPage,
   },
 ];
