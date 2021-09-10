@@ -2,39 +2,42 @@ import { GameService } from '@server/services/game-service';
 import { UserToJoin } from '@shared/api-types/user';
 import { validateUserToJoin } from '@shared/api-validators/user';
 import { ApiFailMessage } from '@server/api-fail-message';
-import { ApiClientEvents, ApiServerEvents } from '@shared/api-types/api-events';
+import { ApiServerEvents } from '@shared/api-types/api-events';
 import { setUserListeners } from '@server/controllers/user-controller';
 import { PointingPokerServerSocket } from 'types/server-socket';
+import { InitUser } from '@shared/api-types/init';
+import { AckCallback, setFail } from '@shared/api-types/api-events-maps';
+
+const validate = (userToJoin: UserToJoin, game: GameService): string | null => {
+  if (!validateUserToJoin(userToJoin)) return ApiFailMessage.USER_NEED_NAME;
+  if (game.isUserInStore(userToJoin))
+    return ApiFailMessage.SAME_USER_ALREADY_EXIST;
+  return null;
+};
 
 export const getLoginHandler =
   (socket: PointingPokerServerSocket, game: GameService) =>
-  (userToJoin: UserToJoin) => {
-    let failMessage = '';
-    if (!validateUserToJoin(userToJoin))
-      failMessage = ApiFailMessage.USER_NEED_NAME;
-    if (game.isUserInStore(userToJoin))
-      failMessage = ApiFailMessage.SAME_USER_ALREADY_EXIST;
-
+  (userToJoin: UserToJoin, ackCallback: AckCallback<InitUser>) => {
+    const failMessage = validate(userToJoin, game);
     if (failMessage) {
-      socket.emit(ApiServerEvents.LOGIN_FAILED, failMessage);
+      ackCallback(setFail(failMessage));
       return;
     }
 
     if (!game.needDealerAdmitToJoin) {
-      setUserListeners(socket, game, userToJoin);
+      setUserListeners(socket, game, userToJoin, ackCallback);
       return;
     }
 
-    game.dealerSocket.emit(ApiServerEvents.ALLOW_USER_JOIN, userToJoin);
-
-    game.dealerSocket.once(ApiClientEvents.IS_USER_JOIN_ALLOWED, (allowed) => {
-      if (!allowed) {
-        socket.emit(
-          ApiServerEvents.LOGIN_FAILED,
-          ApiFailMessage.DEALER_REJECTED_LOGIN
-        );
-        return;
+    game.dealerSocket.emit(
+      ApiServerEvents.ALLOW_USER_JOIN,
+      userToJoin,
+      (allowed) => {
+        if (!allowed) {
+          ackCallback(setFail(ApiFailMessage.DEALER_REJECTED_LOGIN));
+          return;
+        }
+        setUserListeners(socket, game, userToJoin, ackCallback);
       }
-      setUserListeners(socket, game, userToJoin);
-    });
+    );
   };

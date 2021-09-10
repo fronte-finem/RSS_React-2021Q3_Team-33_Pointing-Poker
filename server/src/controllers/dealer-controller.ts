@@ -4,8 +4,8 @@ import {
   getChangeGameTitleHandler,
   getCancelGameHandler,
 } from '@server/controllers/dealer-handlers';
-import { getPostMessageHandler } from '@server/controllers/user-handlers';
 import { PointingPokerServerSocket } from 'types/server-socket';
+import { getPostMessageHandler } from '@server/controllers/chat-handlers';
 
 export function setDealerListeners(
   socket: PointingPokerServerSocket,

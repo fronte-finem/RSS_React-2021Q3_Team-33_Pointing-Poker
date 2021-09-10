@@ -1,5 +1,4 @@
 import { GameService } from '@server/services/game-service';
-import { ApiServerEvents } from '@shared/api-types/api-events';
 import { ApiFailMessage } from '@server/api-fail-message';
 import { DealerToJoin } from '@shared/api-types/user';
 import { validateDealerToJoin } from '@shared/api-validators/user';
@@ -9,6 +8,8 @@ import {
   PointingPokerServer,
   PointingPokerServerSocket,
 } from 'types/server-socket';
+import { InitDealer } from '@shared/api-types/init';
+import { AckCallback, setFail, setOk } from '@shared/api-types/api-events-maps';
 
 const validate = (dealerToJoin: DealerToJoin): string | null => {
   if (!dealerToJoin.gameTitle) return ApiFailMessage.GAME_NEED_TITLE;
@@ -18,10 +19,10 @@ const validate = (dealerToJoin: DealerToJoin): string | null => {
 
 export const getDealerInitHandler =
   (server: PointingPokerServer, socket: PointingPokerServerSocket) =>
-  (dealerToJoin: DealerToJoin) => {
+  (dealerToJoin: DealerToJoin, ackCallback: AckCallback<InitDealer>) => {
     const failMessage = validate(dealerToJoin);
     if (failMessage) {
-      socket.emit(ApiServerEvents.CREATE_GAME_FAILED, failMessage);
+      ackCallback(setFail(failMessage));
       return;
     }
 
@@ -30,5 +31,5 @@ export const getDealerInitHandler =
 
     setDealerListeners(socket, game);
     socket.join(game.room);
-    socket.emit(ApiServerEvents.GAME_CREATED, game.initDealer());
+    ackCallback(setOk(game.initDealer()));
   };
