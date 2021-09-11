@@ -63,9 +63,6 @@
               "$ref": "#/components/messages/AddUser"
             },
             {
-              "$ref": "#/components/messages/IsUserJoinAllowed"
-            },
-            {
               "$ref": "#/components/messages/Disconnect"
             },
             {
@@ -123,37 +120,13 @@
         "message": {
           "oneOf": [
             {
-              "$ref": "#/components/messages/CreateGameFailed"
-            },
-            {
-              "$ref": "#/components/messages/GameCreated"
-            },
-            {
-              "$ref": "#/components/messages/CancelGameFailed"
-            },
-            {
               "$ref": "#/components/messages/GameCanceled"
-            },
-            {
-              "$ref": "#/components/messages/ChangeGameTitleFailed"
             },
             {
               "$ref": "#/components/messages/GameTitleChanged"
             },
             {
-              "$ref": "#/components/messages/JoinGameFailed"
-            },
-            {
-              "$ref": "#/components/messages/ReadyToAddUser"
-            },
-            {
               "$ref": "#/components/messages/AllowUserJoin"
-            },
-            {
-              "$ref": "#/components/messages/LoginError"
-            },
-            {
-              "$ref": "#/components/messages/LoggedIn"
             },
             {
               "$ref": "#/components/messages/UserJoined"
@@ -162,19 +135,10 @@
               "$ref": "#/components/messages/UserDisconnected"
             },
             {
-              "$ref": "#/components/messages/PostMessageFailed"
-            },
-            {
               "$ref": "#/components/messages/MessagePosted"
             },
             {
-              "$ref": "#/components/messages/KickUserFailed"
-            },
-            {
               "$ref": "#/components/messages/KickVoteStarted"
-            },
-            {
-              "$ref": "#/components/messages/VoteToKickUserFailed"
             },
             {
               "$ref": "#/components/messages/UserKickResult"
@@ -183,49 +147,25 @@
               "$ref": "#/components/messages/Kicked"
             },
             {
-              "$ref": "#/components/messages/AddIssueFailed"
-            },
-            {
               "$ref": "#/components/messages/IssueAdded"
-            },
-            {
-              "$ref": "#/components/messages/DeleteIssueFailed"
             },
             {
               "$ref": "#/components/messages/IssueDeleted"
             },
             {
-              "$ref": "#/components/messages/EditIssueFailed"
-            },
-            {
               "$ref": "#/components/messages/IssueEdited"
-            },
-            {
-              "$ref": "#/components/messages/StartGameFailed"
             },
             {
               "$ref": "#/components/messages/GameStarted"
             },
             {
-              "$ref": "#/components/messages/EndGameFailed"
-            },
-            {
               "$ref": "#/components/messages/GameEnded"
-            },
-            {
-              "$ref": "#/components/messages/StartRoundFailed"
             },
             {
               "$ref": "#/components/messages/RoundStarted"
             },
             {
-              "$ref": "#/components/messages/EndRoundFailed"
-            },
-            {
               "$ref": "#/components/messages/RoundEnded"
-            },
-            {
-              "$ref": "#/components/messages/AddScoreFailed"
             },
             {
               "$ref": "#/components/messages/ScoreAdded"
@@ -278,6 +218,22 @@
       },
       "KickResult": {
         "$ref": "./api-types.schema.json#/definitions/KickResult"
+      },
+      "AckResponse": {
+        "description": "Объект-аргумент `callback`'а, содержащий статус обработки запроса сервером и, либо сообщение с ошибкой, либо какие-то данные.\n https://socket.io/docs/v4/emitting-events/#Acknowledgements",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["OK", "FAIL"]
+          },
+          "failMessage": {
+            "type": ["string", "null"]
+          },
+          "data": {}
+        },
+        "required": ["status"],
+        "additionalProperties": false
       }
     },
     "messages": {
@@ -291,32 +247,29 @@
         "description": "Запрос на создание игры (комнаты в терминологии socket.io).\\\nНеобходим валидный объект пользователя-дилера.\n",
         "payload": {
           "$ref": "#/components/schemas/DealerToJoin"
-        }
-      },
-      "CreateGameFailed": {
-        "name": "create game failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
+        },
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/InitDealer"
+                      },
+                      { "type": "null" }
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет дилера.\\\nВалидация объекта пользователя-дилера не прошла.\\\nИгра не создана, например по причине:\n- пустое имя дилера;\n",
-        "payload": {
-          "description": "описание причины проваленной валидации\n",
-          "type": "string",
-          "example": "dealer name required!"
-        }
-      },
-      "GameCreated": {
-        "name": "game created",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
-          }
-        ],
-        "description": "Уведомление на сокет дилера.\\\nВалидация объекта пользователя-дилера прошла.\\\nИгра создана.\n",
-        "payload": {
-          "$ref": "#/components/schemas/InitDealer"
         }
       },
       "CancelGame": {
@@ -326,26 +279,7 @@
             "name": "From Dealer Socket"
           }
         ],
-        "description": "Запрос на отмену игры принимается только от сокета дилера.\\\nПроходит валидацию на активность игры для полученного ID.\n",
-        "payload": {
-          "description": "`game-id`",
-          "type": "string",
-          "format": "uuid"
-        }
-      },
-      "CancelGameFailed": {
-        "name": "cancel game failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
-          }
-        ],
-        "description": "Уведомление на сокет дилера.\\\nОтменить не получилось, например по причине:\n- игра не активна;\n",
-        "payload": {
-          "description": "описание причины отказа в отмене игры\n",
-          "type": "string",
-          "example": "Game already not active!"
-        }
+        "description": "Запрос на отмену игры принимается только от сокета дилера."
       },
       "GameCanceled": {
         "name": "game canceled",
@@ -367,20 +301,25 @@
         "payload": {
           "description": "название для игры",
           "type": "string"
-        }
-      },
-      "ChangeGameTitleFailed": {
-        "name": "change game title failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
+        },
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": ["string", "null"],
+                    "description": "game-title"
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет дилера - смена названия игры не удалась.",
-        "payload": {
-          "description": "описание причины неудачной смены имени",
-          "type": "string",
-          "example": "Empty title pointless!"
         }
       },
       "GameTitleChanged": {
@@ -408,30 +347,26 @@
           "description": "`game-id`",
           "type": "string",
           "format": "uuid"
-        }
-      },
-      "JoinGameFailed": {
-        "name": "join game failed",
-        "tags": [
-          {
-            "name": "To User Socket"
+        },
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": ["string", "null"],
+                    "description": "game-id"
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет запросившего присоединение.\\\nПрисоединение к игре не получилось, например по причине:\n- игры с `game-id` не существует;\n- игра с `game-id` уже не активна;\n",
-        "payload": {
-          "description": "описание причины проваленной валидации\n",
-          "type": "string",
-          "example": "Game already not active!"
         }
-      },
-      "ReadyToAddUser": {
-        "name": "ready to add user",
-        "tags": [
-          {
-            "name": "To User Socket"
-          }
-        ],
-        "description": "Уведомление на сокет запросившего присоединение.\\\nВалидация `game-id` пройдена.\\\nСервер готов обработать запрос на создание участника игры от этого сокета.\n"
       },
       "AddUser": {
         "name": "add user",
@@ -443,6 +378,29 @@
         "description": "Запрос на создание пользователя от сокета прошедшего валидацию на присоединение к игре.\\\nЕсли игра уже стартовала, и дилер установил подтверждение на вход - на сокет дилера\\\nприходит уведомление `AllowUserJoin`\n",
         "payload": {
           "$ref": "#/components/schemas/UserToJoin"
+        },
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/InitUser"
+                      },
+                      { "type": "null" }
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
         }
       },
       "AllowUserJoin": {
@@ -455,44 +413,12 @@
         "description": "Уведомление на сокет дилера о присоединении пользователя, если игра уже идет,\\\nи стоит настройка пускать только после подтверждения.\n",
         "payload": {
           "$ref": "#/components/schemas/UserToJoin"
-        }
-      },
-      "IsUserJoinAllowed": {
-        "name": "is user join allowed",
-        "tags": [
-          {
-            "name": "From Dealer Socket"
+        },
+        "x-ack-callback": {
+          "args": {
+            "type": "boolean",
+            "description": "allow or reject"
           }
-        ],
-        "description": "Запрос от сокета дилера с разрешением или запретом присоединении пользователя,\\\nесли игра уже идет, и стоит настройка пускать только после подтверждения.\n",
-        "payload": {
-          "type": "boolean"
-        }
-      },
-      "LoginError": {
-        "name": "login error",
-        "tags": [
-          {
-            "name": "To User Socket"
-          }
-        ],
-        "description": "Уведомление на сокет запросившего присоединение и создание пользователя.\\\nВалидация не прошла, например по причине:\n- пустое имя пользователя;\n- пользователь с такими же данными уже участвует;\n- дилер запретил вход в уже идущую игру;\n",
-        "payload": {
-          "description": "описание причины проваленной валидации\n",
-          "type": "string",
-          "example": "Game started, dealer rejected your join!"
-        }
-      },
-      "LoggedIn": {
-        "name": "logged in",
-        "tags": [
-          {
-            "name": "To User Socket"
-          }
-        ],
-        "description": "Уведомление на сокет запросившего присоединение и создание пользователя.\\\nВалидация прошла успешно.\n",
-        "payload": {
-          "$ref": "#/components/schemas/InitUser"
         }
       },
       "UserJoined": {
@@ -546,23 +472,25 @@
         "description": "Запрос с сообщением в чат.\n",
         "payload": {
           "type": "string"
-        }
-      },
-      "PostMessageFailed": {
-        "name": "post message failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
-          },
-          {
-            "name": "To User Socket"
+        },
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": ["null", "string"],
+                    "description": "message"
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет отправившего сообщение в чат.\\\nВалидация не прошла, например по причине:\n- пустое сообщение;\n- слишком длинное сообщение;\n",
-        "payload": {
-          "description": "описание причины проваленной валидации\n",
-          "type": "string",
-          "example": "Empty messages not allowed!"
         }
       },
       "MessagePosted": {
@@ -592,23 +520,25 @@
           "description": "`user-id`",
           "type": "string",
           "format": "uuid"
-        }
-      },
-      "KickUserFailed": {
-        "name": "kick user failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
-          },
-          {
-            "name": "To User Socket"
+        },
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": ["null", "string"],
+                    "description": "user-id"
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет запросившего удаление о неудачной валидации, например:\n- себя удалить нельзя;\n- дилера удалить нельзя;\n- в лобби менее 3 человек, не считая дилера;\n- этого пользователя уже нет в игре;\n- в данный момент уже идет голосование;\n",
-        "payload": {
-          "description": "описание причины проваленной валидации\n",
-          "type": "string",
-          "example": "Not enough users for start kick vote!"
         }
       },
       "KickVoteStarted": {
@@ -633,20 +563,25 @@
         "name": "vote to kick user",
         "payload": {
           "type": "boolean"
-        }
-      },
-      "VoteToKickUserFailed": {
-        "name": "kick user failed",
-        "tags": [
-          {
-            "name": "To User Socket"
+        },
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": ["null", "boolean"],
+                    "description": "vote"
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет отправивший голос по удалению о неудачной обработке запроса,\\\nвозможные причины:\n- голосование уже закончено;\n- голос от виновника не принимается;\n- голос с данного сокета уже учтен;\n",
-        "payload": {
-          "description": "описание причины не прошедшего голоса\n",
-          "type": "string",
-          "example": "Kick vote ended!"
         }
       },
       "UserKickResult": {
@@ -685,20 +620,29 @@
         "description": "Запрос на добавление новой задачи.\\\nСервер ожидает его только от сокета дилера.\n",
         "payload": {
           "$ref": "#/components/schemas/IssueBase"
-        }
-      },
-      "AddIssueFailed": {
-        "name": "add issue failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
+        },
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/Issue"
+                      },
+                      { "type": "null" }
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка добавить задачу, например по причинам:\n- пустое название;\n- дубль, такая задача уже есть;\n",
-        "payload": {
-          "description": "описание причины отказа в добавлении задачи\n",
-          "type": "string",
-          "example": "Same issue already exist"
         }
       },
       "IssueAdded": {
@@ -724,20 +668,25 @@
         "payload": {
           "description": "issue-id",
           "type": "string"
-        }
-      },
-      "DeleteIssueFailed": {
-        "name": "delete issue failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
+        },
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": ["null", "string"],
+                    "description": "issue-id"
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка удалить задачу, например по причинам:\n- задача с таки id не найдена;\n",
-        "payload": {
-          "description": "описание причины отказа в удалении задачи\n",
-          "type": "string",
-          "example": "Issue with this id not exist"
         }
       },
       "IssueDeleted": {
@@ -763,20 +712,29 @@
         "description": "Запрос на сохранение отредактированной задачи.\\\nСервер ожидает его только от сокета дилера.\n",
         "payload": {
           "$ref": "#/components/schemas/Issue"
-        }
-      },
-      "EditIssueFailed": {
-        "name": "edit issue failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
+        },
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/Issue"
+                      },
+                      { "type": "null" }
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка сохранить отредактированную задачу, например по причинам:\n- пустое название;\n- дубль, такая задача уже есть;\n",
-        "payload": {
-          "description": "описание причины отказа в сохранении отредактированной задачи\n",
-          "type": "string",
-          "example": "Same issue already exist"
         }
       },
       "IssueEdited": {
@@ -801,20 +759,29 @@
         "description": "Запрос на запуск игры с выбранными настройками.\\\nСервер ожидает его только от сокета дилера.\n",
         "payload": {
           "$ref": "#/components/schemas/GameSettings"
-        }
-      },
-      "StartGameFailed": {
-        "name": "start game failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
+        },
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/GameSettings"
+                      },
+                      { "type": "null" }
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка запустить игру, например по причинам:\n- нет задач для оценивания\n- нет игроков\n",
-        "payload": {
-          "description": "описание причины отказа в запуске игры\n",
-          "type": "string",
-          "example": "No gamers!"
         }
       },
       "GameStarted": {
@@ -836,20 +803,24 @@
             "name": "From Dealer Socket"
           }
         ],
-        "description": "Запрос на остановку игры.\\\nСервер ожидает его только от сокета дилера.\n"
-      },
-      "EndGameFailed": {
-        "name": "end game failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
+        "description": "Запрос на остановку игры.\\\nСервер ожидает его только от сокета дилера.\n",
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": ["null", "boolean"]
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка остановить игру, например по причинам:\n- игра уже остановлена;\n",
-        "payload": {
-          "description": "описание причины отказа в остановке игры\n",
-          "type": "string",
-          "example": "No active game!"
         }
       },
       "GameEnded": {
@@ -876,20 +847,25 @@
           "description": "`issue-id`",
           "type": "string",
           "format": "uuid"
-        }
-      },
-      "StartRoundFailed": {
-        "name": "start round failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
+        },
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": ["null", "string"],
+                    "description": "`issue-id`"
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка запустить раунд оценок, например по причинам:\n- предыдущий раунд еще не закончен;\n",
-        "payload": {
-          "description": "описание причины отказа в остановке игры\n",
-          "type": "string",
-          "example": "Another round active now!"
         }
       },
       "RoundStarted": {
@@ -913,20 +889,24 @@
             "name": "From Dealer Socket"
           }
         ],
-        "description": "Запрос на остановку раунда оценок.\\\nСервер ожидает его только от сокета дилера.\n"
-      },
-      "EndRoundFailed": {
-        "name": "end round failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
+        "description": "Запрос на остановку раунда оценок.\\\nСервер ожидает его только от сокета дилера.\n",
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": ["null", "boolean"]
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет дилера.\\\nНеуспешная попытка остановить раунд оценок, например по причинам:\n- нет активного раунда;\n",
-        "payload": {
-          "description": "описание причины отказа в остановке игры\n",
-          "type": "string",
-          "example": "No active round!"
         }
       },
       "RoundEnded": {
@@ -954,23 +934,29 @@
         "description": "Запрос на выставление задаче оценки из выбранной карты.\n",
         "payload": {
           "$ref": "#/components/schemas/CardScore"
-        }
-      },
-      "AddScoreFailed": {
-        "name": "add score failed",
-        "tags": [
-          {
-            "name": "To Dealer Socket"
-          },
-          {
-            "name": "To User Socket"
+        },
+        "x-ack-callback": {
+          "args": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AckResponse"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/CardScore"
+                      },
+                      { "type": "null" }
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
           }
-        ],
-        "description": "Уведомление на сокет запросившего выставление оценки.\\\nВалидация не пройдена, например по причинам:\n- сокет не имеет роли игрок\n- если это дилер, и не была включена опция, разрешающая принимать ему участие в игре\n",
-        "payload": {
-          "description": "описание причины не пройденной валидации\n",
-          "type": "string",
-          "example": "You need to have role - gamer!"
         }
       },
       "ScoreAdded": {
