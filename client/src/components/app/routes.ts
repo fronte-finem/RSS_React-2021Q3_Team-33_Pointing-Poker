@@ -7,6 +7,8 @@ import { PageIssueDemo } from '@client/components/pages/demo/issue';
 import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
 import { PageMessageDemo } from '@client/components/pages/demo/message';
 import { MainPage } from '../pages/main-page/main-page';
+import { KickPlayer } from '../pages/demo/kick-player';
+import { KickPlayerVoting } from '../pages/demo/kick-player-voting';
 
 interface RouteConf {
   path: string;
@@ -59,5 +61,15 @@ export const routes: RouteConf[] = [
     path: '/demo/main-page',
     name: 'Main Page',
     component: MainPage,
+  },
+  {
+    path: '/demo/kick-player',
+    name: 'Kick Player',
+    component: KickPlayer,
+  },
+  {
+    path: '/demo/kick-player-voting',
+    name: 'Kick Player Voting',
+    component: KickPlayerVoting,
   },
 ];
