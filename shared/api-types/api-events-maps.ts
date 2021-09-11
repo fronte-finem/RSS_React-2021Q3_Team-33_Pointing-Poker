@@ -13,33 +13,41 @@ import { ChatMessage, KickResult, KickVoteInit } from '@shared/api-types/chat';
 type ApiClientEventsMap = { [event in ApiClientEvents]: Function };
 type ApiServerEventsMap = { [event in ApiServerEvents]: Function };
 
-export const enum ResponseStatus {
+export const enum AckResponseStatus {
   FAIL = 'FAIL',
   OK = 'OK',
 }
-export type ApiResponseFail = {
-  status: ResponseStatus.FAIL;
+export type AckResponseFail = {
+  status: AckResponseStatus.FAIL;
   failMessage: string;
   data: undefined;
 };
-export type ApiResponseOk<Payload> = {
-  status: ResponseStatus.OK;
+export type AckResponseOk<Payload> = {
+  status: AckResponseStatus.OK;
   failMessage: undefined;
   data: Payload;
 };
-export type ApiResponse<Payload> = ApiResponseFail | ApiResponseOk<Payload>;
-export type AckCallback<Payload> = (response: ApiResponse<Payload>) => void;
+export type AckResponse<Payload> = AckResponseFail | AckResponseOk<Payload>;
+export type AckCallback<Payload> = (response: AckResponse<Payload>) => void;
 
-export const isOk = ({ status }: ApiResponse<any>) =>
-  status === ResponseStatus.OK;
-export const isFail = ({ status }: ApiResponse<any>) =>
-  status === ResponseStatus.FAIL;
+export const isOk = ({ status }: AckResponse<any>) =>
+  status === AckResponseStatus.OK;
+export const isFail = ({ status }: AckResponse<any>) =>
+  status === AckResponseStatus.FAIL;
 
-export function setFail(message: string): ApiResponseFail {
-  return { status: ResponseStatus.FAIL, failMessage: message, data: undefined };
+export function setFail(message: string): AckResponseFail {
+  return {
+    status: AckResponseStatus.FAIL,
+    failMessage: message,
+    data: undefined,
+  };
 }
-export function setOk<Payload>(data: Payload): ApiResponseOk<Payload> {
-  return { status: ResponseStatus.OK, failMessage: undefined, data };
+export function setOk<Payload>(data: Payload): AckResponseOk<Payload> {
+  return {
+    status: AckResponseStatus.OK,
+    failMessage: undefined,
+    data,
+  };
 }
 
 export interface PointingPokerClientToServerEvents extends ApiClientEventsMap {

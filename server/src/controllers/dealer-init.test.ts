@@ -6,7 +6,10 @@ import { ApiFailMessage } from '@server/api-fail-message';
 import { InitDealer } from '@shared/api-types/init';
 import { DealerToJoin } from '@shared/api-types/user';
 import { PointingPokerServer } from 'types/server-socket';
-import { ApiResponse, ResponseStatus } from '@shared/api-types/api-events-maps';
+import {
+  AckResponse,
+  AckResponseStatus,
+} from '@shared/api-types/api-events-maps';
 import { zip } from '@shared/utils/array';
 
 const PORT = 42002;
@@ -37,15 +40,15 @@ describe('Dealer init tests.', () => {
     const badDealerData1 = { ...dealerData, gameTitle: '' };
     const badDealerData2 = { ...dealerData, firstName: '' };
 
-    const responses: ApiResponse<InitDealer>[] = await Promise.all(
+    const responses: AckResponse<InitDealer>[] = await Promise.all(
       zip([badDealerData1, badDealerData2, dealerData], dealerSockets).map(
         ([data, socket]) => emit(ApiClientEvents.CREATE_GAME, data, socket)
       )
     );
 
-    expect(responses[0].status).toBe(ResponseStatus.FAIL);
-    expect(responses[1].status).toBe(ResponseStatus.FAIL);
-    expect(responses[2].status).toBe(ResponseStatus.OK);
+    expect(responses[0].status).toBe(AckResponseStatus.FAIL);
+    expect(responses[1].status).toBe(AckResponseStatus.FAIL);
+    expect(responses[2].status).toBe(AckResponseStatus.OK);
 
     expect(responses[0].failMessage).toBe(ApiFailMessage.GAME_NEED_TITLE);
     expect(responses[1].failMessage).toBe(ApiFailMessage.USER_NEED_NAME);

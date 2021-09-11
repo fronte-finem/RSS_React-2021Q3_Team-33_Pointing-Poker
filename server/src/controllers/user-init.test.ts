@@ -6,7 +6,10 @@ import { ApiFailMessage } from '@server/api-fail-message';
 import { InitDealer } from '@shared/api-types/init';
 import { DealerToJoin } from '@shared/api-types/user';
 import { PointingPokerServer } from 'types/server-socket';
-import { ApiResponse, ResponseStatus } from '@shared/api-types/api-events-maps';
+import {
+  AckResponse,
+  AckResponseStatus,
+} from '@shared/api-types/api-events-maps';
 
 const PORT = 42003;
 let httpServer: Server | undefined;
@@ -33,7 +36,7 @@ describe('Users init tests.', () => {
     const [userSocket1, userSocket2, dealerSocket] = await Promise.all(
       Array(3).fill(PORT).map(connectClient)
     );
-    const { data }: ApiResponse<InitDealer> = await emit(
+    const { data }: AckResponse<InitDealer> = await emit(
       ApiClientEvents.CREATE_GAME,
       dealerData,
       dealerSocket
@@ -47,11 +50,11 @@ describe('Users init tests.', () => {
     const joinEvent2 = emit(ApiClientEvents.JOIN_GAME, gameId, userSocket2);
     const responses = await Promise.all([joinEvent1, joinEvent2]);
 
-    expect(responses[0].status).toBe(ResponseStatus.FAIL);
+    expect(responses[0].status).toBe(AckResponseStatus.FAIL);
     expect(responses[0].failMessage).toBe(ApiFailMessage.GAME_NOT_EXIST);
     expect(responses[0].data).toBeUndefined();
 
-    expect(responses[1].status).toBe(ResponseStatus.OK);
+    expect(responses[1].status).toBe(AckResponseStatus.OK);
     expect(responses[1].failMessage).toBeUndefined();
     expect(responses[1].data).toBe(gameId);
 
