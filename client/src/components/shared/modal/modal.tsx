@@ -43,7 +43,7 @@ const StyledModal = styled(AntModal)`
 `;
 
 export const Modal: React.FC<ModalFuncProps> = (props) => {
-  const { onOk, onCancel, okText, cancelText, children } = props;
+  const { title, onOk, onCancel, okText, cancelText, content } = props;
   const footer = [
     <Button onClick={onOk}>{okText}</Button>,
     <Button type="default" onClick={onCancel}>
@@ -52,8 +52,8 @@ export const Modal: React.FC<ModalFuncProps> = (props) => {
   ];
 
   return (
-    <StyledModal footer={footer} closable={false} {...props}>
-      {children}
+    <StyledModal title={title} footer={footer} closable={false} {...props}>
+      {content}
     </StyledModal>
   );
 };

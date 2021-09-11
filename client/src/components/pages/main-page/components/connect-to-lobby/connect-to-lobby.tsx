@@ -5,31 +5,21 @@ import { Modal } from '@client/components/shared/modal/modal';
 import { Toggle } from '@client/components/shared/toggle/toggle';
 import { ModalFuncProps } from 'antd';
 import React from 'react';
-import styled from 'styled-components';
-
-const StyledTitle = styled.p`
-  font-style: normal;
-  font-weight: bold;
-  font-size: 64px;
-  line-height: 75px;
-`;
-const StyledText = styled.p`
-  font-style: normal;
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 28px;
-`;
+import {
+  StyledObserver,
+  StyledText,
+  StyledTitle,
+  StyledWrapper,
+} from './connect-to-lobby-styleds';
 
 export const ConnectToLobby: React.FC<ModalFuncProps> = (props) => {
   return (
-    <Modal {...props} okText="Confirm" cancelText="Cancel">
-      <div
-        style={{
-          textAlign: 'left',
-          paddingBottom: '100px',
-          position: 'relative',
-        }}>
-        <div style={{ display: 'inline-block' }}>
+    <Modal
+      {...props}
+      okText="Confirm"
+      cancelText="Cancel"
+      content={
+        <StyledWrapper>
           <StyledTitle> Connect to lobby </StyledTitle>
           <StyledText>Your first name:</StyledText>
           <Input />
@@ -39,19 +29,16 @@ export const ConnectToLobby: React.FC<ModalFuncProps> = (props) => {
           <Input />
           <StyledText>Image:</StyledText>
           <InputFile />
-          <Avatar content={{ lastName: 'Nick', firstName: 'Niger' }} />
-          <div
-            style={{
-              position: 'absolute',
-              top: '0px',
-              right: '0px',
-              display: 'flex',
-            }}>
+          <Avatar
+            content={{ lastName: '', firstName: '' }}
+            mod={{ size: 83 }}
+          />
+          <StyledObserver>
             <StyledText>Connect as Observer </StyledText>
             <Toggle />
-          </div>
-        </div>
-      </div>
-    </Modal>
+          </StyledObserver>
+        </StyledWrapper>
+      }
+    />
   );
 };
