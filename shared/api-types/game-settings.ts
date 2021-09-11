@@ -55,3 +55,12 @@ export interface GameSettings {
    */
   timeout?: number;
 }
+
+export const getDefaultGameSettings = (): GameSettings => ({
+  dealerGamer: false,
+  cardsSet: CardsSetDefault.FIBONACCI,
+  autoJoinToGame: true,
+  autoOpenCards: true,
+  changeAfterRoundEnd: false,
+  timeout: undefined,
+});
