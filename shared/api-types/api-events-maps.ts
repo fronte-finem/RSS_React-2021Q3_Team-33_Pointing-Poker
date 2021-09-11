@@ -1,4 +1,10 @@
-import { ApiClientEvents, ApiServerEvents } from '@shared/api-types/api-events';
+import {
+  ApiClientEvents,
+  ApiClientEventsWithCallback,
+  ApiClientEventsWithNoArgs,
+  ApiClientEventsWithPayloadAndCallback,
+  ApiServerEvents,
+} from '@shared/api-types/api-events';
 import { DealerToJoin, User, UserToJoin } from '@shared/api-types/user';
 import {
   GameResult,
@@ -108,6 +114,21 @@ export interface PointingPokerClientToServerEvents extends ApiClientEventsMap {
     ackCallback: AckCallback<CardScore>
   ) => void;
 }
+
+export type PointingPokerClientToServerEventsWithPayloadAndCallback = Pick<
+  PointingPokerClientToServerEvents,
+  ApiClientEventsWithPayloadAndCallback
+>;
+
+export type PointingPokerClientToServerEventsWithNoArgs = Pick<
+  PointingPokerClientToServerEvents,
+  ApiClientEventsWithNoArgs
+>;
+
+export type PointingPokerClientToServerEventsWithCallback = Pick<
+  PointingPokerClientToServerEvents,
+  ApiClientEventsWithCallback
+>;
 
 export interface PointingPokerServerToClientEvents extends ApiServerEventsMap {
   [ApiServerEvents.GAME_TITLE_CHANGED]: (title: string) => void;

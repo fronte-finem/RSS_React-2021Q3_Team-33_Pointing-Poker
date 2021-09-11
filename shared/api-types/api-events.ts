@@ -104,6 +104,24 @@ export const enum ApiClientEvents {
   ADD_SCORE = 'add score',
 }
 
+export type ApiClientEventsWithPayloadAndCallback = Exclude<
+  ApiClientEvents,
+  | ApiClientEvents.CANCEL_GAME
+  | ApiClientEvents.DISCONNECT
+  | ApiClientEvents.END_GAME
+  | ApiClientEvents.END_ROUND
+>;
+
+export type ApiClientEventsWithNoArgs = Extract<
+  ApiClientEvents,
+  ApiClientEvents.CANCEL_GAME | ApiClientEvents.DISCONNECT
+>;
+
+export type ApiClientEventsWithCallback = Extract<
+  ApiClientEvents,
+  ApiClientEvents.END_GAME | ApiClientEvents.END_ROUND
+>;
+
 /**
  * Набор событий инициируемых сервером.
  */
