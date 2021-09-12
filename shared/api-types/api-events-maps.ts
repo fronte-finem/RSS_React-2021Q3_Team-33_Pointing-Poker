@@ -10,7 +10,7 @@ import {
   GameResult,
   Issue,
   IssueBase,
-  RoundResult,
+  IssueScore,
 } from '@shared/api-types/issue';
 import { CardScore, GameSettings } from '@shared/api-types/game-settings';
 import { InitDealer, InitUser } from '@shared/api-types/init';
@@ -150,6 +150,6 @@ export interface PointingPokerServerToClientEvents extends ApiServerEventsMap {
   [ApiServerEvents.GAME_STARTED]: (gameSettings: GameSettings) => void;
   [ApiServerEvents.GAME_ENDED]: (gameResult: GameResult) => void;
   [ApiServerEvents.ROUND_STARTED]: (issueId: string) => void;
-  [ApiServerEvents.ROUND_ENDED]: (roundResult: RoundResult) => void;
+  [ApiServerEvents.ROUND_ENDED]: (issueScore: IssueScore) => void;
   [ApiServerEvents.SCORE_ADDED]: (userId: string) => void;
 }
