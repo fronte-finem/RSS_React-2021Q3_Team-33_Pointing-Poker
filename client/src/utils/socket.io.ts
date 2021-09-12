@@ -13,7 +13,10 @@ export const connect = (
   address: string = ADDRESS,
   port: number = PORT
 ): Promise<PointingPokerClientSocket> => {
-  const socket = ioClient(`${address}:${port}`);
+  const socket = ioClient(`${address}:${port}`, {
+    forceNew: true,
+    transports: ['websocket'],
+  });
   return new Promise<PointingPokerClientSocket>((resolve) =>
     socket.on('connect', () => resolve(socket))
   );
