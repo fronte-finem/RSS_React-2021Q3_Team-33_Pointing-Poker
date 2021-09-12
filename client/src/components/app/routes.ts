@@ -6,7 +6,7 @@ import { PageAvatarDemo } from '@client/components/pages/demo/avatar';
 import { PageIssueDemo } from '@client/components/pages/demo/issue';
 import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
 import { PageMessageDemo } from '@client/components/pages/demo/message';
-import { PageGameStateDemo } from '@client/components/pages/demo/game-state';
+import { PageGameRouterDemo } from '@client/components/pages/demo/game-router';
 
 interface RouteConf {
   path: string;
@@ -19,6 +19,11 @@ export const routes: RouteConf[] = [
     path: '/',
     name: 'Home',
     component: undefined,
+  },
+  {
+    path: '/demo/game-router',
+    name: 'Game Router Demo',
+    component: PageGameRouterDemo,
   },
   {
     path: '/example',
@@ -54,10 +59,5 @@ export const routes: RouteConf[] = [
     path: '/demo/message',
     name: 'Message Demo',
     component: PageMessageDemo,
-  },
-  {
-    path: '/demo/game-state',
-    name: 'Game State Demo',
-    component: PageGameStateDemo,
   },
 ];
