@@ -16,11 +16,10 @@ const validate = (
 };
 
 const dealerKick = (userId: string, game: GameService) => {
-  const kickResult = game.userService.getKickResult(userId, true, 'dealer');
   const badUserSocket = game.userService.getUserSocket(userId)!;
+  const kickResult = game.userService.kick(userId, true);
   badUserSocket.emit(ApiServerEvents.KICKED, kickResult.reason);
   badUserSocket.disconnect();
-  game.userService.deleteUser(userId);
   game.server.to(game.room).emit(ApiServerEvents.USER_KICK_RESULT, kickResult);
 };
 
