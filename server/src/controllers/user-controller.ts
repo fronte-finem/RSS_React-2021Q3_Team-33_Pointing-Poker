@@ -17,7 +17,7 @@ export const setUserListeners = (
   userToJoin: UserToJoin,
   ackCallback: AckCallback<InitUser>
 ): void => {
-  const user = game.addUser(userToJoin, userToJoin.role, socket);
+  const user = game.userService.addUser(userToJoin, userToJoin.role, socket);
   ackCallback(setOk(game.initUser()));
   socket.join(game.room);
   socket.to(game.room).emit(ApiServerEvents.USER_JOINED, user);

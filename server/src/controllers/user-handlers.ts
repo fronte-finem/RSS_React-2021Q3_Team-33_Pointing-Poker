@@ -7,5 +7,5 @@ export const getDisconnectHandler =
     game.server
       .to(game.room)
       .emit(ApiServerEvents.USER_DISCONNECTED, socket.id);
-    game.deleteUser(socket.id);
+    game.userService.deleteUser(socket.id);
   };

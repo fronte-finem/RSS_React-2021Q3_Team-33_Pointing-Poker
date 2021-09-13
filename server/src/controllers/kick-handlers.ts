@@ -11,16 +11,16 @@ const validate = (
 ) => {
   if (userId === socket.id) return ApiFailMessage.NO_SELF_KICK;
   if (userId === game.dealerSocket.id) return ApiFailMessage.NO_DEALER_KICK;
-  if (!game.getUser(userId)) return ApiFailMessage.NO_USER_FOR_KICK;
+  if (!game.userService.getUser(userId)) return ApiFailMessage.NO_USER_FOR_KICK;
   return null;
 };
 
 const dealerKick = (userId: string, game: GameService) => {
   const kickResult = game.getKickResult(userId, true, 'dealer');
-  const badUserSocket = game.getUserSocket(userId)!;
+  const badUserSocket = game.userService.getUserSocket(userId)!;
   badUserSocket.emit(ApiServerEvents.KICKED, kickResult.reason);
   badUserSocket.disconnect();
-  game.deleteUser(userId);
+  game.userService.deleteUser(userId);
   game.server.to(game.room).emit(ApiServerEvents.USER_KICK_RESULT, kickResult);
 };
 

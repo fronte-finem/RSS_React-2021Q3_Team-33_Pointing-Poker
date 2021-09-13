@@ -1,15 +1,5 @@
-import {
-  IUsersService,
-  UsersService,
-  UserX,
-} from '@server/services/user-service';
-import {
-  DealerToJoin,
-  Role,
-  User,
-  UserBase,
-  UsersList,
-} from '@shared/api-types/user';
+import { IUsersService, UsersService } from '@server/services/user-service';
+import { DealerToJoin, Role } from '@shared/api-types/user';
 import { InitDealer, InitUser } from '@shared/api-types/init';
 import {
   GameSettings,
@@ -20,12 +10,7 @@ import {
   PointingPokerServer,
   PointingPokerServerSocket,
 } from 'types/server-socket';
-import {
-  ChatMessage,
-  ChatMessagesList,
-  KickResult,
-  KickVoteInit,
-} from '@shared/api-types/chat';
+import { KickResult, KickVoteInit } from '@shared/api-types/chat';
 import { ChatService, IChatService } from '@server/services/chat-service';
 
 const MINIMAL_USERS_NUM_FOR_KICK_VOTE = 3;
@@ -35,7 +20,7 @@ interface KickVote {
   vote: boolean;
 }
 
-export class GameService implements IChatService {
+export class GameService {
   private _userService: IUsersService = new UsersService();
   private _chatService: IChatService = new ChatService();
   private _gameSettings: GameSettings = getDefaultGameSettings();
@@ -51,7 +36,15 @@ export class GameService implements IChatService {
     { gameTitle, ...userBase }: DealerToJoin
   ) {
     this._title = gameTitle;
-    this.addUser(userBase, Role.DEALER, _dealer);
+    this.userService.addUser(userBase, Role.DEALER, _dealer);
+  }
+
+  public get userService(): IUsersService {
+    return this._userService;
+  }
+
+  public get chatService(): IChatService {
+    return this._chatService;
   }
 
   public get room(): string {
@@ -86,46 +79,6 @@ export class GameService implements IChatService {
     return this.isStarted && !this._gameSettings.autoJoinToGame;
   }
 
-  public addMessage(userId: string, message: string): ChatMessage {
-    return this._chatService.addMessage(userId, message);
-  }
-
-  public getChatMessages(): ChatMessagesList {
-    return this._chatService.getChatMessages();
-  }
-
-  public isUserInStore(userData: UserBase): boolean {
-    return this._userService.isUserInStore(userData);
-  }
-
-  public addUser(
-    userData: UserBase,
-    role: Role,
-    socket: PointingPokerServerSocket
-  ): User {
-    return this._userService.addUser(userData, role, socket);
-  }
-
-  public deleteUser(userId: string): void {
-    this._userService.deleteUser(userId);
-  }
-
-  public getUser(userId: string): User | undefined {
-    return this._userService.getUser(userId);
-  }
-
-  public getUserX(userId: string): UserX | undefined {
-    return this._userService.getUserX(userId);
-  }
-
-  public getUserSocket(userId: string): PointingPokerServerSocket | undefined {
-    return this._userService.getUserSocket(userId);
-  }
-
-  public getUsers(): UsersList {
-    return this._userService.getUsers();
-  }
-
   public initDealer(): InitDealer {
     return {
       gameId: this._room,
@@ -156,7 +109,7 @@ export class GameService implements IChatService {
 
   public get kickVotersNum(): number {
     // Dealer don't count in voters
-    return this.getUsers().length - 2;
+    return this.userService.getUsers().length - 2;
   }
 
   public canStartKickVote(): boolean {
