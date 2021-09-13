@@ -1,10 +1,16 @@
-import { ApiClientEvents, ApiServerEvents } from '@shared/api-types/api-events';
+import {
+  ApiClientEvents,
+  ApiClientEventsWithCallback,
+  ApiClientEventsWithNoArgs,
+  ApiClientEventsWithPayloadAndCallback,
+  ApiServerEvents,
+} from '@shared/api-types/api-events';
 import { DealerToJoin, User, UserToJoin } from '@shared/api-types/user';
 import {
   GameResult,
   Issue,
   IssueBase,
-  RoundResult,
+  IssueScore,
 } from '@shared/api-types/issue';
 import { CardScore, GameSettings } from '@shared/api-types/game-settings';
 import { InitDealer, InitUser } from '@shared/api-types/init';
@@ -13,33 +19,41 @@ import { ChatMessage, KickResult, KickVoteInit } from '@shared/api-types/chat';
 type ApiClientEventsMap = { [event in ApiClientEvents]: Function };
 type ApiServerEventsMap = { [event in ApiServerEvents]: Function };
 
-export const enum ResponseStatus {
+export const enum AckResponseStatus {
   FAIL = 'FAIL',
   OK = 'OK',
 }
-export type ApiResponseFail = {
-  status: ResponseStatus.FAIL;
+export type AckResponseFail = {
+  status: AckResponseStatus.FAIL;
   failMessage: string;
   data: undefined;
 };
-export type ApiResponseOk<Payload> = {
-  status: ResponseStatus.OK;
+export type AckResponseOk<Payload> = {
+  status: AckResponseStatus.OK;
   failMessage: undefined;
   data: Payload;
 };
-export type ApiResponse<Payload> = ApiResponseFail | ApiResponseOk<Payload>;
-export type AckCallback<Payload> = (response: ApiResponse<Payload>) => void;
+export type AckResponse<Payload> = AckResponseFail | AckResponseOk<Payload>;
+export type AckCallback<Payload> = (response: AckResponse<Payload>) => void;
 
-export const isOk = ({ status }: ApiResponse<any>) =>
-  status === ResponseStatus.OK;
-export const isFail = ({ status }: ApiResponse<any>) =>
-  status === ResponseStatus.FAIL;
+export const isOk = ({ status }: AckResponse<any>) =>
+  status === AckResponseStatus.OK;
+export const isFail = ({ status }: AckResponse<any>) =>
+  status === AckResponseStatus.FAIL;
 
-export function setFail(message: string): ApiResponseFail {
-  return { status: ResponseStatus.FAIL, failMessage: message, data: undefined };
+export function setFail(message: string): AckResponseFail {
+  return {
+    status: AckResponseStatus.FAIL,
+    failMessage: message,
+    data: undefined,
+  };
 }
-export function setOk<Payload>(data: Payload): ApiResponseOk<Payload> {
-  return { status: ResponseStatus.OK, failMessage: undefined, data };
+export function setOk<Payload>(data: Payload): AckResponseOk<Payload> {
+  return {
+    status: AckResponseStatus.OK,
+    failMessage: undefined,
+    data,
+  };
 }
 
 export interface PointingPokerClientToServerEvents extends ApiClientEventsMap {
@@ -101,6 +115,21 @@ export interface PointingPokerClientToServerEvents extends ApiClientEventsMap {
   ) => void;
 }
 
+export type PointingPokerClientToServerEventsWithPayloadAndCallback = Pick<
+  PointingPokerClientToServerEvents,
+  ApiClientEventsWithPayloadAndCallback
+>;
+
+export type PointingPokerClientToServerEventsWithNoArgs = Pick<
+  PointingPokerClientToServerEvents,
+  ApiClientEventsWithNoArgs
+>;
+
+export type PointingPokerClientToServerEventsWithCallback = Pick<
+  PointingPokerClientToServerEvents,
+  ApiClientEventsWithCallback
+>;
+
 export interface PointingPokerServerToClientEvents extends ApiServerEventsMap {
   [ApiServerEvents.GAME_TITLE_CHANGED]: (title: string) => void;
   [ApiServerEvents.DISCONNECT]: () => void;
@@ -121,6 +150,6 @@ export interface PointingPokerServerToClientEvents extends ApiServerEventsMap {
   [ApiServerEvents.GAME_STARTED]: (gameSettings: GameSettings) => void;
   [ApiServerEvents.GAME_ENDED]: (gameResult: GameResult) => void;
   [ApiServerEvents.ROUND_STARTED]: (issueId: string) => void;
-  [ApiServerEvents.ROUND_ENDED]: (roundResult: RoundResult) => void;
+  [ApiServerEvents.ROUND_ENDED]: (issueScore: IssueScore) => void;
   [ApiServerEvents.SCORE_ADDED]: (userId: string) => void;
 }

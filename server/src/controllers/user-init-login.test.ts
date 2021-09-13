@@ -6,7 +6,10 @@ import { ApiFailMessage } from '@server/api-fail-message';
 import { InitDealer } from '@shared/api-types/init';
 import { DealerToJoin, Role, UserToJoin } from '@shared/api-types/user';
 import { PointingPokerServer } from 'types/server-socket';
-import { ApiResponse, ResponseStatus } from '@shared/api-types/api-events-maps';
+import {
+  AckResponse,
+  AckResponseStatus,
+} from '@shared/api-types/api-events-maps';
 import { PointingPokerClientSocket } from 'types/client-socket';
 import { zip } from '@shared/utils/array';
 
@@ -47,7 +50,7 @@ describe('Users init tests.', () => {
   function usersEmit<Payload>(
     event: ApiClientEvents,
     payloads: Payload[]
-  ): Promise<ApiResponse<any>[]> {
+  ): Promise<AckResponse<any>[]> {
     return Promise.all(
       zip(payloads, getUserSockets()).map(([payload, socket]) =>
         emit(event, payload, socket)
@@ -59,7 +62,7 @@ describe('Users init tests.', () => {
     [userSocket1, userSocket2, dealerSocket] = await Promise.all(
       Array(3).fill(PORT).map(connectClient)
     );
-    const { data }: ApiResponse<InitDealer> = await emit(
+    const { data }: AckResponse<InitDealer> = await emit(
       ApiClientEvents.CREATE_GAME,
       dealerData,
       dealerSocket
@@ -69,8 +72,8 @@ describe('Users init tests.', () => {
 
     const payloads = Array(2).fill(gameId);
     const responses = await usersEmit(ApiClientEvents.JOIN_GAME, payloads);
-    expect(responses[0].status).toBe(ResponseStatus.OK);
-    expect(responses[1].status).toBe(ResponseStatus.OK);
+    expect(responses[0].status).toBe(AckResponseStatus.OK);
+    expect(responses[1].status).toBe(AckResponseStatus.OK);
   });
 
   afterEach(() => {
@@ -81,20 +84,20 @@ describe('Users init tests.', () => {
     const badGamerData = { ...gamerData, firstName: '' };
     const payloads2 = [badGamerData, gamerData];
     let loginResponses = await usersEmit(ApiClientEvents.ADD_USER, payloads2);
-    expect(loginResponses[0].status).toBe(ResponseStatus.FAIL);
+    expect(loginResponses[0].status).toBe(AckResponseStatus.FAIL);
     expect(loginResponses[0].failMessage).toBe(ApiFailMessage.USER_NEED_NAME);
     expect(loginResponses[0].data).toBeUndefined();
-    expect(loginResponses[1].status).toBe(ResponseStatus.OK);
+    expect(loginResponses[1].status).toBe(AckResponseStatus.OK);
     expect(loginResponses[1].failMessage).toBeUndefined();
     expect(loginResponses[1].data?.gameId).toBe(gameId);
 
     const goodGamerData = { ...gamerData, firstName: 'Frodo' };
     const payloads3 = [goodGamerData, gamerData];
     loginResponses = await usersEmit(ApiClientEvents.ADD_USER, payloads3);
-    expect(loginResponses[0].status).toBe(ResponseStatus.OK);
+    expect(loginResponses[0].status).toBe(AckResponseStatus.OK);
     expect(loginResponses[0].failMessage).toBeUndefined();
     expect(loginResponses[0].data?.gameId).toBe(gameId);
-    expect(loginResponses[1].status).toBe(ResponseStatus.FAIL);
+    expect(loginResponses[1].status).toBe(AckResponseStatus.FAIL);
     expect(loginResponses[1].failMessage).toBe(
       ApiFailMessage.SAME_USER_ALREADY_EXIST
     );
@@ -105,8 +108,8 @@ describe('Users init tests.', () => {
     const goodGamerData = { ...gamerData, firstName: 'Frodo' };
     const payloads2 = [goodGamerData, gamerData];
     const loginResponses = await usersEmit(ApiClientEvents.ADD_USER, payloads2);
-    expect(loginResponses[0].status).toBe(ResponseStatus.OK);
-    expect(loginResponses[1].status).toBe(ResponseStatus.OK);
+    expect(loginResponses[0].status).toBe(AckResponseStatus.OK);
+    expect(loginResponses[1].status).toBe(AckResponseStatus.OK);
 
     const events = [userSocket2!, dealerSocket!].map((socket) =>
       onEvent(ApiServerEvents.USER_DISCONNECTED, socket)

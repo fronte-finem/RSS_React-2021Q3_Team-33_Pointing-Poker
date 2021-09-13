@@ -19,6 +19,12 @@ export default defineConfig(({ command }) => {
       postcss: './postcss.config.js',
     },
 
+    clearScreen: true,
+
+    server: {
+      open: true,
+    },
+
     build: {
       outDir: BUILD_DIR,
       emptyOutDir: true,

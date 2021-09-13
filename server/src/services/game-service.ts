@@ -7,7 +7,10 @@ import {
   UsersList,
 } from '@shared/api-types/user';
 import { InitDealer, InitUser } from '@shared/api-types/init';
-import { CardsSetDefault, GameSettings } from '@shared/api-types/game-settings';
+import {
+  GameSettings,
+  getDefaultGameSettings,
+} from '@shared/api-types/game-settings';
 import { randomUUID } from 'crypto';
 import {
   PointingPokerServer,
@@ -15,15 +18,6 @@ import {
 } from 'types/server-socket';
 import { ChatMessage, ChatMessagesList } from '@shared/api-types/chat';
 import { ChatService, IChatService } from '@server/services/chat-service';
-
-const getDefaultGameSettings = (): GameSettings => ({
-  dealerGamer: false,
-  cardsSet: CardsSetDefault.FIBONACCI,
-  autoJoinToGame: true,
-  autoOpenCards: true,
-  changeAfterRoundEnd: false,
-  timeout: undefined,
-});
 
 export class GameService implements IChatService {
   private _userService: IUsersService = new UsersService();

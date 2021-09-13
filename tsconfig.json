@@ -11,6 +11,7 @@
     "allowJs": true,
     "skipLibCheck": false,
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "useDefineForClassFields": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
