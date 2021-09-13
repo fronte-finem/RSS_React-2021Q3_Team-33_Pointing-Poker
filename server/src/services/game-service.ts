@@ -1,4 +1,8 @@
-import { IUsersService, UsersService } from '@server/services/user-service';
+import {
+  IUsersService,
+  UsersService,
+  UserX,
+} from '@server/services/user-service';
 import {
   DealerToJoin,
   Role,
@@ -16,8 +20,20 @@ import {
   PointingPokerServer,
   PointingPokerServerSocket,
 } from 'types/server-socket';
-import { ChatMessage, ChatMessagesList } from '@shared/api-types/chat';
+import {
+  ChatMessage,
+  ChatMessagesList,
+  KickResult,
+  KickVoteInit,
+} from '@shared/api-types/chat';
 import { ChatService, IChatService } from '@server/services/chat-service';
+
+const MINIMAL_USERS_NUM_FOR_KICK_VOTE = 3;
+
+interface KickVote {
+  userId: string;
+  vote: boolean;
+}
 
 export class GameService implements IChatService {
   private _userService: IUsersService = new UsersService();
@@ -26,6 +42,8 @@ export class GameService implements IChatService {
   private _room: string = randomUUID();
   private _title: string;
   private _isStarted: boolean = false;
+  private _kickVotes: KickVote[] = [];
+  private _kickVoteStarted: boolean = false;
 
   constructor(
     private _server: PointingPokerServer,
@@ -33,7 +51,7 @@ export class GameService implements IChatService {
     { gameTitle, ...userBase }: DealerToJoin
   ) {
     this._title = gameTitle;
-    this.addUser(userBase, _dealer.id, Role.DEALER);
+    this.addUser(userBase, Role.DEALER, _dealer);
   }
 
   public get room(): string {
@@ -80,8 +98,12 @@ export class GameService implements IChatService {
     return this._userService.isUserInStore(userData);
   }
 
-  public addUser(userData: UserBase, id: string, role: Role): User {
-    return this._userService.addUser(userData, id, role);
+  public addUser(
+    userData: UserBase,
+    role: Role,
+    socket: PointingPokerServerSocket
+  ): User {
+    return this._userService.addUser(userData, role, socket);
   }
 
   public deleteUser(userId: string): void {
@@ -90,6 +112,14 @@ export class GameService implements IChatService {
 
   public getUser(userId: string): User | undefined {
     return this._userService.getUser(userId);
+  }
+
+  public getUserX(userId: string): UserX | undefined {
+    return this._userService.getUserX(userId);
+  }
+
+  public getUserSocket(userId: string): PointingPokerServerSocket | undefined {
+    return this._userService.getUserSocket(userId);
   }
 
   public getUsers(): UsersList {
@@ -118,6 +148,60 @@ export class GameService implements IChatService {
       initUser.gameResult = [];
     }
     return initUser;
+  }
+
+  public get kickVoteStarted(): boolean {
+    return this._kickVoteStarted;
+  }
+
+  public get kickVotersNum(): number {
+    // Dealer don't count in voters
+    return this.getUsers().length - 2;
+  }
+
+  public canStartKickVote(): boolean {
+    return (
+      !this._kickVoteStarted &&
+      this.kickVotersNum >= MINIMAL_USERS_NUM_FOR_KICK_VOTE
+    );
+  }
+
+  public startKickVote(badUserId: string, initiatorId: string): KickVoteInit {
+    this._kickVotes = [];
+    this._kickVoteStarted = true;
+    return {
+      badUserId,
+      initiatorId,
+    };
+  }
+
+  public getKickResult(
+    badUserId: string,
+    kicked: boolean,
+    byWhom: string
+  ): KickResult {
+    this._kickVotes = [];
+    this._kickVoteStarted = false;
+    return {
+      kicked,
+      badUserId,
+      reason: `${kicked ? 'Kicked' : 'Not kicked'} by ${byWhom}`,
+    };
+  }
+
+  public addKickVote(userId: string, vote: boolean): null | KickResult {
+    if (!this._kickVoteStarted) return null;
+    this._kickVotes.push({ userId, vote });
+    const half = Math.floor(this.kickVotersNum / 2);
+    const yes = this._kickVotes.filter((arg) => arg.vote).length;
+    const no = this._kickVotes.filter((arg) => !arg.vote).length;
+    if (yes > half) {
+      return this.getKickResult(userId, true, 'majority of votes');
+    }
+    if (no > half) {
+      return this.getKickResult(userId, false, 'majority of votes');
+    }
+    return null;
   }
 
   public destroy(): void {
