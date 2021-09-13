@@ -2,7 +2,7 @@ import React from 'react';
 import {
   StyleEditTitleButton,
   StyleLobbyEditTitleIcon,
-} from './lobby-info-styles';
+} from './lobby-info/lobby-info-styles';
 
 interface EditButtonProps {
   setEditModal: (isShow: boolean) => void;

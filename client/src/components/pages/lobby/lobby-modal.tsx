@@ -1,7 +1,6 @@
 import { Input } from '@client/components/shared/input/input';
 import { Modal } from '@client/components/shared/modal/modal';
 import React, { ChangeEvent, useState } from 'react';
-// import { StyleLobbyEditTitleForm } from './lobby-info-styles';
 
 interface LobbyEditTitleModalProps {
   setEditModal: (isShow: boolean) => void;
