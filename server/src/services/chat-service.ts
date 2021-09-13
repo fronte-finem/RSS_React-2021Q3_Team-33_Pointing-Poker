@@ -1,12 +1,6 @@
 import { ChatMessage, ChatMessagesList } from '@shared/api-types/chat';
 
-export interface IChatService {
-  addMessage(userId: string, message: string): ChatMessage;
-  getChatMessages(): ChatMessagesList;
-  destroy(): void;
-}
-
-export class ChatService implements IChatService {
+export class ChatService {
   private _chatMessages: ChatMessagesList = [];
 
   public addMessage(userId: string, message: string): ChatMessage {

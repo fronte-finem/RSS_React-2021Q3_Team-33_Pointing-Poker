@@ -16,7 +16,7 @@ const validate = (
 };
 
 const dealerKick = (userId: string, game: GameService) => {
-  const kickResult = game.getKickResult(userId, true, 'dealer');
+  const kickResult = game.userService.getKickResult(userId, true, 'dealer');
   const badUserSocket = game.userService.getUserSocket(userId)!;
   badUserSocket.emit(ApiServerEvents.KICKED, kickResult.reason);
   badUserSocket.disconnect();
@@ -39,16 +39,16 @@ export const getKickHandler =
       return;
     }
 
-    if (game.kickVoteStarted) {
+    if (game.userService.kickVoteStarted) {
       ackCallback(setFail(ApiFailMessage.KICK_VOTE_ALREADY_STARTED));
       return;
     }
-    if (!game.canStartKickVote()) {
+    if (!game.userService.canStartKickVote()) {
       ackCallback(setFail(ApiFailMessage.NOT_ENOUGH_USERS_FOR_KICK_VOTE));
       return;
     }
 
-    const initKickVote = game.startKickVote(userId, socket.id);
+    const initKickVote = game.userService.startKickVote(userId, socket.id);
 
     game.dealerSocket
       .to(game.room)
@@ -58,12 +58,12 @@ export const getKickHandler =
 export const getKickVoteHandler =
   (socket: PointingPokerServerSocket, game: GameService) =>
   (vote: boolean, ackCallback: AckCallback<boolean>) => {
-    if (!game.kickVoteStarted) {
+    if (!game.userService.kickVoteStarted) {
       ackCallback(setFail(ApiFailMessage.NO_ACTIVE_KICK_VOTE));
       return;
     }
 
-    const result = game.addKickVote(socket.id, vote);
+    const result = game.userService.addKickVote(socket.id, vote);
     ackCallback(setOk(vote));
     if (!result) return;
 
