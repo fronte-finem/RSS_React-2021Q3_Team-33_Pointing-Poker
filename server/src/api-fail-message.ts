@@ -8,4 +8,10 @@ export const enum ApiFailMessage {
   SAME_USER_ALREADY_EXIST = 'User with same data already in game-room!',
   USER_WITH_SOCKET_ID_EXIST = 'User with same socket-id already in game-room!',
   DEALER_REJECTED_LOGIN = 'Game already started, dealer rejected your login!',
+  NO_SELF_KICK = 'Self kick not supported 😉',
+  NO_DEALER_KICK = 'Dealer not kickable 😉',
+  NO_USER_FOR_KICK = 'User with that id not found 😉',
+  KICK_VOTE_ALREADY_STARTED = 'Kick vote already started!',
+  NOT_ENOUGH_USERS_FOR_KICK_VOTE = 'Not enough users for kick vote!',
+  NO_ACTIVE_KICK_VOTE = 'No active kick vote!',
 }
