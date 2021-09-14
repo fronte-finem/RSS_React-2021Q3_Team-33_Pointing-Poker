@@ -19,7 +19,7 @@ export const LobbyUsersSection: React.FC = () => {
       lastName: 'Ross',
       jobPosition: 'junior software engineer',
       avatar: '',
-      id: '1',
+      id: '2',
       role: Role.GAMER,
     },
     {
@@ -27,7 +27,7 @@ export const LobbyUsersSection: React.FC = () => {
       lastName: 'Horn',
       jobPosition: '',
       avatar: '',
-      id: '1',
+      id: '3',
       role: Role.GAMER,
     },
     {
@@ -35,7 +35,7 @@ export const LobbyUsersSection: React.FC = () => {
       lastName: 'Single',
       jobPosition: 'senior software engineer',
       avatar: '',
-      id: '1',
+      id: '4',
       role: Role.GAMER,
     },
     {
@@ -43,7 +43,7 @@ export const LobbyUsersSection: React.FC = () => {
       lastName: 'Ring',
       jobPosition: 'software engineer',
       avatar: '',
-      id: '1',
+      id: '5',
       role: Role.GAMER,
     },
     {
@@ -51,7 +51,7 @@ export const LobbyUsersSection: React.FC = () => {
       lastName: 'King',
       jobPosition: 'junior software engineer',
       avatar: '',
-      id: '1',
+      id: '6',
       role: Role.GAMER,
     },
     {
@@ -59,7 +59,7 @@ export const LobbyUsersSection: React.FC = () => {
       lastName: '',
       jobPosition: 'QA engineer',
       avatar: '',
-      id: '1',
+      id: '7',
       role: Role.GAMER,
     },
   ];
@@ -84,6 +84,7 @@ export const LobbyUsersSection: React.FC = () => {
             avatar={user.avatar!}
             isOwner={false}
             isDelete
+            key={user.id}
           />
         ))}
       </StyleLobbyUsersWrapper>
