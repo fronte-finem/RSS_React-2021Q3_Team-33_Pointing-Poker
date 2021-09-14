@@ -33,7 +33,6 @@ export const InfoMaster = styled(Row)`
 `;
 
 export const StyleLobbyMaster = styled(Col)`
-  margin-left: 43px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -54,7 +53,6 @@ export const InfoCopy = styled(Row)`
 `;
 
 export const StyleLobbyCopy = styled(Col)`
-  margin-left: 43px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -76,14 +74,11 @@ export const StyleLobbyCopyWrapper = styled.div`
 
 export const StyleLobbyControl = styled.div`
   margin-top: 97px;
-  margin-right: 38px;
   display: flex;
   justify-content: flex-end;
 `;
 
 export const InfoControl = styled.div`
-  margin-left: 43px;
-  margin-right: 38px;
   display: flex;
   justify-content: space-between;
 `;
