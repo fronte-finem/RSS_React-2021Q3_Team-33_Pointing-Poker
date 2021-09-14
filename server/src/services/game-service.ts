@@ -11,10 +11,12 @@ import {
   PointingPokerServer,
   PointingPokerServerSocket,
 } from 'types/server-socket';
+import { IssueService } from '@server/services/issue-service';
 
 export class GameService {
   private _userService: UsersService = new UsersService();
   private _chatService: ChatService = new ChatService();
+  private _issueService: IssueService = new IssueService();
   private _gameSettings: GameSettings = getDefaultGameSettings();
   private _room: string = randomUUID();
   private _title: string;
@@ -29,12 +31,22 @@ export class GameService {
     this.userService.addUser(userBase, Role.DEALER, _dealer);
   }
 
+  public destroy(): void {
+    this._userService.destroy();
+    this._chatService.destroy();
+    this._issueService.destroy();
+  }
+
   public get userService(): UsersService {
     return this._userService;
   }
 
   public get chatService(): ChatService {
     return this._chatService;
+  }
+
+  public get issueService(): IssueService {
+    return this._issueService;
   }
 
   public get room(): string {
@@ -87,6 +99,7 @@ export class GameService {
     if (!this.isStarted) {
       initUser.messages = this._chatService.getChatMessages();
     } else {
+      initUser.issues = this._issueService.getIssues();
       initUser.gameSettings = this._gameSettings;
       initUser.gameResult = [];
     }
