@@ -19,4 +19,5 @@ export const enum ApiFailMessage {
   ISSUE_NEED_TITLE = 'Need some title for issue',
   ISSUE_TITLE_TO_LONG = 'Issue title to long! Max length: ',
   ISSUE_NEED_PRIORITY = 'Issue need priority: ',
+  NO_ACTIVE_ROUND = 'No active round for add score',
 }
