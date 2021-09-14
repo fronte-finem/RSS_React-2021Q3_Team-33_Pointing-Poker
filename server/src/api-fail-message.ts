@@ -14,4 +14,9 @@ export const enum ApiFailMessage {
   KICK_VOTE_ALREADY_STARTED = 'Kick vote already started!',
   NOT_ENOUGH_USERS_FOR_KICK_VOTE = 'Not enough users for kick vote!',
   NO_ACTIVE_KICK_VOTE = 'No active kick vote!',
+  SAME_TITLE_ISSUE_ALREADY_EXIST = 'Issue with same title already exist!',
+  ISSUE_NOT_FOUND = 'Issue with what id not found in store!',
+  ISSUE_NEED_TITLE = 'Need some title for issue',
+  ISSUE_TITLE_TO_LONG = 'Issue title to long! Max length: ',
+  ISSUE_NEED_PRIORITY = 'Issue need priority: ',
 }

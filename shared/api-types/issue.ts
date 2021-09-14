@@ -3,7 +3,7 @@ import { CardScore } from './game-settings';
 /**
  * Приоритет задачи
  */
-export const enum Priority {
+export enum Priority {
   HIGH = 'high',
   MIDDLE = 'middle',
   LOW = 'low',
