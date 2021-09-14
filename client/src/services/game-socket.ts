@@ -7,9 +7,6 @@ import { AckResponse, isFail, isOk } from '@shared/api-types/api-events-maps';
 import { connect, emitWithPayloadAndCallback } from '@client/utils/socket.io';
 import { KickResult, KickVoteInit } from '@shared/api-types/chat';
 
-const ADDRESS = `http://localhost`;
-const PORT = 42424;
-
 export interface SocketState {
   isLoading: boolean;
   isFail: boolean;
@@ -113,7 +110,7 @@ export class GameSocketActions {
 
   @action public async createGame(dealerToJoin: DealerToJoin) {
     this.beforeAsync();
-    this.socket = await connect(ADDRESS, PORT);
+    this.socket = await connect();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.CREATE_GAME,
       dealerToJoin,
@@ -150,7 +147,7 @@ export class GameSocketActions {
 
   @action public async joinGame(gameId: string) {
     this.beforeAsync();
-    this.socket = await connect(ADDRESS, PORT);
+    this.socket = await connect();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.JOIN_GAME,
       gameId,
