@@ -7,7 +7,7 @@ import {
 } from '@shared/api-types/api-events';
 import { DealerToJoin, User, UserToJoin } from '@shared/api-types/user';
 import {
-  GameResult,
+  GameResults,
   Issue,
   IssueBase,
   IssueScore,
@@ -148,7 +148,7 @@ export interface PointingPokerServerToClientEvents extends ApiServerEventsMap {
   [ApiServerEvents.ISSUE_DELETED]: (issueId: string) => void;
   [ApiServerEvents.ISSUE_EDITED]: (issue: Issue) => void;
   [ApiServerEvents.GAME_STARTED]: (gameSettings: GameSettings) => void;
-  [ApiServerEvents.GAME_ENDED]: (gameResult: GameResult) => void;
+  [ApiServerEvents.GAME_ENDED]: (gameResults: GameResults) => void;
   [ApiServerEvents.ROUND_STARTED]: (issueId: string) => void;
   [ApiServerEvents.ROUND_ENDED]: (issueScore: IssueScore) => void;
   [ApiServerEvents.SCORE_ADDED]: (userId: string) => void;

@@ -8,7 +8,7 @@ import {
   KickVoteInit,
 } from '@shared/api-types/chat';
 import {
-  GameResult,
+  GameResults,
   Issue,
   IssueScore,
   IssuesList,
@@ -37,7 +37,7 @@ export interface GameState {
   messages: ChatMessagesList;
   issues: IssuesList;
   settings: null | GameSettings;
-  results: GameResult;
+  results: GameResults;
   allowUserToJoin: null | AllowUserToJoin;
   kickedReason: null | string;
   gameRun: boolean;
@@ -227,7 +227,7 @@ export class GameStateActions {
     });
   }
 
-  public setResults(results: GameResult) {
+  public setResults(results: GameResults) {
     runInAction(() => {
       this.gameState.results = results;
     });
@@ -268,7 +268,7 @@ export class GameStateActions {
     });
   }
 
-  public endGame(results: GameResult) {
+  public endGame(results: GameResults) {
     runInAction(() => {
       this.gameState.page = GamePage.RESULTS;
       this.gameState.gameRun = false;

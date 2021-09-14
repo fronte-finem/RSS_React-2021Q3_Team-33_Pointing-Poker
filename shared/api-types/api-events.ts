@@ -9,7 +9,7 @@
  * @external { import("./chat").KickResult } KickResult
  * @external { import("./issue").IssueBase } IssueBase
  * @external { import("./issue").Issue } Issue
- * @external { import("./issue").GameResult } GameResult
+ * @external { import("./issue").GameResults } GameResults
  * @external { import("./issue").IssueScore } IssueScore
  * @external { import("./game-settings").GameSettings } GameSettings
  * @external { import("./game-settings").CardScore } CardScore
@@ -184,7 +184,7 @@ export const enum ApiServerEvents {
    */
   GAME_STARTED = 'game started',
   /**
-   * - payload: {@link GameResult}
+   * - payload: {@link GameResults}
    */
   GAME_ENDED = 'game ended',
   /**
