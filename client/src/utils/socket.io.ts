@@ -6,13 +6,12 @@ import {
   ApiClientEventsWithPayloadAndCallback,
 } from '@shared/api-types/api-events';
 
-const PORT = 42424;
+// const PORT = 42424;
 
 export const connect = (): Promise<PointingPokerClientSocket> => {
   const socket = ioClient({
     forceNew: true,
     transports: ['websocket'],
-    port: `${PORT}`,
   });
   return new Promise<PointingPokerClientSocket>((resolve) =>
     socket.on('connect', () => resolve(socket))
