@@ -20,6 +20,8 @@ export const enum ApiFailMessage {
   ISSUE_TITLE_TO_LONG = 'Issue title to long! Max length: ',
   ISSUE_NEED_PRIORITY = 'Issue need priority: ',
   NO_ACTIVE_ROUND = 'No active round for add score',
+  ACTIVE_ROUND = 'Another round active now',
   GAME_STARTED = 'Game already started!',
-  GAME_NOT_STARTED = 'GAme not started yet!',
+  GAME_NOT_STARTED = 'Game not started yet!',
+  DEALER_NOT_GAMER = 'Dealer no gamer by selected settings!',
 }

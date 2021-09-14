@@ -11,7 +11,8 @@ import { IssueItem } from '@server/models/issue-item';
 
 export class IssueService {
   private _store: IssueItem[] = [];
-  private _activeIssueItem: IssueItem | null = null;
+  private _activeIssueItem: null | IssueItem = null;
+  private _timerId: null | NodeJS.Timeout = null;
 
   public getIssues(): IssuesList {
     return this._store.map((item) => item.getDTO());
@@ -52,20 +53,30 @@ export class IssueService {
     this._store = [];
   }
 
-  public start(issueId: string): void {
+  public start(issueId: string, timerId: null | NodeJS.Timeout = null): void {
+    if (this._activeIssueItem) throw new Error(ApiFailMessage.ACTIVE_ROUND);
     const item = this.findItem(issueId);
     if (!item) throw new Error(ApiFailMessage.ISSUE_NOT_FOUND);
     this._activeIssueItem = item;
+    this._timerId = timerId;
   }
 
   public get isRoundActive(): boolean {
     return Boolean(this._activeIssueItem);
   }
 
+  public getRoundScore(): IssueScore | null {
+    return this._activeIssueItem && this._activeIssueItem.getScore();
+  }
+
   public end(): IssueScore {
     if (!this._activeIssueItem) throw new Error(ApiFailMessage.NO_ACTIVE_ROUND);
     const issueScore = this._activeIssueItem.getScore();
     this._activeIssueItem = null;
+    if (this._timerId) {
+      global.clearTimeout(this._timerId);
+      this._timerId = null;
+    }
     return issueScore;
   }
 

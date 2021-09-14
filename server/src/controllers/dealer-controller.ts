@@ -13,6 +13,9 @@ import {
   getAddIssueHandler,
   getDeleteIssueHandler,
   getModifyIssueHandler,
+  getRoundEndHandler,
+  getRoundStartHandler,
+  getScoreAddHandler,
 } from '@server/controllers/issue-handlers';
 
 export function setDealerListeners(
@@ -32,4 +35,7 @@ export function setDealerListeners(
   socket.on(ApiClientEvents.EDIT_ISSUE, getModifyIssueHandler(socket, game));
   socket.on(ApiClientEvents.START_GAME, getStartGameHandler(socket, game));
   socket.on(ApiClientEvents.END_GAME, getEndGameHandler(socket, game));
+  socket.on(ApiClientEvents.START_ROUND, getRoundStartHandler(socket, game));
+  socket.on(ApiClientEvents.END_ROUND, getRoundEndHandler(socket, game));
+  socket.on(ApiClientEvents.ADD_SCORE, getScoreAddHandler(socket, game));
 }

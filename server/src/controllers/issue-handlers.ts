@@ -4,6 +4,7 @@ import { ApiServerEvents } from '@shared/api-types/api-events';
 import { PointingPokerServerSocket } from 'types/server-socket';
 import { AckCallback, setFail, setOk } from '@shared/api-types/api-events-maps';
 import { Issue, IssueBase, Priority } from '@shared/api-types/issue';
+import { CardScore } from '@shared/api-types/game-settings';
 
 const TITLE_MAX_LENGTH = 50;
 
@@ -74,4 +75,68 @@ export const getModifyIssueHandler =
     const modifiedIssue = game.issueService.modify(issue);
     ackCallback(setOk(modifiedIssue));
     conditionalEmit(ApiServerEvents.ISSUE_EDITED, modifiedIssue, game);
+  };
+
+export const getRoundStartHandler =
+  (socket: PointingPokerServerSocket, game: GameService) =>
+  (issueId: string, ackCallback: AckCallback<string>) => {
+    if (game.issueService.isRoundActive) {
+      ackCallback(setFail(ApiFailMessage.ACTIVE_ROUND));
+      return;
+    }
+    if (!game.issueService.find(issueId)) {
+      ackCallback(setFail(ApiFailMessage.ISSUE_NOT_FOUND));
+      return;
+    }
+    ackCallback(setOk(issueId));
+
+    let timerId: null | NodeJS.Timer = null;
+
+    if (game.gameSettings.timeout) {
+      timerId = global.setTimeout(() => {
+        if (!game.issueService.isRoundActive) return;
+        const results = game.issueService.end();
+        game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, results);
+      }, game.gameSettings.timeout);
+    }
+
+    game.issueService.start(issueId, timerId);
+    game.server.to(game.room).emit(ApiServerEvents.ROUND_STARTED, issueId);
+  };
+
+export const getRoundEndHandler =
+  (socket: PointingPokerServerSocket, game: GameService) =>
+  (ackCallback: AckCallback<true>) => {
+    if (!game.issueService.isRoundActive) {
+      ackCallback(setFail(ApiFailMessage.NO_ACTIVE_ROUND));
+      return;
+    }
+    ackCallback(setOk(true));
+    const results = game.issueService.end();
+    game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, results);
+  };
+
+export const getScoreAddHandler =
+  (socket: PointingPokerServerSocket, game: GameService) =>
+  (score: CardScore, ackCallback: AckCallback<CardScore>) => {
+    if (!game.issueService.isRoundActive) {
+      ackCallback(setFail(ApiFailMessage.NO_ACTIVE_ROUND));
+      return;
+    }
+    const userId = socket.id;
+    if (!game.gameSettings.dealerGamer && userId === game.dealerSocket.id) {
+      ackCallback(setFail(ApiFailMessage.DEALER_NOT_GAMER));
+      return;
+    }
+    game.issueService.addScore({ userId, score });
+    ackCallback(setOk(score));
+    game.server.to(game.room).emit(ApiServerEvents.SCORE_ADDED, userId);
+
+    if (game.gameSettings.autoOpenCards) {
+      const usersNum = game.userService.getUsers().length;
+      const scoresNum = game.issueService.getRoundScore()!.scores.length;
+      if (scoresNum < usersNum) return;
+      const results = game.issueService.end();
+      game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, results);
+    }
   };

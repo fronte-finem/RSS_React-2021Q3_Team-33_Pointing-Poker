@@ -10,6 +10,7 @@ import {
   getKickHandler,
   getKickVoteHandler,
 } from '@server/controllers/kick-handlers';
+import { getScoreAddHandler } from '@server/controllers/issue-handlers';
 
 export const setUserListeners = (
   socket: PointingPokerServerSocket,
@@ -29,4 +30,5 @@ export const setUserListeners = (
     ApiClientEvents.VOTE_TO_KICK_USER,
     getKickVoteHandler(socket, game)
   );
+  socket.on(ApiClientEvents.ADD_SCORE, getScoreAddHandler(socket, game));
 };
