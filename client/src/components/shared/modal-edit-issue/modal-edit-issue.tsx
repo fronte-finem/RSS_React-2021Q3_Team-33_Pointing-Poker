@@ -25,6 +25,12 @@ export const ModalEditIssue: React.FC<IProps> = (props) => {
     { value: 'Middle', label: 'Middle' },
     { value: 'Hight', label: 'Hight' },
   ];
+
+
+  const onchange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+    console.log(e.target.value)
+  }
+
   return (
     <Modal
       okText="Yes"
@@ -41,7 +47,7 @@ export const ModalEditIssue: React.FC<IProps> = (props) => {
           </StyledInputWrapper>
           <StyledInputWrapper>
             <StyledText>Link:</StyledText>
-            <StyledInput value={link} />
+            <StyledInput value={link} onChange={onchange} />
           </StyledInputWrapper>
           <StyledInputWrapper>
             <StyledText>Priority:</StyledText>
