@@ -74,10 +74,6 @@ export class GameService {
     this._title = title;
   }
 
-  public get isStarted(): boolean {
-    return this._isStarted;
-  }
-
   public get needDealerAdmitToJoin(): boolean {
     return this.isStarted && !this._gameSettings.autoJoinToGame;
   }
@@ -105,6 +101,10 @@ export class GameService {
       initUser.gameResult = this._issueService.getResults();
     }
     return initUser;
+  }
+
+  public get isStarted(): boolean {
+    return this._isStarted;
   }
 
   public startGame(gameSettings: GameSettings): void {

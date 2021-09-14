@@ -3,6 +3,8 @@ import { ApiClientEvents } from '@shared/api-types/api-events';
 import {
   getChangeGameTitleHandler,
   getCancelGameHandler,
+  getStartGameHandler,
+  getEndGameHandler,
 } from '@server/controllers/dealer-handlers';
 import { PointingPokerServerSocket } from 'types/server-socket';
 import { getPostMessageHandler } from '@server/controllers/chat-handlers';
@@ -28,4 +30,6 @@ export function setDealerListeners(
   socket.on(ApiClientEvents.ADD_ISSUE, getAddIssueHandler(socket, game));
   socket.on(ApiClientEvents.DELETE_ISSUE, getDeleteIssueHandler(socket, game));
   socket.on(ApiClientEvents.EDIT_ISSUE, getModifyIssueHandler(socket, game));
+  socket.on(ApiClientEvents.START_GAME, getStartGameHandler(socket, game));
+  socket.on(ApiClientEvents.END_GAME, getEndGameHandler(socket, game));
 }
