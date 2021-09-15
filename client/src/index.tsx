@@ -9,7 +9,7 @@ import { lightTheme } from './themes/themes';
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={lightTheme}>
-      <div style={{ backgroundColor: '#fff', height: '100vh', width: '100vw' }}>
+      <div style={{ backgroundColor: '#fff' }}>
         <App />
       </div>
     </ThemeProvider>
