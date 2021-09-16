@@ -3,7 +3,7 @@ import { CardScore } from './game-settings';
 /**
  * Приоритет задачи
  */
-export const enum Priority {
+export enum Priority {
   HIGH = 'high',
   MIDDLE = 'middle',
   LOW = 'low',
@@ -50,7 +50,7 @@ export interface UserScore {
 /**
  * Массив оценок поставленных задаче игроками.
  */
-export type RoundResult = Array<UserScore>;
+export type RoundResults = Array<UserScore>;
 
 /**
  * Объект оценок поставленных задаче игроками.
@@ -60,10 +60,10 @@ export interface IssueScore {
    * @format uuid
    */
   issueId: string;
-  scores: RoundResult;
+  scores: RoundResults;
 }
 
 /**
  * Массив всех оценённых задач.
  */
-export type GameResult = Array<IssueScore>;
+export type GameResults = Array<IssueScore>;
