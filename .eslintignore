@@ -5,3 +5,6 @@
 
 # Ignore generated html-api-doc
 /server/doc/**/*
+
+# Ignore build directory
+/dist/**/*
