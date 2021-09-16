@@ -7,6 +7,7 @@ import {
   StyleLobbySettings,
   StyleLobbySettingsDesc,
   StyleLobbySettingsItem,
+  StyleLobbySettingsScore,
   StyleLobbySettingsWrapper,
 } from './lobby-settings-styles';
 import { LobbyTimer } from './lobby-timer';
@@ -28,6 +29,7 @@ export const LobbySettingsSection: React.FC = () => {
   const [changeAfterRoundEnd, setChangeAfterRoundEnd] = useState(false);
   const [isShowGameTimer, setIsShowGameTimer] = useState(false);
   const [timeoutRound, setTimeoutRound] = useState(0);
+  const [scoreType, setScoreType] = useState('');
   console.log(
     dealerGame,
     autoJoinToGame,
@@ -72,6 +74,16 @@ export const LobbySettingsSection: React.FC = () => {
     {
       title: 'Round time:',
       component: <LobbyTimer setTimeoutRound={setTimeoutRound} />,
+    },
+    {
+      title: 'Score type:',
+      component: (
+        <StyleLobbySettingsScore
+          type="text"
+          value={scoreType}
+          onChange={(e) => setScoreType(e.target.value)}
+        />
+      ),
     },
     {
       title: 'A set of cards will be used:',

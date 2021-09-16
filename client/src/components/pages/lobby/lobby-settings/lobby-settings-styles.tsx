@@ -1,3 +1,4 @@
+import { Input } from '@client/components/shared/input/input';
 import { TimerWrapper } from '@client/components/shared/timer/timer-wrapper';
 import { InputNumber, Row } from 'antd';
 import styled from 'styled-components';
@@ -102,4 +103,9 @@ export const StyleLobbySettingsTimerSeconds = styled(InputNumber)`
     line-height: 15px;
     color: rgba(0, 0, 0, 0.5);
   }
+`;
+
+export const StyleLobbySettingsScore = styled(Input)`
+  width: 300px;
+  height: 36px;
 `;
