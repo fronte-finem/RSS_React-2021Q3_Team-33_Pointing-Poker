@@ -1,4 +1,5 @@
 import React from 'react';
+import { LobbyCardsSection } from './lobby-cards/lobby-cards';
 import { LobbyInfoSection } from './lobby-info/lobby-info';
 import { LobbyIssueSection } from './lobby-issue/lobby-issue';
 import { LobbySettingsSection } from './lobby-settings/lobby-settings';
@@ -15,6 +16,7 @@ export const PageLobby: React.FC = () => {
         <>
           <LobbyIssueSection />
           <LobbySettingsSection />
+          <LobbyCardsSection />
         </>
       ) : (
         ''

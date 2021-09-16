@@ -1,3 +1,4 @@
+import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
 import React from 'react';
 
 import {
@@ -6,9 +7,10 @@ import {
   StyledGameCard,
 } from './game-card-styles';
 
-export const GameCard: React.FC<{ score: number; scoreType: string }> = (
-  props
-) => {
+export const GameCard: React.FC<{
+  score: number | AntdIconProps;
+  scoreType: string;
+}> = (props) => {
   const { score, scoreType } = props;
   return (
     <StyledGameCard {...props}>
