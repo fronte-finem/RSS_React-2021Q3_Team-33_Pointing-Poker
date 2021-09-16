@@ -4,8 +4,13 @@ import { DealerToJoin, UserToJoin } from '@shared/api-types/user';
 import { ApiClientEvents, ApiServerEvents } from '@shared/api-types/api-events';
 import { action, runInAction } from 'mobx';
 import { AckResponse, isFail, isOk } from '@shared/api-types/api-events-maps';
-import { connect, emitWithPayloadAndCallback } from '@client/utils/socket.io';
-import { KickResult, KickVoteInit } from '@shared/api-types/chat';
+import {
+  connect,
+  emitWithCallback,
+  emitWithPayloadAndCallback,
+} from '@client/utils/socket.io';
+import { Issue, IssueBase } from '@shared/api-types/issue';
+import { CardScore, GameSettings } from '@shared/api-types/game-settings';
 
 const ADDRESS = `http://localhost`;
 const PORT = 42424;
@@ -91,14 +96,11 @@ export class GameSocketActions {
   }
 
   private setUserListeners() {
-    this.socket?.on(
-      ApiServerEvents.KICK_VOTE_STARTED,
-      (kickVoteInit: KickVoteInit) =>
-        this.gameStateActions.startKickVote(kickVoteInit)
+    this.socket?.on(ApiServerEvents.KICK_VOTE_STARTED, (kickVoteInit) =>
+      this.gameStateActions.startKickVote(kickVoteInit)
     );
-    this.socket?.on(
-      ApiServerEvents.USER_KICK_RESULT,
-      (kickResult: KickResult) => this.gameStateActions.endKick(kickResult)
+    this.socket?.on(ApiServerEvents.USER_KICK_RESULT, (kickResult) =>
+      this.gameStateActions.endKick(kickResult)
     );
     this.socket?.on(ApiServerEvents.KICKED, (message) =>
       this.gameStateActions.setKicked(message)
@@ -185,6 +187,104 @@ export class GameSocketActions {
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.POST_MESSAGE,
       message,
+      this.socket!
+    );
+    this.afterAsync(response);
+  }
+
+  @action public async kick(userId: string) {
+    this.beforeAsync();
+    const response = await emitWithPayloadAndCallback(
+      ApiClientEvents.KICK_USER,
+      userId,
+      this.socket!
+    );
+    this.afterAsync(response);
+  }
+
+  @action public async kickVote(vote: boolean) {
+    this.beforeAsync();
+    const response = await emitWithPayloadAndCallback(
+      ApiClientEvents.VOTE_TO_KICK_USER,
+      vote,
+      this.socket!
+    );
+    this.afterAsync(response);
+  }
+
+  @action public async addIssue(issueBase: IssueBase) {
+    this.beforeAsync();
+    const response = await emitWithPayloadAndCallback(
+      ApiClientEvents.ADD_ISSUE,
+      issueBase,
+      this.socket!
+    );
+    this.afterAsync(response);
+  }
+
+  @action public async deleteIssue(issueId: string) {
+    this.beforeAsync();
+    const response = await emitWithPayloadAndCallback(
+      ApiClientEvents.DELETE_ISSUE,
+      issueId,
+      this.socket!
+    );
+    this.afterAsync(response);
+  }
+
+  @action public async editIssue(issue: Issue) {
+    this.beforeAsync();
+    const response = await emitWithPayloadAndCallback(
+      ApiClientEvents.EDIT_ISSUE,
+      issue,
+      this.socket!
+    );
+    this.afterAsync(response);
+  }
+
+  @action public async startGame(gameSettings: GameSettings) {
+    this.beforeAsync();
+    const response = await emitWithPayloadAndCallback(
+      ApiClientEvents.START_GAME,
+      gameSettings,
+      this.socket!
+    );
+    this.afterAsync(response);
+  }
+
+  @action public async endGame() {
+    this.beforeAsync();
+    const response = await emitWithCallback(
+      ApiClientEvents.END_GAME,
+      this.socket!
+    );
+    this.afterAsync(response);
+  }
+
+  @action public async startRound(issueId: string) {
+    this.beforeAsync();
+    const response = await emitWithPayloadAndCallback(
+      ApiClientEvents.START_ROUND,
+      issueId,
+      this.socket!
+    );
+    this.afterAsync(response);
+  }
+
+  @action public async endRound() {
+    this.beforeAsync();
+    const response = await emitWithCallback(
+      ApiClientEvents.END_ROUND,
+      this.socket!
+    );
+    this.afterAsync(response);
+  }
+
+  @action public async addScore(score: CardScore) {
+    this.beforeAsync();
+    const response = await emitWithPayloadAndCallback(
+      ApiClientEvents.ADD_SCORE,
+      score,
       this.socket!
     );
     this.afterAsync(response);
