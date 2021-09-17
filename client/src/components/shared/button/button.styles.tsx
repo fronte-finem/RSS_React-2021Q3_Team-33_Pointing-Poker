@@ -36,4 +36,9 @@ export const StyledButton = styled(AntButton)`
     color: ${(props) => selector(props).fg.active};
     border: 1px solid ${(props) => props.theme.button.primary.bg.active};
   }
+
+  &&:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 `;
