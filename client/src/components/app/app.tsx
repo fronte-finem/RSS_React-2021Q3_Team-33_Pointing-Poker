@@ -14,7 +14,7 @@ export const App: React.FC = observer(() => {
   return (
     <ThemeProvider theme={gameState.theme}>
       <BrowserRouter>
-        <Layout>
+        <Layout data-testid="app">
           <Header />
           <AntdLayout.Content>
             <Switch>

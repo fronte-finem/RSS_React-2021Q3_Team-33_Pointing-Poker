@@ -30,7 +30,7 @@ export const Footer = () => (
         <Space direction="vertical">
           <StyledTitle level={4}>Team 33</StyledTitle>
           {links.map(({ title, name, id }) => (
-            <Tooltip title={title} placement="right">
+            <Tooltip key={id} title={title} placement="right">
               <LinkCard href={getGithub(name)} team={title} target="_blank">
                 <Space>
                   <Avatar src={getAvatar(id)} />

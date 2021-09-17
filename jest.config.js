@@ -33,4 +33,5 @@ module.exports = {
     '<rootDir>/tests-coverage/',
     '<rootDir>/tests-mocks/',
   ],
+  setupFilesAfterEnv: ['./tests-mocks/match-media.js'],
 };
