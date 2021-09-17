@@ -1,19 +1,19 @@
 import { Input } from '@client/components/shared/input/input';
 import { Modal } from '@client/components/shared/modal/modal';
+import { useGameService } from '@client/providers/game-service';
 import React, { ChangeEvent, useState } from 'react';
 
 interface LobbyEditTitleModalProps {
   setEditModal: (isShow: boolean) => void;
-  lobbyTitle: string;
-  setLobbyTitle: (title: string) => void;
   visible: boolean;
 }
 
 export const LobbyEditTitleModal: React.FC<LobbyEditTitleModalProps> = (
   props
 ) => {
-  const { setEditModal, lobbyTitle, setLobbyTitle, visible } = props;
-  const [titleValue, setTitleValue] = useState(lobbyTitle);
+  const { setEditModal, visible } = props;
+  const { gameState, gameSocketActions } = useGameService();
+  const [titleValue, setTitleValue] = useState(gameState.title);
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -21,12 +21,12 @@ export const LobbyEditTitleModal: React.FC<LobbyEditTitleModalProps> = (
   };
 
   const takeTitleChanges = () => {
-    setLobbyTitle(titleValue);
+    gameSocketActions.changeGameTitle(titleValue);
     setEditModal(false);
   };
 
   const cancelTitleChanges = () => {
-    setTitleValue(lobbyTitle);
+    setTitleValue(gameState.title);
     setEditModal(false);
   };
 

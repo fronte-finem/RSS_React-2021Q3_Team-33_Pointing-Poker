@@ -22,10 +22,10 @@ export const LobbyInfoSection: React.FC = () => {
     (user) => user.id === gameState.selfUserId
   );
   const isDealer = thisUser?.role === 'dealer';
-
-  const [lobbyTitle, setLobbyTitle] = useState(
-    'Spring 23 planning (issues 13, 533, 5623, 3252, 6623, ...)'
-  );
+  const lobbyTitle = gameState.title;
+  // const [lobbyTitle, setLobbyTitle] = useState(
+  //   'Spring 23 planning (issues 13, 533, 5623, 3252, 6623, ...)'
+  // );
 
   const [isEditModal, setIsEditModal] = useState(false);
 
@@ -50,8 +50,6 @@ export const LobbyInfoSection: React.FC = () => {
           {isDealer ? <EditTitleButton setEditModal={setIsEditModal} /> : ''}
           <LobbyEditTitleModal
             setEditModal={setIsEditModal}
-            lobbyTitle={lobbyTitle}
-            setLobbyTitle={setLobbyTitle}
             visible={isEditModal}
           />
         </StyleLobbyInfo>
