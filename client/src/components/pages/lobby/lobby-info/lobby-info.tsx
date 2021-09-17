@@ -23,6 +23,8 @@ export const LobbyInfoSection: React.FC = () => {
   );
   const isDealer = thisUser?.role === 'dealer';
   const lobbyTitle = gameState.title;
+  const dealer = gameState.users.find((user) => user.role === 'dealer');
+  const isOwner = dealer?.id === gameState.selfUserId;
 
   const [isEditModal, setIsEditModal] = useState(false);
 
@@ -55,11 +57,11 @@ export const LobbyInfoSection: React.FC = () => {
         <StyleLobbyMaster>
           <StyleLobbyMasterText>Scram master:</StyleLobbyMasterText>
           <UserCard
-            firstName="Rick"
-            lastName="Giligan"
-            position="lead software engineer"
-            isOwner
-            avatar=""
+            firstName={dealer?.firstName!}
+            lastName={dealer?.lastName!}
+            position={dealer?.jobPosition!}
+            isOwner={isOwner}
+            avatar={dealer?.avatar!}
             isDelete={false}
           />
         </StyleLobbyMaster>
