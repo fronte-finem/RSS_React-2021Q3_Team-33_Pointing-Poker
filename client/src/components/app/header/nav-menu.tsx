@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { routes } from '@client/components/app/routes';
 
 export const NavMenu: React.FC = () => (
-  <Menu mode="horizontal">
+  <Menu theme="dark">
     {routes.map(({ path, name }) => (
       <Menu.Item key={name}>
         <NavLink to={path} exact>
