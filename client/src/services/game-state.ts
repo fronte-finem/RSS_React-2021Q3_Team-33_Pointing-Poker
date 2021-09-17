@@ -41,6 +41,7 @@ export interface GameState {
   id: string;
   title: string;
   selfUserId: string;
+  isDealer: boolean;
   users: UsersList;
   messages: ChatMessagesList;
   issues: IssuesList;
@@ -63,6 +64,7 @@ export const getDefaultGameState = (): GameState => ({
   id: '',
   title: '',
   selfUserId: '',
+  isDealer: false,
   users: [],
   messages: [],
   issues: [],
@@ -135,6 +137,7 @@ export class GameStateActions {
       this.gameState.id = initDealer.gameId;
       this.gameState.title = initDealer.gameTitle;
       this.gameState.selfUserId = selfUserId;
+      this.gameState.isDealer = true;
       this.gameState.settings = initDealer.gameSettings;
       this.gameState.users = initDealer.users;
     });
@@ -146,6 +149,7 @@ export class GameStateActions {
       this.gameState.id = initUser.gameId;
       this.gameState.title = initUser.gameTitle;
       this.gameState.selfUserId = selfUserId;
+      this.gameState.isDealer = false;
       this.gameState.users = initUser.users;
       if (initUser.messages) this.gameState.messages = initUser.messages;
       if (initUser.issues) this.gameState.issues = initUser.issues;

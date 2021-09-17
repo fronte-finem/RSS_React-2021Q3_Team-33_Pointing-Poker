@@ -48,14 +48,16 @@ export const IssueCard: React.FC<IssueProps> = observer(({ issue }) => {
           <StyledIssuePriority>{issue.priority}</StyledIssuePriority>
         </StyledIssueCardInfo>
       </Tooltip>
-      <StyledIssueCardControls>
-        {editBtn}
-        <StyledDangerButton
-          type="link"
-          icon={isGame ? deleteIcon : cancelIcon}
-          onClick={deleteIssue}
-        />
-      </StyledIssueCardControls>
+      {gameState.isDealer ? (
+        <StyledIssueCardControls>
+          {editBtn}
+          <StyledDangerButton
+            type="link"
+            icon={isGame ? cancelIcon : deleteIcon}
+            onClick={deleteIssue}
+          />
+        </StyledIssueCardControls>
+      ) : null}
     </StyleIssueCard>
   );
 });

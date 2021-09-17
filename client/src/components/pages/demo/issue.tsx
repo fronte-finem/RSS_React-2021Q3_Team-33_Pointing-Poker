@@ -22,6 +22,12 @@ const issues: Issue[] = Array(9)
   .map(() => getIssue(Math.trunc(1000 * Math.random())));
 
 const settings = getDefaultGameSettings();
+const init = {
+  gameId: '123',
+  gameTitle: 'Game',
+  gameSettings: settings,
+  users: [],
+};
 
 export const PageIssueDemo: React.FC = observer(() => {
   const { gameState, gameStateActions } = useGameService();
@@ -38,6 +44,11 @@ export const PageIssueDemo: React.FC = observer(() => {
     else gameStateActions.endGame([]);
   };
 
+  const toggleDealer = (checked: boolean) => {
+    if (checked) gameStateActions.initDealer(init, '42');
+    else gameStateActions.initUser(init, '123');
+  };
+
   return (
     <div>
       <div
@@ -48,6 +59,12 @@ export const PageIssueDemo: React.FC = observer(() => {
           gap: 20,
           padding: 20,
         }}>
+        <Toggle
+          unCheckedChildren="user"
+          checkedChildren="dealer"
+          onChange={toggleDealer}
+          checked={gameState.isDealer}
+        />
         <Toggle
           unCheckedChildren="lobby"
           checkedChildren="game"
@@ -64,7 +81,7 @@ export const PageIssueDemo: React.FC = observer(() => {
             <IssueCard issue={issue} />
           </div>
         ))}
-        <IssueButton />
+        {gameState.isDealer ? <IssueButton /> : null}
       </DemoGrid>
     </div>
   );
