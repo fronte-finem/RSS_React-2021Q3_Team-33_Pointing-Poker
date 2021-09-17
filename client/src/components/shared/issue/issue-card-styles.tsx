@@ -1,19 +1,64 @@
-import styled from 'styled-components';
+import styled, { DefaultTheme } from 'styled-components';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button as AntButton } from 'antd';
+import {
+  issueCardControlsStyle,
+  issueCardInfoStyle,
+  issueCardStyle,
+} from '@client/components/shared/issue/styles';
 
-export const StyleIssueCardWrapper = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  color: ${({ theme }) => theme.issueCard.fg};
+type Props = { isCurrent: boolean };
+type Opts = Props & { theme: DefaultTheme };
+
+const selector = ({ theme, isCurrent }: Opts) =>
+  isCurrent ? theme.issueCard.current : theme.issueCard;
+
+export const StyleIssueCard = styled.div<Props>`
+  ${issueCardStyle};
+  --fg: ${(props) => selector(props).fg};
+  --bg: ${(props) => selector(props).bg};
+`;
+
+export const StyledIssueCardInfo = styled.div`
+  ${issueCardInfoStyle};
+`;
+
+export const StyledIssueCardControls = styled.div`
+  ${issueCardControlsStyle};
+`;
+
+export const StyledIssueTitle = styled.div`
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 48px;
+  line-height: 56px;
+  color: var(--fg);
+`;
+
+export const StyledMark = styled.div`
+  position: absolute;
+  top: 5px;
+  left: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  text-transform: uppercase;
+`;
+
+export const StyledIssuePriority = styled.div`
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 12px;
 `;
 
 const StyledButton = styled(AntButton)`
-  margin-left: auto;
-  margin-right: 27px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,56 +91,14 @@ export const StyledDangerButton = styled(StyledButton)`
   }
 `;
 
-export const StyleCancelIcon = styled(PlusOutlined)`
+export const StyledCancelIcon = styled(PlusOutlined)`
   font-size: 56px;
 `;
 
-export const StyleEditIcon = styled(EditOutlined)`
+export const StyledEditIcon = styled(EditOutlined)`
   font-size: 42px;
 `;
 
-export const StyleDeleteIcon = styled(DeleteOutlined)`
+export const StyledDeleteIcon = styled(DeleteOutlined)`
   font-size: 39px;
-`;
-
-export const StyleEditIssueWrapper = styled.div`
-  margin-left: auto;
-  margin-right: -15px;
-  width: 100%;
-  max-width: 137px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-export const StyleCurrentIssue = styled.p`
-  position: absolute;
-  top: -10px;
-  left: 5px;
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 16px;
-  text-transform: uppercase;
-`;
-
-export const StyleIssueTitle = styled.h3`
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-  font-size: 48px;
-  line-height: 56px;
-  color: ${({ theme }) => theme.issueCard.fg};
-`;
-
-export const StyleIssueText = styled.p`
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-  font-size: 10px;
-  line-height: 12px;
 `;
