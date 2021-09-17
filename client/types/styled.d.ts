@@ -53,8 +53,8 @@ export interface ChatTheme {
 }
 
 export interface IssueCardTheme extends ForeGroundBackGround {
-  current: string;
   priority: string;
+  current: ForeGroundBackGround;
   button: {
     default: InteractiveColors;
     danger: InteractiveColors;

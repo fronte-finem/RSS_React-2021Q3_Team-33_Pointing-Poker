@@ -7,8 +7,11 @@ import {
 
 export const lightIssueCardTheme: IssueCardTheme = {
   ...lightDefaultTheme,
-  current: LightThemeColor.PRIMARY_MID,
   priority: LightThemeColor.PRIMARY_MID,
+  current: {
+    fg: LightThemeColor.BLACK,
+    bg: LightThemeColor.PRIMARY_LIGHT,
+  },
   button: {
     default: {
       normal: '#666',
@@ -25,8 +28,11 @@ export const lightIssueCardTheme: IssueCardTheme = {
 
 export const darkIssueCardTheme: IssueCardTheme = {
   ...darkDefaultTheme,
-  current: DarkThemeColor.PRIMARY_MID,
   priority: DarkThemeColor.PRIMARY_MID,
+  current: {
+    fg: DarkThemeColor.PRIMARY_LIGHT,
+    bg: DarkThemeColor.BLACK,
+  },
   button: {
     default: {
       normal: '#999',
