@@ -3,6 +3,7 @@ import { StopOutlined } from '@ant-design/icons';
 import { Card as AntCard } from 'antd';
 
 export const StyleCard = styled(AntCard)`
+  margin-right: 10px;
   width: 300px;
   background: #ffffff;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
@@ -14,6 +15,10 @@ export const StyleCard = styled(AntCard)`
     display: flex;
     justify-content: flex-start;
     align-items: center;
+  }
+
+  &:nth-child(3n) {
+    margin-right: 0;
   }
 `;
 
