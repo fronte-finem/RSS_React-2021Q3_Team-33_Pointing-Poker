@@ -22,3 +22,7 @@ export function zipWith<A, B, C>(func: BiFunc<A, B, C>) {
 export function zip<A, B>(arrayA: A[], arrayB: B[]): Pair<A, B>[] {
   return zipWith((x: A, y: B) => [x, y] as const)(arrayA, arrayB);
 }
+
+export function getRandomItem<A>(arrayA: A[]): A {
+  return arrayA[Math.trunc(Math.random() * arrayA.length)];
+}

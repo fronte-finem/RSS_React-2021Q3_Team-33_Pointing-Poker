@@ -1,31 +1,71 @@
 import React from 'react';
 import { DemoGrid } from '@client/components/pages/demo/demo-styles';
-import {
-  IssueCard,
-  IssueProps,
-} from '@client/components/shared/issue/issue-card';
+import { IssueCard } from '@client/components/shared/issue/issue-card';
 import { IssueButton } from '@client/components/shared/issue/issue-button';
+import { Issue, Priority } from '@shared/api-types/issue';
+import { observer } from 'mobx-react-lite';
+import { useGameService } from '@client/providers/game-service';
+import { getDefaultGameSettings } from '@shared/api-types/game-settings';
+import { Toggle } from '@client/components/shared/toggle/toggle';
+import { Button } from '@client/components/shared/button/button';
+import { getRandomItem } from '@shared/utils/array';
 
-const testData: IssueProps[] = [
-  { title: 'Issue 123', priority: 'high', isGame: true, isCurrent: true },
-  { title: 'Issue 234', priority: 'low', isGame: true, isCurrent: false },
-  { title: 'Issue 324', priority: 'middle', isGame: false, isCurrent: true },
-  { title: 'Issue 23', priority: 'high', isGame: false, isCurrent: false },
-  { title: 'Issue 343', priority: 'low', isGame: true, isCurrent: false },
-  { title: 'Issue 32', priority: 'middle', isGame: true, isCurrent: true },
-  { title: 'Issue 321', priority: 'high', isGame: true, isCurrent: true },
-  { title: 'Issue 13', priority: 'low', isGame: false, isCurrent: false },
-];
+const getIssue = (id: number): Issue => ({
+  id: `${id}`,
+  title: `Issue ${id}`,
+  link: `https://jira.my-company.com/issue-${id}`,
+  priority: getRandomItem(Object.values(Priority)),
+});
 
-export const PageIssueDemo: React.FC = () => {
+const issues: Issue[] = Array(9)
+  .fill(0)
+  .map(() => getIssue(Math.trunc(1000 * Math.random())));
+
+const settings = getDefaultGameSettings();
+
+export const PageIssueDemo: React.FC = observer(() => {
+  const { gameState, gameStateActions } = useGameService();
+
+  let i = 0;
+
+  const selectNext = () => {
+    gameStateActions.startRound(issues[i].id);
+    i = i >= issues.length - 1 ? 0 : i + 1;
+  };
+
+  const toggleGameState = (checked: boolean) => {
+    if (checked) gameStateActions.startGame(settings);
+    else gameStateActions.endGame([]);
+  };
+
   return (
-    <DemoGrid>
-      {testData.map((data) => (
-        <div key={data.title + data.priority}>
-          <IssueCard {...data} />
-        </div>
-      ))}
-      <IssueButton />
-    </DemoGrid>
+    <div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 20,
+          padding: 20,
+        }}>
+        <Toggle
+          unCheckedChildren="lobby"
+          checkedChildren="game"
+          onChange={toggleGameState}
+          checked={gameState.gameRun}
+        />
+        <Button onClick={selectNext} disabled={!gameState.gameRun}>
+          Select next issue
+        </Button>
+      </div>
+      <DemoGrid>
+        {issues.map((issue) => (
+          <div key={issue.id}>
+            <IssueCard issue={issue} />
+          </div>
+        ))}
+        <IssueButton />
+      </DemoGrid>
+    </div>
   );
-};
+});
