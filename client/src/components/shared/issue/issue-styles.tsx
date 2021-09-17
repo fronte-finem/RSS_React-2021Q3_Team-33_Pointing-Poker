@@ -5,7 +5,7 @@ export const StyleIssueCard = styled(AntCard)`
   width: 100%;
   max-width: 500px;
   min-width: 380px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.issueCard.bg};
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border: none;
   border-radius: 4px;

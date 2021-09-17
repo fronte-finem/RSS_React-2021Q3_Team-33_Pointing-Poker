@@ -8,9 +8,10 @@ export const StyleIssueCardWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  color: ${({ theme }) => theme.issueCard.fg};
 `;
 
-export const StyleButton = styled(AntButton)`
+const StyledButton = styled(AntButton)`
   margin-left: auto;
   margin-right: 27px;
   display: flex;
@@ -19,19 +20,42 @@ export const StyleButton = styled(AntButton)`
   border: none;
 `;
 
+export const StyledDefaultButton = styled(StyledButton)`
+  &,
+  &:focus {
+    color: ${({ theme }) => theme.issueCard.button.default.normal};
+  }
+  &:hover {
+    color: ${({ theme }) => theme.issueCard.button.default.hover};
+  }
+  &:active {
+    color: ${({ theme }) => theme.issueCard.button.default.active};
+  }
+`;
+
+export const StyledDangerButton = styled(StyledButton)`
+  &,
+  &:focus {
+    color: ${({ theme }) => theme.issueCard.button.danger.normal};
+  }
+  &:hover {
+    color: ${({ theme }) => theme.issueCard.button.danger.hover};
+  }
+  &:active {
+    color: ${({ theme }) => theme.issueCard.button.danger.active};
+  }
+`;
+
 export const StyleCancelIcon = styled(PlusOutlined)`
   font-size: 56px;
-  color: #636363;
 `;
 
 export const StyleEditIcon = styled(EditOutlined)`
   font-size: 42px;
-  color: #636363;
 `;
 
 export const StyleDeleteIcon = styled(DeleteOutlined)`
   font-size: 39px;
-  color: #ff0000;
 `;
 
 export const StyleEditIssueWrapper = styled.div`
@@ -55,7 +79,6 @@ export const StyleCurrentIssue = styled.p`
   font-size: 14px;
   line-height: 16px;
   text-transform: uppercase;
-  color: #000000;
 `;
 
 export const StyleIssueTitle = styled.h3`
@@ -65,7 +88,7 @@ export const StyleIssueTitle = styled.h3`
   font-weight: 300;
   font-size: 48px;
   line-height: 56px;
-  color: #000000;
+  color: ${({ theme }) => theme.issueCard.fg};
 `;
 
 export const StyleIssueText = styled.p`
@@ -75,5 +98,4 @@ export const StyleIssueText = styled.p`
   font-weight: 300;
   font-size: 10px;
   line-height: 12px;
-  color: #000000;
 `;

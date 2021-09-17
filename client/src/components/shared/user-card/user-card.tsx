@@ -1,13 +1,17 @@
 import React from 'react';
 import { Avatar } from '@client/components/shared/avatar/avatar';
 import { Tooltip } from 'antd';
+import { User, UserBase } from '@shared/api-types/user';
+import { useGameService } from '@client/providers/game-service';
 import {
   StyleCard,
   StyleCardOwner,
-  StyleCardText,
-  StyleCardTitle,
-  StyleCardWrapper,
+  StyledJobPosition,
+  StyledUsername,
   StyleStopOutlined,
+  StyledAvatarContainer,
+  StyledBodyContainer,
+  StyledControlContainer,
 } from './user-card-styles';
 
 export interface UserCardProps {
@@ -15,7 +19,7 @@ export interface UserCardProps {
   lastName: string;
   position: string;
   isOwner: boolean;
-  isDelete: boolean;
+  isDelete?: boolean;
   avatar: string;
 }
 
@@ -24,26 +28,34 @@ const deleteUser = () => {
   // TODO: add delete user
 };
 
-export const UserCard: React.FC<UserCardProps> = (props) => {
-  const { firstName, lastName, position, isOwner, isDelete, avatar } = props;
+const getFullName = ({ firstName, lastName }: UserBase) =>
+  [firstName, lastName].filter((name) => Boolean(name)).join(' ');
+
+export const UserCard: React.FC<User> = (user) => {
+  const { gameState } = useGameService();
+  const { id, firstName, lastName, avatar, jobPosition } = user;
+  const username = getFullName({ firstName, lastName });
+
+  const isOwner = gameState.selfUserId === id;
+  const isDelete = !isOwner;
+
   return (
     <StyleCard>
-      <Avatar
-        content={{ firstName, lastName }}
-        mod={{ size: 83, src: avatar }}
-      />
-      <StyleCardWrapper>
+      <StyledAvatarContainer>
+        <Avatar user={user} size={83} src={avatar} />
+      </StyledAvatarContainer>
+      <StyledBodyContainer>
         {isOwner ? <StyleCardOwner>It&prime;s you</StyleCardOwner> : ''}
-        <Tooltip title={`${firstName} ${lastName}`} placement="bottom">
-          <StyleCardTitle>
-            {firstName}
-            {lastName === '' ? '' : ' '}
-            {lastName}
-          </StyleCardTitle>
+        <Tooltip title={username} placement="bottom">
+          <StyledUsername>{username}</StyledUsername>
         </Tooltip>
-        <StyleCardText>{position}</StyleCardText>
-      </StyleCardWrapper>
-      {isDelete ? <StyleStopOutlined rotate={90} onClick={deleteUser} /> : ''}
+        <StyledJobPosition>{jobPosition}</StyledJobPosition>
+      </StyledBodyContainer>
+      {isDelete && (
+        <StyledControlContainer>
+          <StyleStopOutlined rotate={90} onClick={deleteUser} />
+        </StyledControlContainer>
+      )}
     </StyleCard>
   );
 };

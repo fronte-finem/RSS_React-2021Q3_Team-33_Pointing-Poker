@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleIssueCard } from './issue-styles';
 import {
-  StyleButton,
   StyleCancelIcon,
   StyleCurrentIssue,
+  StyledDangerButton,
+  StyledDefaultButton,
   StyleDeleteIcon,
   StyleEditIcon,
   StyleEditIssueWrapper,
@@ -30,8 +31,12 @@ const deleteIssue = () => {
 const EditIssue: React.FC = () => {
   return (
     <StyleEditIssueWrapper>
-      <StyleButton type="link" icon={<StyleEditIcon />} onClick={editIssue} />
-      <StyleButton
+      <StyledDefaultButton
+        type="link"
+        icon={<StyleEditIcon />}
+        onClick={editIssue}
+      />
+      <StyledDangerButton
         type="link"
         icon={<StyleDeleteIcon />}
         onClick={deleteIssue}
@@ -47,14 +52,12 @@ export const IssueCard: React.FC<IssueProps> = (props) => {
       <StyleIssueCardWrapper>
         {isGame && isCurrent ? (
           <StyleCurrentIssue>Current</StyleCurrentIssue>
-        ) : (
-          ''
-        )}
+        ) : null}
         <StyleIssueTitle>{title}</StyleIssueTitle>
         <StyleIssueText>{priority}</StyleIssueText>
       </StyleIssueCardWrapper>
       {isGame ? (
-        <StyleButton
+        <StyledDangerButton
           type="link"
           icon={<StyleCancelIcon rotate={45} onClick={deleteIssue} />}
         />

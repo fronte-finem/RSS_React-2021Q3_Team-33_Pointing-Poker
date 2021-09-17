@@ -9,7 +9,7 @@ export const StyleIssueTitle = styled.p`
   font-weight: 300;
   font-size: 48px;
   line-height: 56px;
-  color: #000000;
+  color: ${({ theme }) => theme.issueCard.fg};
 `;
 
 export const StyleButton = styled(AntButton)`
@@ -19,9 +19,20 @@ export const StyleButton = styled(AntButton)`
   justify-content: center;
   align-items: center;
   border: none;
+
+  &,
+  &:focus {
+    color: ${({ theme }) => theme.issueCard.button.default.normal};
+  }
+  &:hover {
+    color: ${({ theme }) => theme.issueCard.button.default.hover};
+  }
+  &:active {
+    color: ${({ theme }) => theme.issueCard.button.default.active};
+  }
 `;
 
 export const StyleAddIcon = styled(PlusOutlined)`
   font-size: 56px;
-  color: #636363;
+  transition: all 300ms;
 `;
