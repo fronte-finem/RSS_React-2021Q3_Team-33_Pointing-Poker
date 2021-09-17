@@ -31,9 +31,9 @@ export const StyledIssueTitle = styled.div`
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-  font-size: 48px;
-  line-height: 56px;
+  font-weight: 200;
+  font-size: 28px;
+  line-height: 30px;
   color: var(--fg);
 `;
 
@@ -92,13 +92,13 @@ export const StyledDangerButton = styled(StyledButton)`
 `;
 
 export const StyledCancelIcon = styled(PlusOutlined)`
-  font-size: 56px;
+  font-size: 33px;
 `;
 
 export const StyledEditIcon = styled(EditOutlined)`
-  font-size: 42px;
+  font-size: 25px;
 `;
 
 export const StyledDeleteIcon = styled(DeleteOutlined)`
-  font-size: 39px;
+  font-size: 23px;
 `;

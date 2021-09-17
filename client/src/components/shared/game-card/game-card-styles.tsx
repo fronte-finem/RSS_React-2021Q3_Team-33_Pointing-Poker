@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
 export const StyledGameCard = styled.div`
+  width: 100px;
+  height: 161px;
+  background-color: ${(props) => props.theme.bg};
   width: 130px;
   height: 210px;
   color: ${({ theme }) => theme.gameCard.fg};

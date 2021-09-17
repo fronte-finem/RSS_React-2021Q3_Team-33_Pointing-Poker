@@ -7,8 +7,10 @@ export const Modal: React.FC<ModalFuncProps> = ({ children, ...props }) => {
   const { title, onOk, onCancel, okText, cancelText } = props;
 
   const footer = [
-    <Button onClick={onOk}>{okText}</Button>,
-    <Button type="default" onClick={onCancel}>
+    <Button onClick={onOk} key="ok-modal-btn">
+      {okText}
+    </Button>,
+    <Button type="default" onClick={onCancel} key="cancel-modal-btn">
       {cancelText}
     </Button>,
   ];

@@ -44,13 +44,13 @@ export const StyledIssueButtonCardControls = styled.div`
 
 export const StyleIssueTitle = styled.div`
   font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-  font-size: 48px;
-  line-height: 56px;
+  font-weight: 200;
+  font-size: 28px;
+  line-height: 30px;
 `;
 
 export const StyleAddIcon = styled(PlusOutlined)`
-  font-size: 56px;
+  font-size: 33px;
   transition: all 300ms;
   color: var(--icon);
 `;

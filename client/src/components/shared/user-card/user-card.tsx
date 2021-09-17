@@ -40,7 +40,7 @@ export const UserCard: React.FC<User> = observer((user) => {
   return (
     <StyleCard userRole={user.role}>
       <StyledAvatarContainer>
-        <Avatar user={user} size={83} src={avatar} />
+        <Avatar user={user} size={50} src={avatar} />
       </StyledAvatarContainer>
       <StyledBodyContainer>
         {isOwner ? <StyleCardOwner>It&prime;s you</StyleCardOwner> : null}

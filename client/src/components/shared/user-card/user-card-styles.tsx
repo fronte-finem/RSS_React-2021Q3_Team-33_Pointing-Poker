@@ -13,9 +13,7 @@ export const StyleCard = styled.div<Props>`
   --bg: ${(props) => selector(props).bg};
   --fg: ${(props) => selector(props).fg};
 
-  max-width: 500px;
-  min-width: 350px;
-  width: 100%;
+  width: 300px;
 
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -59,8 +57,8 @@ export const StyleCardOwner = styled.div`
 export const StyledUsername = styled.div`
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
-  font-size: 3em;
-  line-height: 56px;
+  font-size: 28px;
+  line-height: 30px;
   color: var(--fg);
 `;
 
@@ -73,7 +71,7 @@ export const StyledJobPosition = styled.div`
 `;
 
 export const StyledButton = styled(AntButton)`
-  --size: 47px;
+  --size: 28px;
 
   display: flex;
   justify-content: center;
