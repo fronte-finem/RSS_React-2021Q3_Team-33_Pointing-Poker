@@ -2,17 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import './index.css';
-import { ThemeProvider } from 'styled-components';
-import { App } from './components/app/app';
-import { lightTheme } from './themes/themes';
+import { App } from '@client/components/app/app';
+import { GameServiceProvider } from '@client/providers/game-service';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={lightTheme}>
-      <div style={{ backgroundColor: '#fff', height: '100vh', width: '100vw' }}>
-        <App />
-      </div>
-    </ThemeProvider>
+    <GameServiceProvider>
+      <App />
+    </GameServiceProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
