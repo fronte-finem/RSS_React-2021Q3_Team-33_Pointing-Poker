@@ -10,7 +10,7 @@ import {
   ApiClientEventsWithPayloadAndCallback,
 } from '@shared/api-types/api-events';
 
-const devAddress = `http://localhost:${import.meta.env.VITE_DEV_PORT}/`;
+const devAddress = `http://localhost:${VITE_DEV_PORT}/`;
 
 const clientOpts: Partial<ManagerOptions & SocketOptions> = {
   forceNew: true,
@@ -18,7 +18,7 @@ const clientOpts: Partial<ManagerOptions & SocketOptions> = {
 };
 
 export const connect = (): Promise<PointingPokerClientSocket> => {
-  const socket = import.meta.env.DEV
+  const socket = DEV_MODE
     ? ioClient(devAddress, clientOpts)
     : ioClient(clientOpts);
   return new Promise<PointingPokerClientSocket>((resolve) =>
