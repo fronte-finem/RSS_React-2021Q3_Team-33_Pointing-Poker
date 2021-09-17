@@ -4,7 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import { initSocketServer } from '@server/init-socket-server';
 
-const PORT = process.env.PORT || 42424;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 const httpServer = createServer(app);
