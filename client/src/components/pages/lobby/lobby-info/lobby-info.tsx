@@ -69,11 +69,7 @@ export const LobbyInfoSection: React.FC = () => {
           />
         </StyleLobbyMaster>
       </InfoMaster>
-      {isDealer ? (
-        <LobbyCopyLink lobbyLink="http://ourgame.com/12345qwe" />
-      ) : (
-        ''
-      )}
+      {isDealer ? <LobbyCopyLink /> : ''}
       {isDealer ? (
         <LobbyInfoControl />
       ) : (
