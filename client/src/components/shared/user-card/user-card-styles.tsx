@@ -1,7 +1,16 @@
-import styled from 'styled-components';
+import styled, { DefaultTheme } from 'styled-components';
 import { StopOutlined } from '@ant-design/icons';
+import { Role } from '@shared/api-types/user';
 
-export const StyleCard = styled.div`
+type Props = { theme: DefaultTheme; role: Role };
+
+const selector = ({ theme, role }: Props) =>
+  role === Role.DEALER ? theme.userCard.dealer : theme.userCard;
+
+export const StyleCard = styled.div<{ role: Role }>`
+  --bg: ${(props) => selector(props).bg};
+  --fg: ${(props) => selector(props).fg};
+
   max-width: 500px;
   min-width: 350px;
   width: 100%;
@@ -10,7 +19,7 @@ export const StyleCard = styled.div`
   grid-template-columns: auto 1fr auto;
 
   border-radius: 4px;
-  background: ${({ theme }) => theme.userCard.bg};
+  background: var(--bg);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
@@ -49,7 +58,7 @@ export const StyledUsername = styled.div`
   font-weight: 300;
   font-size: 3em;
   line-height: 56px;
-  color: ${({ theme }) => theme.userCard.fg};
+  color: var(--fg);
 `;
 
 export const StyledJobPosition = styled.div`

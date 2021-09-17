@@ -60,6 +60,10 @@ export const lightUserCardTheme: UserCardTheme = {
   ...lightDefaultTheme,
   owner: LightThemeColor.ACCENT_DARK,
   jobPosition: LightThemeColor.PRIMARY_MID,
+  dealer: {
+    bg: LightThemeColor.PRIMARY_LIGHT,
+    fg: LightThemeColor.BLACK,
+  },
   deleteBtn: {
     normal: LightThemeColor.PRIMARY_LIGHT,
     hover: LightThemeColor.ACCENT_LIGHT,
@@ -70,6 +74,10 @@ export const darkUserCardTheme: UserCardTheme = {
   ...darkDefaultTheme,
   owner: DarkThemeColor.ACCENT_DARK,
   jobPosition: DarkThemeColor.PRIMARY_MID,
+  dealer: {
+    bg: DarkThemeColor.BLACK,
+    fg: DarkThemeColor.PRIMARY_LIGHT,
+  },
   deleteBtn: {
     normal: DarkThemeColor.PRIMARY_LIGHT,
     hover: DarkThemeColor.ACCENT_LIGHT,

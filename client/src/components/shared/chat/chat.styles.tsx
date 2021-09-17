@@ -1,4 +1,10 @@
-import styled from 'styled-components';
+import styled, { DefaultTheme } from 'styled-components';
+import { Role } from '@shared/api-types/user';
+
+type Props = { theme: DefaultTheme; role: Role };
+
+const selector = ({ theme, role }: Props) =>
+  role === Role.DEALER ? theme.userCard.dealer : theme.userCard;
 
 export const StyledChat = styled.div`
   display: grid;
@@ -10,12 +16,15 @@ export const StyledChat = styled.div`
   width: 100%;
 `;
 
-export const StyledMessageWrapper = styled.div`
+export const StyledMessageWrapper = styled.div<{ role: Role }>`
+  --bg: ${(props) => selector(props).bg};
+  --fg: ${(props) => selector(props).fg};
+
   max-width: 640px;
   width: 100%;
 
-  color: ${({ theme }) => theme.chat.message.fg};
-  background: ${({ theme }) => theme.chat.message.bg};
+  color: var(--fg);
+  background: var(--bg);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px 0 0 20px;
 

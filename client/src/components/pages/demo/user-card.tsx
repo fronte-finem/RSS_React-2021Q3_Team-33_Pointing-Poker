@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DemoGrid } from '@client/components/pages/demo/demo-styles';
 import { UserCard } from '@client/components/shared/user-card/user-card';
 import { Role, UsersList } from '@shared/api-types/user';
+import { observer } from 'mobx-react-lite';
+import { useGameService } from '@client/providers/game-service';
 
 const users: UsersList = [
   {
@@ -27,7 +29,20 @@ const users: UsersList = [
   },
 ];
 
-export const PageUserCardDemo: React.FC = () => {
+export const PageUserCardDemo: React.FC = observer(() => {
+  const { gameStateActions } = useGameService();
+
+  useEffect(() => {
+    gameStateActions.initUser(
+      {
+        gameId: '42',
+        gameTitle: 'Awesome',
+        users,
+      },
+      users[1].id
+    );
+  }, []);
+
   return (
     <DemoGrid>
       {users.map((data) => (
@@ -37,4 +52,4 @@ export const PageUserCardDemo: React.FC = () => {
       ))}
     </DemoGrid>
   );
-};
+});

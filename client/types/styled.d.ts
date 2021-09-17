@@ -41,6 +41,7 @@ export interface AvatarTheme extends ForeGroundBackGround {}
 export interface UserCardTheme extends ForeGroundBackGround {
   owner: string;
   jobPosition: string;
+  dealer: ForeGroundBackGround;
   deleteBtn: InteractiveColors;
 }
 

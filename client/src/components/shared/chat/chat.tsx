@@ -18,7 +18,7 @@ export const Chat: React.FC = observer(() => {
         if (!maybeUser) return null;
         return (
           <>
-            <StyledMessageWrapper>
+            <StyledMessageWrapper role={maybeUser.role}>
               <StyledMessage>{message}</StyledMessage>
               <StyledDateTime>{new Date(date).toLocaleString()}</StyledDateTime>
             </StyledMessageWrapper>
