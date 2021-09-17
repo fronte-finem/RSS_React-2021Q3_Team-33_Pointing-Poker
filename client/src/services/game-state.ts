@@ -14,6 +14,8 @@ import {
   IssuesList,
 } from '@shared/api-types/issue';
 import { InitDealer, InitUser } from '@shared/api-types/init';
+import { DefaultTheme } from 'styled-components';
+import { darkTheme, lightTheme } from '@client/themes/themes';
 
 export const enum GamePage {
   ENTRY = 'entry',
@@ -23,6 +25,11 @@ export const enum GamePage {
   RESULTS = 'results',
 }
 
+export const enum ColorTheme {
+  DARK = 'dark',
+  LIGHT = 'light',
+}
+
 export interface AllowUserToJoin {
   userToJoin: UserToJoin;
   callback: (allow: boolean) => void;
@@ -30,6 +37,7 @@ export interface AllowUserToJoin {
 
 export interface GameState {
   page: GamePage;
+  theme: DefaultTheme;
   id: string;
   title: string;
   selfUserId: string;
@@ -51,6 +59,7 @@ export interface GameState {
 
 export const getDefaultGameState = (): GameState => ({
   page: GamePage.ENTRY,
+  theme: lightTheme,
   id: '',
   title: '',
   selfUserId: '',
@@ -72,6 +81,21 @@ export const getDefaultGameState = (): GameState => ({
 
 export class GameStateActions {
   constructor(private gameState: GameState) {}
+
+  public toggleTheme(colorTheme: ColorTheme) {
+    runInAction(() => {
+      switch (colorTheme) {
+        case ColorTheme.DARK:
+          this.gameState.theme = darkTheme;
+          break;
+        case ColorTheme.LIGHT:
+          this.gameState.theme = lightTheme;
+          break;
+        default:
+          break;
+      }
+    });
+  }
 
   public reset() {
     runInAction(() => {
