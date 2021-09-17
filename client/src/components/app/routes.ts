@@ -7,6 +7,7 @@ import { PageIssueDemo } from '@client/components/pages/demo/issue';
 import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
 import { PageMessageDemo } from '@client/components/pages/demo/message';
 import { PageGameRouterDemo } from '@client/components/pages/demo/game-router';
+import { PageLobby } from '../pages/lobby/lobby';
 
 interface RouteConf {
   path: string;
@@ -59,5 +60,10 @@ export const routes: RouteConf[] = [
     path: '/demo/message',
     name: 'Message Demo',
     component: PageMessageDemo,
+  },
+  {
+    path: '/lobby',
+    name: 'Lobby',
+    component: PageLobby,
   },
 ];

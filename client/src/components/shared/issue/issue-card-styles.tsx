@@ -12,7 +12,7 @@ export const StyleIssueCardWrapper = styled.div`
 
 export const StyleButton = styled(AntButton)`
   margin-left: auto;
-  margin-right: 27px;
+  margin-right: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,25 +20,23 @@ export const StyleButton = styled(AntButton)`
 `;
 
 export const StyleCancelIcon = styled(PlusOutlined)`
-  font-size: 56px;
+  font-size: 33px;
   color: #636363;
 `;
 
 export const StyleEditIcon = styled(EditOutlined)`
-  font-size: 42px;
+  font-size: 25px;
   color: #636363;
 `;
 
 export const StyleDeleteIcon = styled(DeleteOutlined)`
-  font-size: 39px;
+  font-size: 23px;
   color: #ff0000;
 `;
 
 export const StyleEditIssueWrapper = styled.div`
   margin-left: auto;
-  margin-right: -15px;
-  width: 100%;
-  max-width: 137px;
+  margin-right: -10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -62,9 +60,9 @@ export const StyleIssueTitle = styled.h3`
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-  font-size: 48px;
-  line-height: 56px;
+  font-weight: 200;
+  font-size: 28px;
+  line-height: 30px;
   color: #000000;
 `;
 

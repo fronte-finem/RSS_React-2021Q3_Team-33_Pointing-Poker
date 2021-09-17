@@ -30,7 +30,7 @@ export const UserCard: React.FC<UserCardProps> = (props) => {
     <StyleCard>
       <Avatar
         content={{ firstName, lastName }}
-        mod={{ size: 83, src: avatar }}
+        mod={{ size: 50, src: avatar }}
       />
       <StyleCardWrapper>
         {isOwner ? <StyleCardOwner>It&prime;s you</StyleCardOwner> : ''}

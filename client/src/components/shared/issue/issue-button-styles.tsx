@@ -4,17 +4,16 @@ import { PlusOutlined } from '@ant-design/icons';
 
 export const StyleIssueTitle = styled.p`
   margin: 0;
-  padding: 0;
+  padding: 6px 0;
   font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-  font-size: 48px;
-  line-height: 56px;
+  font-weight: 200;
+  font-size: 28px;
+  line-height: 30px;
   color: #000000;
 `;
 
 export const StyleButton = styled(AntButton)`
   margin-left: auto;
-  margin-right: 27px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,6 +21,6 @@ export const StyleButton = styled(AntButton)`
 `;
 
 export const StyleAddIcon = styled(PlusOutlined)`
-  font-size: 56px;
+  font-size: 33px;
   color: #636363;
 `;
