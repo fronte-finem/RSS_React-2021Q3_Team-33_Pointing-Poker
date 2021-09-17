@@ -1,10 +1,11 @@
 import styled, { DefaultTheme } from 'styled-components';
 import { Role } from '@shared/api-types/user';
 
-type Props = { theme: DefaultTheme; role: Role };
+type Props = { userRole: Role };
+type Opts = Props & { theme: DefaultTheme };
 
-const selector = ({ theme, role }: Props) =>
-  role === Role.DEALER ? theme.userCard.dealer : theme.userCard;
+const selector = ({ theme, userRole }: Opts) =>
+  userRole === Role.DEALER ? theme.userCard.dealer : theme.userCard;
 
 export const StyledChat = styled.div`
   display: grid;
@@ -16,7 +17,7 @@ export const StyledChat = styled.div`
   width: 100%;
 `;
 
-export const StyledMessageWrapper = styled.div<{ role: Role }>`
+export const StyledMessageWrapper = styled.div<Props>`
   --bg: ${(props) => selector(props).bg};
   --fg: ${(props) => selector(props).fg};
 

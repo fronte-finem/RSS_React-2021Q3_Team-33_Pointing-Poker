@@ -12,6 +12,7 @@ import {
   StyledControlContainer,
   StyledJobPosition,
   StyledUsername,
+  StyledButton,
   StyleStopOutlined,
 } from './user-card-styles';
 
@@ -28,23 +29,29 @@ export const UserCard: React.FC<User> = observer((user) => {
 
   const onDelete = () => gameSocketActions.kick(id);
 
+  const deleteBtn = (
+    <StyledButton
+      type="link"
+      icon={<StyleStopOutlined rotate={90} />}
+      onClick={onDelete}
+    />
+  );
+
   return (
-    <StyleCard role={user.role}>
+    <StyleCard userRole={user.role}>
       <StyledAvatarContainer>
         <Avatar user={user} size={83} src={avatar} />
       </StyledAvatarContainer>
       <StyledBodyContainer>
-        {isOwner ? <StyleCardOwner>It&prime;s you</StyleCardOwner> : ''}
+        {isOwner ? <StyleCardOwner>It&prime;s you</StyleCardOwner> : null}
         <Tooltip title={username} placement="bottom">
           <StyledUsername>{username}</StyledUsername>
         </Tooltip>
         <StyledJobPosition>{jobPosition}</StyledJobPosition>
       </StyledBodyContainer>
-      {isDelete && (
-        <StyledControlContainer>
-          <StyleStopOutlined rotate={90} onClick={onDelete} />
-        </StyledControlContainer>
-      )}
+      <StyledControlContainer>
+        {isDelete ? deleteBtn : null}
+      </StyledControlContainer>
     </StyleCard>
   );
 });

@@ -1,13 +1,15 @@
 import styled, { DefaultTheme } from 'styled-components';
 import { StopOutlined } from '@ant-design/icons';
 import { Role } from '@shared/api-types/user';
+import { Button as AntButton } from 'antd';
 
-type Props = { theme: DefaultTheme; role: Role };
+type Props = { userRole: Role };
+type Opts = Props & { theme: DefaultTheme };
 
-const selector = ({ theme, role }: Props) =>
-  role === Role.DEALER ? theme.userCard.dealer : theme.userCard;
+const selector = ({ theme, userRole }: Opts) =>
+  userRole === Role.DEALER ? theme.userCard.dealer : theme.userCard;
 
-export const StyleCard = styled.div<{ role: Role }>`
+export const StyleCard = styled.div<Props>`
   --bg: ${(props) => selector(props).bg};
   --fg: ${(props) => selector(props).fg};
 
@@ -36,6 +38,7 @@ export const StyledBodyContainer = styled.div`
   align-items: flex-start;
   padding: 10px;
   overflow: hidden;
+  mask: linear-gradient(to left, #0000, #fff 10px);
 `;
 export const StyledControlContainer = styled.div`
   display: flex;
@@ -69,10 +72,15 @@ export const StyledJobPosition = styled.div`
   color: ${({ theme }) => theme.userCard.jobPosition};
 `;
 
-export const StyleStopOutlined = styled(StopOutlined)`
-  font-size: 47px;
-  cursor: pointer;
-  transition: all 300ms;
+export const StyledButton = styled(AntButton)`
+  --size: 47px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  height: var(--size);
+  width: var(--size);
 
   & {
     color: ${({ theme }) => theme.userCard.deleteBtn.normal};
@@ -83,4 +91,8 @@ export const StyleStopOutlined = styled(StopOutlined)`
   &:active {
     color: ${({ theme }) => theme.userCard.deleteBtn.active};
   }
+`;
+
+export const StyleStopOutlined = styled(StopOutlined)`
+  font-size: var(--size);
 `;
