@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useGameService } from '@client/providers/game-service';
+import { PageLobby } from '../lobby/lobby';
 
 export const PageGameLobbyDemo: React.FC = observer(() => {
   const { gameState, socketState } = useGameService();
@@ -12,7 +13,8 @@ export const PageGameLobbyDemo: React.FC = observer(() => {
       <h4>Game ID: {gameState.id}</h4>
       {socketState.isLoading && <div>Loading...</div>}
       {socketState.isFail && <div>{socketState.failMessage}</div>}
-      <pre>{JSON.stringify(gameState, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(gameState, null, 2)}</pre> */}
+      <PageLobby />
     </div>
   );
 });

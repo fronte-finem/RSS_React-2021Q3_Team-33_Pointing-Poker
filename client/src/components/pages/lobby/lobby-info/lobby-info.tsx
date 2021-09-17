@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { UserCard } from '@client/components/shared/user-card/user-card';
 import { Button } from '@client/components/shared/button/button';
+import { useGameService } from '@client/providers/game-service';
 import { StyleLobbyTitle } from '../lobby-styles';
 import {
   InfoMaster,
@@ -15,9 +16,13 @@ import { LobbyEditTitleModal } from '../lobby-modal';
 import { LobbyCopyLink } from './lobby-copy-link';
 import { LobbyInfoControl } from './lobby-info-control';
 
-const isMaster = true;
-
 export const LobbyInfoSection: React.FC = () => {
+  const { gameState } = useGameService();
+  const thisUser = gameState.users.find(
+    (user) => user.id === gameState.selfUserId
+  );
+  const isDealer = thisUser?.role === 'dealer';
+
   const [lobbyTitle, setLobbyTitle] = useState(
     'Spring 23 planning (issues 13, 533, 5623, 3252, 6623, ...)'
   );
@@ -42,7 +47,7 @@ export const LobbyInfoSection: React.FC = () => {
             }}>
             {lobbyTitle}
           </StyleLobbyTitle>
-          {isMaster ? <EditTitleButton setEditModal={setIsEditModal} /> : ''}
+          {isDealer ? <EditTitleButton setEditModal={setIsEditModal} /> : ''}
           <LobbyEditTitleModal
             setEditModal={setIsEditModal}
             lobbyTitle={lobbyTitle}
@@ -64,12 +69,12 @@ export const LobbyInfoSection: React.FC = () => {
           />
         </StyleLobbyMaster>
       </InfoMaster>
-      {isMaster ? (
+      {isDealer ? (
         <LobbyCopyLink lobbyLink="http://ourgame.com/12345qwe" />
       ) : (
         ''
       )}
-      {isMaster ? (
+      {isDealer ? (
         <LobbyInfoControl />
       ) : (
         <StyleLobbyControl>
