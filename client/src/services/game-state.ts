@@ -1,6 +1,9 @@
 import { runInAction } from 'mobx';
-import { GameSettings } from '@shared/api-types/game-settings';
-import { User, UsersList, UserToJoin } from '@shared/api-types/user';
+import {
+  GameSettings,
+  getDefaultGameSettings,
+} from '@shared/api-types/game-settings';
+import { Role, User, UsersList, UserToJoin } from '@shared/api-types/user';
 import {
   ChatMessage,
   ChatMessagesList,
@@ -19,7 +22,6 @@ import { darkTheme, lightTheme } from '@client/themes/themes';
 
 export const enum GamePage {
   ENTRY = 'entry',
-  SETTINGS = 'settings',
   LOBBY = 'lobby',
   GAME = 'game',
   RESULTS = 'results',
@@ -45,7 +47,7 @@ export interface GameState {
   users: UsersList;
   messages: ChatMessagesList;
   issues: IssuesList;
-  settings: null | GameSettings;
+  settings: GameSettings;
   results: GameResults;
   allowUserToJoin: null | AllowUserToJoin;
   kickedReason: null | string;
@@ -68,7 +70,7 @@ export const getDefaultGameState = (): GameState => ({
   users: [],
   messages: [],
   issues: [],
-  settings: null,
+  settings: getDefaultGameSettings(),
   results: [],
   allowUserToJoin: null,
   kickedReason: null,
@@ -83,6 +85,10 @@ export const getDefaultGameState = (): GameState => ({
 
 export class GameStateActions {
   constructor(private gameState: GameState) {}
+
+  public getDealer(): User | undefined {
+    return this.gameState.users.find((user) => user.role === Role.DEALER);
+  }
 
   public toggleTheme(colorTheme: ColorTheme) {
     runInAction(() => {
@@ -133,7 +139,7 @@ export class GameStateActions {
 
   public initDealer(initDealer: InitDealer, selfUserId: string) {
     runInAction(() => {
-      this.gameState.page = GamePage.SETTINGS;
+      this.gameState.page = GamePage.LOBBY;
       this.gameState.id = initDealer.gameId;
       this.gameState.title = initDealer.gameTitle;
       this.gameState.selfUserId = selfUserId;
