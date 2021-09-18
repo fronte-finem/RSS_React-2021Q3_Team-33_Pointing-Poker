@@ -1,5 +1,4 @@
 import { DefaultTheme } from 'styled-components';
-import { sizeTheme } from '@client/themes/size-theme';
 import {
   darkDefaultTheme,
   lightDefaultTheme,
@@ -40,9 +39,12 @@ import {
   darkIssueCardTheme,
   lightIssueCardTheme,
 } from '@client/themes/issue-card-themes';
+import {
+  darkContentTheme,
+  lightContentTheme,
+} from '@client/themes/content-themes';
 
 export const lightTheme: DefaultTheme = {
-  ...sizeTheme,
   ...lightDefaultTheme,
   link: lightLinkTheme,
   toggle: lightToggleTheme,
@@ -57,10 +59,10 @@ export const lightTheme: DefaultTheme = {
   chat: { message: lightChatMessageTheme },
   header: lightHeaderTheme,
   footer: lightFooterTheme,
+  content: lightContentTheme,
 };
 
 export const darkTheme: DefaultTheme = {
-  ...sizeTheme,
   ...darkDefaultTheme,
   link: darkLinkTheme,
   toggle: darkToggleTheme,
@@ -75,4 +77,5 @@ export const darkTheme: DefaultTheme = {
   chat: { message: darkChatMessageTheme },
   header: darkHeaderTheme,
   footer: darkFooterTheme,
+  content: darkContentTheme,
 };

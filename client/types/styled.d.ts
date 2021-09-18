@@ -1,11 +1,5 @@
 import 'styled-components';
 
-export interface SizeTheme {
-  width: {
-    max: string;
-  };
-}
-
 export interface InteractiveColors {
   normal: string;
   hover: string;
@@ -77,8 +71,10 @@ export interface FooterTheme extends ForeGroundBackGround {
   };
 }
 
+export interface ContentTheme extends ForeGroundBackGround {}
+
 declare module 'styled-components' {
-  export interface DefaultTheme extends SizeTheme, ForeGroundBackGround {
+  export interface DefaultTheme extends ForeGroundBackGround {
     link: InteractiveColors;
     button: ButtonTheme;
     toggle: ToggleTheme;
@@ -92,5 +88,6 @@ declare module 'styled-components' {
     chat: ChatTheme;
     header: HeaderTheme;
     footer: FooterTheme;
+    content: ContentTheme;
   }
 }
