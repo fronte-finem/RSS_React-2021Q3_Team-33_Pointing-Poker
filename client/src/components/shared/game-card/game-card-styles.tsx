@@ -3,9 +3,6 @@ import styled from 'styled-components';
 export const StyledGameCard = styled.div`
   width: 100px;
   height: 161px;
-  background-color: ${(props) => props.theme.bg};
-  width: 130px;
-  height: 210px;
   color: ${({ theme }) => theme.gameCard.fg};
   background-color: ${({ theme }) => theme.gameCard.bg};
   border-radius: 20px;
@@ -26,13 +23,11 @@ export const StyledGameCard = styled.div`
   }
 `;
 
-export const StyledCardScore = styled.p`
-  font-size: 70px;
-  margin: 0;
+export const StyledCardScore = styled.div`
+  font-size: 50px;
 `;
 
-export const StyledCardScoreType = styled.p`
+export const StyledCardScoreType = styled.div`
   position: absolute;
-  font-size: 20px;
-  margin: 0;
+  font-size: 16px;
 `;

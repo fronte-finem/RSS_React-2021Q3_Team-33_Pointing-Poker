@@ -1,9 +1,9 @@
 import React from 'react';
-import { ModalFuncProps } from 'antd';
+import { ModalProps } from 'antd';
 import { Button } from '@client/components/shared/button/button';
 import { StyledModal } from './modal.styles';
 
-export const Modal: React.FC<ModalFuncProps> = ({ children, ...props }) => {
+export const Modal: React.FC<ModalProps> = ({ children, ...props }) => {
   const { title, onOk, onCancel, okText, cancelText } = props;
 
   const footer = [

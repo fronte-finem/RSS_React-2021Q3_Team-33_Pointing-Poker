@@ -21,6 +21,7 @@ export const StyledModal = styled(AntModal)`
     border: 0;
     background-color: ${({ theme }) => theme.modal.bg};
     padding: 0;
+    text-transform: capitalize;
   }
 
   .ant-modal-title {

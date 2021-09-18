@@ -13,7 +13,7 @@ export const StyleCard = styled.div<Props>`
   --bg: ${(props) => selector(props).bg};
   --fg: ${(props) => selector(props).fg};
 
-  width: 300px;
+  width: var(--user-card-width);
 
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -34,6 +34,7 @@ export const StyledBodyContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  gap: 5px;
   padding: 10px;
   overflow: hidden;
   mask: linear-gradient(to left, #0000, #fff 10px);
@@ -46,7 +47,7 @@ export const StyledControlContainer = styled.div`
 `;
 
 export const StyleCardOwner = styled.div`
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-roboto);
   font-weight: bold;
   font-size: 14px;
   line-height: 16px;
@@ -55,7 +56,7 @@ export const StyleCardOwner = styled.div`
 `;
 
 export const StyledUsername = styled.div`
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-roboto);
   font-weight: 300;
   font-size: 28px;
   line-height: 30px;
@@ -63,7 +64,7 @@ export const StyledUsername = styled.div`
 `;
 
 export const StyledJobPosition = styled.div`
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-roboto);
   font-weight: 300;
   font-size: 14px;
   line-height: 12px;

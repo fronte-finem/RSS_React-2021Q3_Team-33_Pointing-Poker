@@ -19,8 +19,14 @@ import {
 const getFullName = ({ firstName, lastName }: UserBase) =>
   [firstName, lastName].filter((name) => Boolean(name)).join(' ');
 
-export const UserCard: React.FC<User> = observer((user) => {
+interface UserCardProps {
+  user?: User | null;
+}
+
+export const UserCard: React.FC<UserCardProps> = observer(({ user }) => {
   const { gameState, gameSocketActions } = useGameService();
+
+  if (!user) return null;
   const { id, firstName, lastName, avatar, jobPosition } = user;
   const username = getFullName({ firstName, lastName });
 

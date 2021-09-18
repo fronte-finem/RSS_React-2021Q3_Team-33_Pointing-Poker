@@ -29,15 +29,15 @@ export const StyledMessageWrapper = styled.div<Props>`
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px 0 0 20px;
 
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-roboto);
 `;
 
 export const StyledMessage = styled.div`
   padding: 10px 20px;
 
   font-weight: 300;
-  font-size: 48px;
-  line-height: 56px;
+  font-size: 28px;
+  line-height: 30px;
   text-align: left;
 `;
 
@@ -47,7 +47,7 @@ export const StyledDateTime = styled.time`
 
   color: ${({ theme }) => theme.chat.message.dateTime};
 
-  font-size: 20px;
+  font-size: 14px;
   font-style: italic;
   text-align: right;
 `;

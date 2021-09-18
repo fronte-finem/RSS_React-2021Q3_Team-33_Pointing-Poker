@@ -5,7 +5,7 @@ import {
   issueCardControlsStyle,
   issueCardInfoStyle,
   issueCardStyle,
-} from '@client/components/shared/issue/styles';
+} from '@client/components/shared/issue/issue-styles';
 
 type Props = { isCurrent: boolean };
 type Opts = Props & { theme: DefaultTheme };
@@ -30,7 +30,6 @@ export const StyledIssueCardControls = styled.div`
 export const StyledIssueTitle = styled.div`
   margin: 0;
   padding: 0;
-  font-family: 'Roboto', sans-serif;
   font-weight: 200;
   font-size: 28px;
   line-height: 30px;
@@ -41,8 +40,8 @@ export const StyledMark = styled.div`
   position: absolute;
   top: 5px;
   left: 20px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: bold;
+  font-family: var(--font-ruda);
+  font-weight: lighter;
   font-size: 14px;
   line-height: 16px;
   text-transform: uppercase;
@@ -50,9 +49,8 @@ export const StyledMark = styled.div`
 
 export const StyledIssuePriority = styled.div`
   position: absolute;
-  bottom: 10px;
+  bottom: 5px;
   left: 20px;
-  font-family: 'Roboto', sans-serif;
   font-weight: 300;
   font-size: 12px;
   line-height: 12px;

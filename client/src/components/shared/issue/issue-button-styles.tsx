@@ -4,7 +4,7 @@ import {
   issueCardControlsStyle,
   issueCardInfoStyle,
   issueCardStyle,
-} from '@client/components/shared/issue/styles';
+} from '@client/components/shared/issue/issue-styles';
 
 const selector = ({ theme }: { theme: DefaultTheme }) =>
   theme.issueCard.button.default;
@@ -43,10 +43,9 @@ export const StyledIssueButtonCardControls = styled.div`
 `;
 
 export const StyleIssueTitle = styled.div`
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-roboto);
   font-weight: 200;
-  font-size: 28px;
-  line-height: 30px;
+  font-size: 24px;
 `;
 
 export const StyleAddIcon = styled(PlusOutlined)`

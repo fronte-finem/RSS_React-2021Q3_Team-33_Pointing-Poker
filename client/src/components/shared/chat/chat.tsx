@@ -22,7 +22,7 @@ export const Chat: React.FC = observer(() => {
               <StyledMessage>{message}</StyledMessage>
               <StyledDateTime>{new Date(date).toLocaleString()}</StyledDateTime>
             </StyledMessageWrapper>
-            <UserCard {...maybeUser} />
+            <UserCard user={maybeUser} />
           </>
         );
       })}
