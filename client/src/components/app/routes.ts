@@ -7,7 +7,8 @@ import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
 import { PageMessageDemo } from '@client/components/pages/demo/chat';
 import { PageGameRouterDemo } from '@client/components/pages/demo/game-router';
 import { PageComponentsDemo } from '@client/components/pages/demo/components';
-import { PageLobby } from '../pages/lobby/lobby';
+import { PageLobbyDemo } from '@client/components/pages/demo/page-lobby';
+import { PageGameRouter } from '@client/components/pages/game-router/game-router';
 
 interface RouteConf {
   path: string;
@@ -19,7 +20,12 @@ export const routes: RouteConf[] = [
   {
     path: '/',
     name: 'Home',
-    component: undefined,
+    component: PageGameRouter,
+  },
+  {
+    path: '/demo/lobby',
+    name: 'Lobby demo (🚧 mutate game-state 🚧)',
+    component: PageLobbyDemo,
   },
   {
     path: '/demo/game-router',
@@ -48,22 +54,17 @@ export const routes: RouteConf[] = [
   },
   {
     path: '/demo/issue',
-    name: 'Issue',
+    name: 'Issue (🚧 mutate game-state 🚧)',
     component: PageIssueDemo,
   },
   {
     path: '/demo/user-card',
-    name: 'User-Card',
+    name: 'User-Card (🚧 mutate game-state 🚧)',
     component: PageUserCardDemo,
   },
   {
     path: '/demo/chat',
-    name: 'Chat',
+    name: 'Chat (🚧 mutate game-state 🚧)',
     component: PageMessageDemo,
-  },
-  {
-    path: '/lobby',
-    name: 'Lobby',
-    component: PageLobby,
   },
 ];
