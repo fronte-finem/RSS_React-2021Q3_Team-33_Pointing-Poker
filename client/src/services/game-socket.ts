@@ -13,12 +13,14 @@ import { Issue, IssueBase } from '@shared/api-types/issue';
 import { CardScore, GameSettings } from '@shared/api-types/game-settings';
 
 export interface SocketState {
+  isConnected: boolean;
   isLoading: boolean;
   isFail: boolean;
   failMessage: string;
 }
 
-export const getDefaultSocketState = () => ({
+export const getDefaultSocketState = (): SocketState => ({
+  isConnected: false,
   isLoading: false,
   isFail: false,
   failMessage: '',
@@ -52,6 +54,7 @@ export class GameSocketActions {
 
   private failNoConnection() {
     runInAction(() => {
+      this.socketState.isConnected = false;
       this.socketState.isFail = true;
       this.socketState.failMessage = 'No connection';
     });
@@ -120,6 +123,7 @@ export class GameSocketActions {
   @action public async createGame(dealerToJoin: DealerToJoin) {
     this.beforeAsync();
     this.socket = await connect();
+    this.socketState.isConnected = true;
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.CREATE_GAME,
       dealerToJoin,
@@ -141,6 +145,7 @@ export class GameSocketActions {
 
   @action public disconnect() {
     this.socket?.disconnect();
+    this.socketState.isConnected = false;
     this.gameStateActions.reset();
   }
 
@@ -161,6 +166,7 @@ export class GameSocketActions {
   @action public async joinGame(gameId: string) {
     this.beforeAsync();
     this.socket = await connect();
+    this.socketState.isConnected = true;
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.JOIN_GAME,
       gameId,

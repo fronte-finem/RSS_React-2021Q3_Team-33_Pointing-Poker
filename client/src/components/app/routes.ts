@@ -23,6 +23,11 @@ export const routes: RouteConf[] = [
     component: PageGameRouter,
   },
   {
+    path: '/join/:id',
+    name: 'Home with id',
+    component: PageGameRouter,
+  },
+  {
     path: '/demo/lobby',
     name: 'Lobby demo (🚧 mutate game-state 🚧)',
     component: PageLobbyDemo,
