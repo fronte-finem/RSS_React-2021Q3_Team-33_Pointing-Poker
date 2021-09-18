@@ -45,9 +45,9 @@ export const PageUserCardDemo: React.FC = observer(() => {
 
   return (
     <DemoGrid>
-      {users.map((data) => (
-        <div key={data.firstName + data.lastName}>
-          <UserCard {...data} />
+      {users.map((user) => (
+        <div key={user.id}>
+          <UserCard user={user} />
         </div>
       ))}
     </DemoGrid>
