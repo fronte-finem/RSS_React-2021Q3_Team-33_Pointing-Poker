@@ -107,13 +107,32 @@ export class GameStateActions {
 
   public reset() {
     runInAction(() => {
-      this.gameState = getDefaultGameState();
+      const defaultGameState = getDefaultGameState();
+      this.gameState.page = GamePage.ENTRY;
+      this.gameState.id = defaultGameState.id;
+      this.gameState.title = defaultGameState.title;
+      this.gameState.selfUserId = defaultGameState.selfUserId;
+      this.gameState.isDealer = defaultGameState.isDealer;
+      this.gameState.users = defaultGameState.users;
+      this.gameState.messages = defaultGameState.messages;
+      this.gameState.issues = defaultGameState.issues;
+      this.gameState.settings = defaultGameState.settings;
+      this.gameState.results = defaultGameState.results;
+      this.gameState.allowUserToJoin = defaultGameState.allowUserToJoin;
+      this.gameState.kickedReason = defaultGameState.kickedReason;
+      this.gameState.gameRun = defaultGameState.gameRun;
+      this.gameState.roundRun = defaultGameState.roundRun;
+      this.gameState.roundIssueId = defaultGameState.roundIssueId;
+      this.gameState.roundProgress = defaultGameState.roundProgress;
+      this.gameState.kickVoteRun = defaultGameState.kickVoteRun;
+      this.gameState.kickVoteInit = defaultGameState.kickVoteInit;
+      this.gameState.kickResult = defaultGameState.kickResult;
     });
   }
 
   public setKicked(message: string) {
     runInAction(() => {
-      this.gameState = getDefaultGameState();
+      this.reset();
       this.gameState.kickedReason = message;
     });
   }
