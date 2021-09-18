@@ -15,11 +15,11 @@ export const StyleLobbyCards = styled.div`
 export const StyleLobbyCardsText = styled.p`
   margin: 0;
   padding: 0;
-  font-family: 'Ruda';
+  font-family: var(--font-ruda);
   font-weight: bold;
   font-size: 24px;
   line-height: 30px;
-  color: ${(props) => props.theme.fontColor};
+  color: ${(props) => props.theme.fg};
 `;
 
 export const StyleLobbyCardsWrapper = styled(Row)`

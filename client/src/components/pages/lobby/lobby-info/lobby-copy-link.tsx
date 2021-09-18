@@ -16,7 +16,7 @@ export const LobbyCopyLink: React.FC<LobbyLink> = (props) => {
   const { lobbyLink } = props;
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(lobbyLink);
+    navigator.clipboard.writeText(lobbyLink).then(null);
   };
 
   return (

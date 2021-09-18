@@ -1,46 +1,58 @@
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Input } from '@client/components/shared/input/input';
 import { Modal } from '@client/components/shared/modal/modal';
-import React, { ChangeEvent, useState } from 'react';
+import { useGameService } from '@client/providers/game-service';
 
 interface LobbyEditTitleModalProps {
-  setEditModal: (isShow: boolean) => void;
-  lobbyTitle: string;
-  setLobbyTitle: (title: string) => void;
-  visible: boolean;
+  isVisible: boolean;
+  setIsVisible: (isShow: boolean) => void;
 }
 
-export const LobbyEditTitleModal: React.FC<LobbyEditTitleModalProps> = (
-  props
-) => {
-  const { setEditModal, lobbyTitle, setLobbyTitle, visible } = props;
-  const [titleValue, setTitleValue] = useState(lobbyTitle);
+export const LobbyEditTitleModal: React.FC<LobbyEditTitleModalProps> = observer(
+  ({ isVisible, setIsVisible }) => {
+    const { gameState, gameSocketActions, socketState } = useGameService();
+    const [titleValue, setTitleValue] = useState(gameState.title);
 
-  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setTitleValue(value);
-  };
+    useEffect(() => {
+      setTitleValue(gameState.title);
+    }, [gameState.title]);
 
-  const takeTitleChanges = () => {
-    setLobbyTitle(titleValue);
-    setEditModal(false);
-  };
+    const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      setTitleValue(value);
+    };
 
-  const cancelTitleChanges = () => {
-    setTitleValue(lobbyTitle);
-    setEditModal(false);
-  };
+    const takeTitleChanges = async () => {
+      await gameSocketActions.changeGameTitle(titleValue);
+      if (!socketState.isFail) setIsVisible(false);
+    };
 
-  return (
-    <Modal
-      content={
+    const cancelTitleChanges = () => {
+      if (socketState.isLoading) return;
+      setIsVisible(false);
+    };
+
+    const form = (
+      <>
         <Input type="text" value={titleValue} onChange={handleTitleChange} />
-      }
-      title="edit modal"
-      okText="Edit"
-      onOk={takeTitleChanges}
-      onCancel={cancelTitleChanges}
-      cancelText="Cancel"
-      visible={visible}
-    />
-  );
-};
+        {socketState.isFail ? <div>socketState.failMessage</div> : null}
+      </>
+    );
+
+    return (
+      <Modal
+        title="edit game title"
+        okText="Edit"
+        okButtonProps={{ disabled: !titleValue }}
+        onOk={takeTitleChanges}
+        cancelText="Cancel"
+        cancelButtonProps={{ disabled: socketState.isLoading }}
+        onCancel={cancelTitleChanges}
+        visible={isVisible}
+        confirmLoading={socketState.isLoading}>
+        {form}
+      </Modal>
+    );
+  }
+);
