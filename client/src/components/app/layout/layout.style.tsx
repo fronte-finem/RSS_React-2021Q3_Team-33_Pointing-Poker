@@ -7,7 +7,16 @@ export const StyledLayout = styled(AntdLayout)`
 `;
 
 export const LayoutContainer = styled.div`
-  max-width: ${({ theme }) => theme.width.max};
+  max-width: var(--page-max-width);
   width: 100%;
   margin: 0 auto;
+`;
+
+export const Content = styled(AntdLayout.Content)`
+  padding: 20px;
+  background: ${(props) => props.theme.content.bg};
+`;
+
+export const ContentLayoutContainer = styled(LayoutContainer)`
+  background: ${(props) => props.theme.content.fg};
 `;
