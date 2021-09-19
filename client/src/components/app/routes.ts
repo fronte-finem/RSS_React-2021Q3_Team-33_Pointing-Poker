@@ -4,7 +4,7 @@ import { PageGameCardDemo } from '@client/components/pages/demo/game-card';
 import { PageAvatarDemo } from '@client/components/pages/demo/avatar';
 import { PageIssueDemo } from '@client/components/pages/demo/issue';
 import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
-import { PageMessageDemo } from '@client/components/pages/demo/chat';
+import { PageChatDemo } from '@client/components/pages/demo/chat';
 import { PageGameRouterDemo } from '@client/components/pages/demo/game-router';
 import { PageComponentsDemo } from '@client/components/pages/demo/components';
 import { PageLobbyDemo } from '@client/components/pages/demo/page-lobby';
@@ -70,6 +70,6 @@ export const routes: RouteConf[] = [
   {
     path: '/demo/chat',
     name: 'Chat (🚧 mutate game-state 🚧)',
-    component: PageMessageDemo,
+    component: PageChatDemo,
   },
 ];
