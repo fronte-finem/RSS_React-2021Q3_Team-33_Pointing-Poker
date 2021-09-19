@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { Layout } from 'antd';
+import { Button as AntButton, Layout } from 'antd';
 import { LayoutContainer } from '@client/components/app/layout/layout.style';
+import { MessageOutlined } from '@ant-design/icons';
 
 export const StyledHeader = styled(Layout.Header)`
   height: 80px;
@@ -39,4 +40,57 @@ export const StyledLogoSvg = styled.svg`
   .rhombus {
     fill: ${({ theme }) => theme.header.logo.rhombus};
   }
+`;
+
+export const StyledControlsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+
+export const StyledChatButton = styled(AntButton)`
+  --size: 40px;
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  height: var(--size);
+  width: var(--size);
+
+  &,
+  &:focus {
+    color: ${({ theme }) => theme.header.btn.chat.normal};
+  }
+  &:hover {
+    color: ${({ theme }) => theme.header.btn.chat.hover};
+  }
+  &:active {
+    color: ${({ theme }) => theme.header.btn.chat.active};
+  }
+`;
+
+export const StyledChatButtonIcon = styled(MessageOutlined)`
+  font-size: var(--size);
+`;
+
+export const StyledChatButtonNum = styled.div`
+  --size: 30px;
+
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  height: var(--size);
+  width: var(--size);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50%;
+  background-color: #fff;
+
+  font-size: 20px;
+  color: #000;
 `;
