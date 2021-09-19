@@ -1,5 +1,5 @@
 import { Role, User, UserBase, UsersList } from '@shared/api-types/user';
-import { ApiFailMessage } from '@server/api-fail-message';
+import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { PointingPokerServerSocket } from 'types/server-socket';
 import { KickResult, KickVoteInit } from '@shared/api-types/chat';
 

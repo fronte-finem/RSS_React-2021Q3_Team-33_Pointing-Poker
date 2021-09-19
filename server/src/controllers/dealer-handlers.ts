@@ -1,17 +1,16 @@
 import { GameService } from '@server/services/game-service';
-import { ApiFailMessage } from '@server/api-fail-message';
+import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { ApiServerEvents } from '@shared/api-types/api-events';
 import { GAME_ROOMS } from '@server/store/game-rooms';
 import { PointingPokerServerSocket } from 'types/server-socket';
 import { AckCallback, setFail, setOk } from '@shared/api-types/api-events-maps';
 import { GameSettings } from '@shared/api-types/game-settings';
-
-const TITLE_MAX_LENGTH = 250;
+import { GAME_TITLE_MAX_LENGTH } from '@shared/api-validation/api-constants';
 
 const validate = (title: string) => {
   if (!title) return ApiFailMessage.GAME_NEED_TITLE;
-  if (title.length > TITLE_MAX_LENGTH)
-    return `${ApiFailMessage.GAME_TITLE_TO_LONG}${TITLE_MAX_LENGTH}`;
+  if (title.length > GAME_TITLE_MAX_LENGTH)
+    return `${ApiFailMessage.GAME_TITLE_TO_LONG}${GAME_TITLE_MAX_LENGTH}`;
   return null;
 };
 

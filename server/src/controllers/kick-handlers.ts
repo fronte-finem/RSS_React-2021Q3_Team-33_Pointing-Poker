@@ -1,6 +1,6 @@
 import { PointingPokerServerSocket } from 'types/server-socket';
 import { GameService } from '@server/services/game-service';
-import { ApiFailMessage } from '@server/api-fail-message';
+import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { ApiServerEvents } from '@shared/api-types/api-events';
 import { AckCallback, setFail, setOk } from '@shared/api-types/api-events-maps';
 
