@@ -1,4 +1,4 @@
-import { runInAction } from 'mobx';
+import { action, computed, runInAction } from 'mobx';
 import {
   GameSettings,
   getDefaultGameSettings,
@@ -40,6 +40,8 @@ export interface AllowUserToJoin {
 export interface GameState {
   page: GamePage;
   theme: DefaultTheme;
+  chatIsOpen: boolean;
+  chatOldMessages: number;
   id: string;
   title: string;
   selfUserId: string;
@@ -63,6 +65,8 @@ export interface GameState {
 export const getDefaultGameState = (): GameState => ({
   page: GamePage.ENTRY,
   theme: lightTheme,
+  chatIsOpen: false,
+  chatOldMessages: 0,
   id: '',
   title: '',
   selfUserId: '',
@@ -90,6 +94,28 @@ export class GameStateActions {
     return this.gameState.users.find((user) => user.role === Role.DEALER);
   }
 
+  @computed public get messagesCount(): number {
+    return this.gameState.messages.length;
+  }
+
+  @computed public get newMessagesCount(): number {
+    if (this.gameState.chatIsOpen) return 0;
+    return this.gameState.messages.length - this.gameState.chatOldMessages;
+  }
+
+  @action public openChat() {
+    runInAction(() => {
+      this.gameState.chatIsOpen = true;
+    });
+  }
+
+  @action public closeChat() {
+    runInAction(() => {
+      this.gameState.chatIsOpen = false;
+      this.gameState.chatOldMessages = this.gameState.messages.length;
+    });
+  }
+
   public toggleTheme(colorTheme: ColorTheme) {
     runInAction(() => {
       switch (colorTheme) {
@@ -109,6 +135,8 @@ export class GameStateActions {
     runInAction(() => {
       const defaultGameState = getDefaultGameState();
       this.gameState.page = GamePage.ENTRY;
+      this.gameState.chatIsOpen = defaultGameState.chatIsOpen;
+      this.gameState.chatOldMessages = defaultGameState.chatOldMessages;
       this.gameState.id = defaultGameState.id;
       this.gameState.title = defaultGameState.title;
       this.gameState.selfUserId = defaultGameState.selfUserId;
