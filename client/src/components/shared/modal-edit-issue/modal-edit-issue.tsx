@@ -1,6 +1,7 @@
 import { StyledText } from '@client/components/pages/main-page/components/connect-to-lobby/connect-to-lobby-styleds';
 import { Modal } from '@client/components/shared/modal/modal';
-import React from 'react';
+import { SelectValue } from 'antd/lib/select';
+import React, { useState } from 'react';
 import {
   StyledInput,
   StyledInputWrapper,
@@ -18,7 +19,18 @@ interface IProps {
 }
 
 export const ModalEditIssue: React.FC<IProps> = (props) => {
-  const { title, visible, onOK, onCancel, link, priority } = props;
+  const {
+    title = '',
+    link = '',
+    priority = '',
+    visible,
+    onOK,
+    onCancel,
+  } = props;
+
+  const [titleField, setTitleField] = useState(title);
+  const [linkField, setLinkField] = useState(link);
+  const [priorityField, setPriorityField] = useState(priority);
 
   const options = [
     { value: 'Low', label: 'Low' },
@@ -26,10 +38,15 @@ export const ModalEditIssue: React.FC<IProps> = (props) => {
     { value: 'Hight', label: 'Hight' },
   ];
 
-
-  const onchange = (e: React.ChangeEvent<HTMLInputElement>)=>{
-    console.log(e.target.value)
-  }
+  const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitleField(e.target.value);
+  };
+  const onChangeLink = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLinkField(e.target.value);
+  };
+  const onChangePriority = (e: React.SetStateAction<SelectValue>) => {
+    setPriorityField(e as string);
+  };
 
   return (
     <Modal
@@ -43,17 +60,18 @@ export const ModalEditIssue: React.FC<IProps> = (props) => {
         <StyledWrapper>
           <StyledInputWrapper>
             <StyledText>Title:</StyledText>
-            <StyledInput value={title} />
+            <StyledInput value={titleField} onChange={onChangeTitle} />
           </StyledInputWrapper>
           <StyledInputWrapper>
             <StyledText>Link:</StyledText>
-            <StyledInput value={link} onChange={onchange} />
+            <StyledInput value={linkField} onChange={onChangeLink} />
           </StyledInputWrapper>
           <StyledInputWrapper>
             <StyledText>Priority:</StyledText>
             <StyledSelect
-              defaultValue={!title ? options[0].value : priority}
+              defaultValue={!title ? options[0].value : priorityField}
               options={options}
+              onChange={onChangePriority}
             />
           </StyledInputWrapper>
         </StyledWrapper>

@@ -34,3 +34,13 @@ export const StyledObserver = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const StyledErrorLabel = styled.p`
+  top: 0px;
+  right: -20px;
+  transform: translateX(100%);
+  position: absolute;
+  font-size: 24px;
+  line-height: 28px;
+  color: red;
+`;
