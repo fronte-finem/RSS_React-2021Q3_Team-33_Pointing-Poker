@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { DemoGrid } from '@client/components/pages/demo/demo-styles';
 import { Chat } from '@client/components/shared/chat/chat';
 import { Role, UsersList } from '@shared/api-types/user';
 import { ChatMessagesList } from '@shared/api-types/chat';
 import { useGameService } from '@client/providers/game-service';
 import { observer } from 'mobx-react-lite';
+import { repeat } from '@shared/utils/array';
 
 const users: UsersList = [
   {
@@ -49,7 +49,7 @@ const messages: ChatMessagesList = [
   },
 ];
 
-export const PageMessageDemo = observer(() => {
+export const PageChatDemo = observer(() => {
   const { gameStateActions } = useGameService();
 
   useEffect(() => {
@@ -57,16 +57,16 @@ export const PageMessageDemo = observer(() => {
       {
         gameId: '123',
         gameTitle: 'Awesome',
-        users,
-        messages,
+        users: repeat(users, 5),
+        messages: repeat(messages, 5),
       },
       users[1].id
     );
   }, []);
 
   return (
-    <DemoGrid>
+    <div style={{ padding: 20 }}>
       <Chat />
-    </DemoGrid>
+    </div>
   );
 });
