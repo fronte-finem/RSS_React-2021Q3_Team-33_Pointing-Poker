@@ -7,9 +7,10 @@ import {
   StyledChat,
   StyledDateTime,
   StyledMessageWrapper,
+  StyledPost,
 } from './chat.styles';
 
-export const Chat: React.FC = observer(() => {
+export const Chat = observer(() => {
   const { gameState } = useGameService();
   return (
     <StyledChat>
@@ -17,13 +18,15 @@ export const Chat: React.FC = observer(() => {
         const maybeUser = gameState.users.find((user) => user.id === userId);
         if (!maybeUser) return null;
         return (
-          <>
+          <StyledPost key={date}>
+            <UserCard user={maybeUser} />
             <StyledMessageWrapper userRole={maybeUser.role}>
               <StyledMessage>{message}</StyledMessage>
-              <StyledDateTime>{new Date(date).toLocaleString()}</StyledDateTime>
+              <StyledDateTime>
+                {new Date(date).toLocaleTimeString()}
+              </StyledDateTime>
             </StyledMessageWrapper>
-            <UserCard user={maybeUser} />
-          </>
+          </StyledPost>
         );
       })}
     </StyledChat>

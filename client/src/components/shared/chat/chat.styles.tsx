@@ -8,26 +8,28 @@ const selector = ({ theme, userRole }: Opts) =>
   userRole === Role.DEALER ? theme.userCard.dealer : theme.userCard;
 
 export const StyledChat = styled.div`
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: flex-start;
-  row-gap: 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
 
-  max-width: 1140px;
-  width: 100%;
+export const StyledPost = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 5px;
 `;
 
 export const StyledMessageWrapper = styled.div<Props>`
   --bg: ${(props) => selector(props).bg};
   --fg: ${(props) => selector(props).fg};
 
-  max-width: 640px;
-  width: 100%;
+  flex: 1 1 300px;
 
   color: var(--fg);
   background: var(--bg);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 20px 0 0 20px;
+  border-radius: 0 20px 0 20px;
 
   font-family: var(--font-roboto);
 `;
@@ -39,6 +41,8 @@ export const StyledMessage = styled.div`
   font-size: 28px;
   line-height: 30px;
   text-align: left;
+
+  word-break: break-all;
 `;
 
 export const StyledDateTime = styled.time`
