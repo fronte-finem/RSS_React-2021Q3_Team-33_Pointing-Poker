@@ -1,6 +1,6 @@
 import { GameSettings } from './game-settings';
 import { UsersList } from './user';
-import { GameResult, IssuesList } from './issue';
+import { GameResults, IssuesList } from './issue';
 import { ChatMessagesList } from './chat';
 
 /**
@@ -11,6 +11,7 @@ export interface InitDealer {
    * @format uuid
    */
   gameId: string;
+  gameTitle: string;
   gameSettings: GameSettings;
   users: UsersList;
 }
@@ -40,5 +41,5 @@ export interface InitUser {
   /**
    * Если игра еще не началась - `undefined`, результаты пройденных раундов.
    */
-  gameResult?: GameResult;
+  gameResult?: GameResults;
 }

@@ -11,6 +11,8 @@ import { KickPlayer } from '../pages/demo/kick-player';
 import { KickPlayerVoting } from '../pages/demo/kick-player-voting';
 import { EditIssue } from '../pages/demo/edit-issue';
 import { CreateIssue } from '../pages/demo/create-issue';
+import { PageGameRouterDemo } from '@client/components/pages/demo/game-router';
+import { PageLobby } from '../pages/lobby/lobby';
 
 interface RouteConf {
   path: string;
@@ -23,6 +25,11 @@ export const routes: RouteConf[] = [
     path: '/',
     name: 'Home',
     component: undefined,
+  },
+  {
+    path: '/demo/game-router',
+    name: 'Game Router Demo',
+    component: PageGameRouterDemo,
   },
   {
     path: '/example',
@@ -83,5 +90,10 @@ export const routes: RouteConf[] = [
     path: '/demo/create-issue',
     name: 'Create Issue',
     component: CreateIssue,
+  },
+  {
+    path: '/lobby',
+    name: 'Lobby',
+    component: PageLobby,
   },
 ];

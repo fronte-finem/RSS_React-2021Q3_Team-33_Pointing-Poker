@@ -11,16 +11,25 @@
     "allowJs": true,
     "skipLibCheck": false,
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "useDefineForClassFields": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
     "baseUrl": "./",
     "paths": {
+      "types/*": ["shared/types/*", "client/types/*", "server/types/*"],
+      "@shared/*": ["shared/*"],
       "@client/*": ["client/src/*"],
-      "@server/*": ["server/src/*"],
-      "@shared/*": ["shared/*"]
+      "@server/*": ["server/src/*"]
     }
   },
-  "include": ["./client", "./server", "./shared"]
+  "include": ["./shared", "./client", "./server"],
+  "ts-node": {
+    "transpileOnly": true,
+    "require": ["tsconfig-paths/register"],
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
 }

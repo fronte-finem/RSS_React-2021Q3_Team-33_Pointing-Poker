@@ -3,15 +3,14 @@ import { StopOutlined } from '@ant-design/icons';
 import { Card as AntCard } from 'antd';
 
 export const StyleCard = styled(AntCard)`
-  width: 100%;
-  max-width: 500px;
+  width: 300px;
   background: #ffffff;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border: none;
   border-radius: 4px;
 
   .ant-card-body {
-    padding: 18px 22px;
+    padding: 11px 13px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -20,7 +19,7 @@ export const StyleCard = styled(AntCard)`
 
 export const StyleCardWrapper = styled.div`
   position: relative;
-  margin-left: 27px;
+  margin-left: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -32,14 +31,14 @@ export const StyleCardWrapper = styled.div`
 
 export const StyleCardOwner = styled.p`
   position: absolute;
-  top: -10px;
-  left: 5px;
+  top: -9px;
+  left: 0;
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 10px;
+  line-height: 12px;
   text-transform: uppercase;
   color: #000000;
 `;
@@ -49,9 +48,9 @@ export const StyleCardTitle = styled.h3`
   padding: 0;
   height: 100%;
   font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-  font-size: 3em;
-  line-height: 56px;
+  font-weight: 200;
+  font-size: 28px;
+  line-height: 30px;
   color: #000000;
 `;
 
@@ -68,7 +67,7 @@ export const StyleCardText = styled.p`
 export const StyleStopOutlined = styled(StopOutlined)`
   display: flex;
   flex-shrink: 0;
-  font-size: 47px;
+  font-size: 28px;
   margin-left: auto;
   margin-right: 3px;
   cursor: pointer;

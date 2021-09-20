@@ -9,8 +9,8 @@
  * @external { import("./chat").KickResult } KickResult
  * @external { import("./issue").IssueBase } IssueBase
  * @external { import("./issue").Issue } Issue
- * @external { import("./issue").GameResult } GameResult
- * @external { import("./issue").RoundResult } RoundResult
+ * @external { import("./issue").GameResults } GameResults
+ * @external { import("./issue").IssueScore } IssueScore
  * @external { import("./game-settings").GameSettings } GameSettings
  * @external { import("./game-settings").CardScore } CardScore
  */
@@ -20,225 +20,183 @@
  */
 export const enum ApiClientEvents {
   /**
-   * payload: {@link DealerToJoin DealerToJoin '@shared/api-types/user'}
+   * - payload: {@link DealerToJoin}
+   * - callback: {@link String fail-message} | {@link InitDealer}
    */
   CREATE_GAME = 'create game',
   /**
-   * payload: {@link String} - game-id
+   * no payload
    */
   CANCEL_GAME = 'cancel game',
   /**
-   * payload: {@link String} - game name
+   * - payload: {@link String game-title}
+   * - callback: {@link String fail-message} | {@link String game-title}
    */
   CHANGE_GAME_TITLE = 'change game title',
   /**
-   * payload: {@link String} - game-id
+   * - payload: {@link String game-id}
+   * - callback: {@link String fail-message} | {@link String game-id}
    */
   JOIN_GAME = 'join game',
   /**
-   * payload: {@link UserToJoin UserToJoin '@shared/api-types/user'}
+   * - payload: {@link UserToJoin}
+   * - callback: {@link String fail-message} | {@link InitUser}
    */
   ADD_USER = 'add user',
-  /**
-   * payload: {@link Boolean} - true(yes) or false(no)
-   */
-  IS_USER_JOIN_ALLOWED = 'is user join allowed',
   /**
    * no payload
    */
   DISCONNECT = 'disconnect',
   /**
-   * payload: {@link String} - message
+   * - payload: {@link String message}
+   * - callback: {@link String fail-message} | {@link String message}
    */
   POST_MESSAGE = 'post message',
   /**
-   * payload: {@link String} - user-id
+   * - payload: {@link String user-id}
+   * - callback: {@link String fail-message} | {@link String user-id}
    */
   KICK_USER = 'kick user',
   /**
-   * payload: {@link Boolean} - true(yes) or false(no)
+   * - payload: {@link Boolean vote}
+   * - callback: {@link String fail-message} | {@link Boolean vote}
    */
   VOTE_TO_KICK_USER = 'vote to kick user',
   /**
-   * payload: {@link IssueBase IssueBase '@shared/api-types/issue'}
+   * - payload: {@link IssueBase}
+   * - callback: {@link String fail-message} | {@link Issue}
    */
   ADD_ISSUE = 'add issue',
   /**
-   * payload: {@link String} - issue-id
+   * - payload: {@link String issue-id}
+   * - callback: {@link String fail-message} | {@link String issue-id}
    */
   DELETE_ISSUE = 'delete issue',
   /**
-   * payload: {@link Issue Issue '@shared/api-types/issue'}
+   * - payload: {@link Issue}
+   * - callback: {@link String fail-message} | {@link Issue}
    */
   EDIT_ISSUE = 'edit issue',
   /**
-   * payload: {@link GameSettings GameSettings '@shared/api-types/game-settings'}
+   * - payload: {@link GameSettings}
+   * - callback: {@link String fail-message} | {@link GameSettings}
    */
   START_GAME = 'start game',
   /**
-   * no payload
+   * - no payload
+   * - callback: {@link String fail-message} | {@link Boolean true}
    */
   END_GAME = 'end game',
   /**
-   * payload: {@link String} - issue-id
+   * - payload: {@link String issue-id}
+   * - callback: {@link String fail-message} | {@link String issue-id}
    */
   START_ROUND = 'start round',
   /**
-   * no payload
+   * - no payload
+   * - callback: {@link String fail-message} | {@link Boolean true}
    */
   END_ROUND = 'end round',
   /**
-   * payload: {@link CardScore CardScore '@shared/api-types/game-settings'}
+   * - payload: {@link CardScore}
+   * - callback: {@link String fail-message} | {@link CardScore}
    */
   ADD_SCORE = 'add score',
 }
+
+export type ApiClientEventsWithPayloadAndCallback = Exclude<
+  ApiClientEvents,
+  | ApiClientEvents.CANCEL_GAME
+  | ApiClientEvents.DISCONNECT
+  | ApiClientEvents.END_GAME
+  | ApiClientEvents.END_ROUND
+>;
+
+export type ApiClientEventsWithNoArgs = Extract<
+  ApiClientEvents,
+  ApiClientEvents.CANCEL_GAME | ApiClientEvents.DISCONNECT
+>;
+
+export type ApiClientEventsWithCallback = Extract<
+  ApiClientEvents,
+  ApiClientEvents.END_GAME | ApiClientEvents.END_ROUND
+>;
 
 /**
  * Набор событий инициируемых сервером.
  */
 export const enum ApiServerEvents {
   /**
-   * payload: {@link String} - fail description
-   */
-  CREATE_GAME_FAILED = 'create game failed',
-  /**
-   * payload: {@link InitDealer InitDealer '@shared/api-types/init'}
-   */
-  GAME_CREATED = 'game created',
-  /**
-   * payload: {@link String} - fail description
-   */
-  CANCEL_GAME_FAILED = 'cancel game failed',
-  /**
    * no payload
+   */
+  DISCONNECT = 'disconnect',
+  /**
+   * - no payload
    */
   GAME_CANCELED = 'game canceled',
   /**
-   * payload: {@link String} - fail description
-   */
-  CHANGE_GAME_TITLE_FAILED = 'change game title failed',
-  /**
-   * payload: {@link String} - new game name
+   * - payload: {@link String game-title}
    */
   GAME_TITLE_CHANGED = 'game title changed',
   /**
-   * payload: {@link String} - fail description
-   */
-  JOIN_GAME_FAILED = 'join game failed',
-  /**
-   * no payload
-   */
-  READY_TO_ADD_USER = 'ready to add user',
-  /**
-   * payload: {@link UserToJoin UserToJoin '@shared/api-types/user'}
+   * - payload: {@link UserToJoin}
+   * - callback: {@link Boolean allow}
    */
   ALLOW_USER_JOIN = 'allow user join',
   /**
-   * payload: {@link String} - fail description
-   */
-  LOGIN_FAILED = 'login failed',
-  /**
-   * payload: {@link InitUser InitUser '@shared/api-types/init'}
-   */
-  LOGGED_IN = 'logged in',
-  /**
-   * payload: {@link User User '@shared/api-types/user'}
+   * - payload: {@link User}
    */
   USER_JOINED = 'user joined',
   /**
-   * payload: {@link String} - user-id
+   * - payload: {@link String user-id}
    */
   USER_DISCONNECTED = 'user disconnected',
   /**
-   * payload: {@link String} - fail description
-   */
-  POST_MESSAGE_FAILED = 'post message failed',
-  /**
-   * payload: {@link ChatMessage ChatMessage '@shared/api-types/chat'}
+   * - payload: {@link ChatMessage}
    */
   MESSAGE_POSTED = 'message posted',
   /**
-   * payload: {@link String} - fail description
-   */
-  KICK_USER_FAILED = 'kick user failed',
-  /**
-   * payload: {@link KickVoteInit KickVoteInit '@shared/api-types/chat'}
+   * - payload: {@link KickVoteInit}
    */
   KICK_VOTE_STARTED = 'kick vote started',
   /**
-   * payload: {@link String} - fail description
-   */
-  VOTE_TO_KICK_USER_FAILED = 'vote to kick user failed',
-  /**
-   * payload: {@link KickResult KickResult '@shared/api-types/chat'}
+   * - payload: {@link KickResult}
    */
   USER_KICK_RESULT = 'user kick result',
   /**
-   * payload: {@link String} - kick reason
+   * - payload: {@link String kick-reason}
    */
   KICKED = 'kicked',
   /**
-   * payload: {@link String} - fail description
-   */
-  ADD_ISSUE_FAILED = 'add issue failed',
-  /**
-   * payload: {@link Issue Issue '@shared/api-types/issue'}
+   * - payload: {@link Issue}
    */
   ISSUE_ADDED = 'issue added',
   /**
-   * payload: {@link String} - fail description
-   */
-  DELETE_ISSUE_FAILED = 'delete issue failed',
-  /**
-   * payload: {@link String} - issue-id
+   * - payload: {@link String issue-id}
    */
   ISSUE_DELETED = 'issue deleted',
   /**
-   * payload: {@link String} - fail description
-   */
-  EDIT_ISSUE_FAILED = 'edit issue failed',
-  /**
-   * payload: {@link Issue Issue '@shared/api-types/issue'}
+   * - payload: {@link Issue}
    */
   ISSUE_EDITED = 'issue edited',
   /**
-   * payload: {@link String} - fail description
-   */
-  START_GAME_FAILED = 'start game failed',
-  /**
-   * payload: {@link GameSettings GameSettings '@shared/api-types/game-settings'}
+   * - payload: {@link GameSettings}
    */
   GAME_STARTED = 'game started',
   /**
-   * payload: {@link String} - fail description
-   */
-  END_GAME_FAILED = 'end game failed',
-  /**
-   * payload: {@link GameResult GameResult '@shared/api-types/issue'}
+   * - payload: {@link GameResults}
    */
   GAME_ENDED = 'game ended',
   /**
-   * payload: {@link String} - fail description
-   */
-  START_ROUND_FAILED = 'start round failed',
-  /**
-   * payload: {@link String} - issue-id
+   * - payload: {@link String issue-id}
    */
   ROUND_STARTED = 'round started',
   /**
-   * payload: {@link String} - fail description
-   */
-  END_ROUND_FAILED = 'end round failed',
-  /**
-   * payload: {@link RoundResult RoundResult '@shared/api-types/issue'}
+   * - payload: {@link IssueScore}
    */
   ROUND_ENDED = 'round ended',
   /**
-   * payload: {@link String} - fail description
-   */
-  ADD_SCORE_FAILED = 'add score failed',
-  /**
-   * payload: {@link String} - user-id
+   * - payload: {@link String user-id}
    */
   SCORE_ADDED = 'score added',
 }
