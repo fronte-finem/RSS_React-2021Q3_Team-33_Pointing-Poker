@@ -24,4 +24,5 @@ export const enum ApiFailMessage {
   GAME_STARTED = 'Game already started!',
   GAME_NOT_STARTED = 'Game not started yet!',
   DEALER_NOT_GAMER = 'Dealer no gamer by selected settings!',
+  SOCKET_OF_USER_FOR_KICK_NOT_FOUND = 'Socket of user for kick not found!',
 }

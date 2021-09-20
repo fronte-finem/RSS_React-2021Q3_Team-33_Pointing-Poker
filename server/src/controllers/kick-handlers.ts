@@ -31,7 +31,6 @@ export const getKickHandler =
       ackCallback(setFail(failMessage));
       return;
     }
-    ackCallback(setOk(userId));
 
     if (socket.id === game.dealerSocket.id) {
       dealerKick(userId, game);
@@ -47,9 +46,17 @@ export const getKickHandler =
       return;
     }
 
+    const badSocket = game.server.sockets.sockets.get(userId);
+
+    if (!badSocket) {
+      ackCallback(setFail(ApiFailMessage.SOCKET_OF_USER_FOR_KICK_NOT_FOUND));
+      return;
+    }
+
+    ackCallback(setOk(userId));
     const initKickVote = game.userService.startKickVote(userId, socket.id);
 
-    game.dealerSocket
+    badSocket
       .to(game.room)
       .emit(ApiServerEvents.KICK_VOTE_STARTED, initKickVote);
   };

@@ -26,7 +26,7 @@ const notThatUser =
   ({ socket }: UserX) =>
     socket.id !== userId;
 
-const MINIMAL_USERS_NUM_FOR_KICK_VOTE = 3;
+const MINIMAL_USERS_NUM_FOR_KICK_VOTE = 2;
 
 interface KickVote {
   userId: string;
