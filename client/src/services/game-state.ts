@@ -1,4 +1,4 @@
-import { action, computed, runInAction } from 'mobx';
+import { action, computed, observable, runInAction } from 'mobx';
 import {
   GameSettings,
   getDefaultGameSettings,
@@ -57,6 +57,7 @@ export interface GameState {
   roundRun: boolean;
   roundIssueId: null | string;
   roundProgress: string[];
+  kickInit: null | string;
   kickVoteRun: boolean;
   kickVoteInit: null | KickVoteInit;
   kickResult: null | KickResult;
@@ -82,16 +83,55 @@ export const getDefaultGameState = (): GameState => ({
   roundRun: false,
   roundIssueId: null,
   roundProgress: [],
+  kickInit: null,
   kickVoteRun: false,
   kickVoteInit: null,
   kickResult: null,
 });
 
 export class GameStateActions {
+  @observable private _initKick?: string;
+
   constructor(private gameState: GameState) {}
+
+  @action public initKick(userId: string) {
+    runInAction(() => {
+      this.gameState.kickInit = userId;
+    });
+  }
+
+  @action public initKickReset() {
+    runInAction(() => {
+      this.gameState.kickInit = null;
+    });
+  }
 
   public getDealer(): User | undefined {
     return this.gameState.users.find((user) => user.role === Role.DEALER);
+  }
+
+  @computed public getGamers(): User[] {
+    return this.gameState.users.filter((user) => user.role === Role.GAMER);
+  }
+
+  @computed public getSpectators(): User[] {
+    return this.gameState.users.filter((user) => user.role === Role.SPECTATOR);
+  }
+
+  @computed public getUser(userId: string): User | undefined {
+    return this.gameState.users.find((user) => user.id === userId);
+  }
+
+  @computed public getUserForKick(): User | undefined {
+    const userId = this.gameState.kickVoteInit?.badUserId;
+    if (!userId) return undefined;
+    return this.getUser(userId);
+  }
+
+  @computed public getUserWhoInitKick(): User | undefined {
+    const userId = this.gameState.kickVoteInit?.initiatorId;
+    if (!userId) return undefined;
+    return this.getUser(userId);
   }
 
   @computed public get messagesCount(): number {
