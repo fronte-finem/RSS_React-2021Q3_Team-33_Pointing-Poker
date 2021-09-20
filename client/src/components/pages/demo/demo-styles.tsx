@@ -8,5 +8,4 @@ export const DemoGrid = styled.div`
   grid-template-rows: 1fr;
   gap: 20px;
   padding: 20px;
-  background: #222;
 `;

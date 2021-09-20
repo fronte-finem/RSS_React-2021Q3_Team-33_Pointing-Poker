@@ -10,7 +10,7 @@ import { AckCallback, setFail } from '@shared/api-types/api-events-maps';
 
 const validate = (userToJoin: UserToJoin, game: GameService): string | null => {
   if (!validateUserToJoin(userToJoin)) return ApiFailMessage.USER_NEED_NAME;
-  if (game.isUserInStore(userToJoin))
+  if (game.userService.isUserInStore(userToJoin))
     return ApiFailMessage.SAME_USER_ALREADY_EXIST;
   return null;
 };

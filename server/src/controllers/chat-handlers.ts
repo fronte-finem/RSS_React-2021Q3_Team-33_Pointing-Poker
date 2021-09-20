@@ -21,7 +21,7 @@ export const getPostMessageHandler =
       ackCallback(setFail(failMessage));
       return;
     }
-    const chatMessage = game.addMessage(socket.id, message);
+    const chatMessage = game.chatService.addMessage(socket.id, message);
     ackCallback(setOk(message));
     game.server.to(game.room).emit(ApiServerEvents.MESSAGE_POSTED, chatMessage);
   };

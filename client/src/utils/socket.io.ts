@@ -1,22 +1,26 @@
 import { PointingPokerClientSocket } from 'types/client-socket';
-import { io as ioClient } from 'socket.io-client';
+import {
+  io as ioClient,
+  ManagerOptions,
+  SocketOptions,
+} from 'socket.io-client';
 import { PointingPokerClientToServerEvents } from '@shared/api-types/api-events-maps';
 import {
   ApiClientEventsWithCallback,
   ApiClientEventsWithPayloadAndCallback,
 } from '@shared/api-types/api-events';
 
-const ADDRESS = `http://localhost`;
-const PORT = 42424;
+const devAddress = `http://localhost:${VITE_DEV_PORT}/`;
 
-export const connect = (
-  address: string = ADDRESS,
-  port: number = PORT
-): Promise<PointingPokerClientSocket> => {
-  const socket = ioClient(`${address}:${port}`, {
-    forceNew: true,
-    transports: ['websocket'],
-  });
+const clientOpts: Partial<ManagerOptions & SocketOptions> = {
+  forceNew: true,
+  transports: ['websocket'],
+};
+
+export const connect = (): Promise<PointingPokerClientSocket> => {
+  const socket = DEV_MODE
+    ? ioClient(devAddress, clientOpts)
+    : ioClient(clientOpts);
   return new Promise<PointingPokerClientSocket>((resolve) =>
     socket.on('connect', () => resolve(socket))
   );

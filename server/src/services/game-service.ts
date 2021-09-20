@@ -1,11 +1,6 @@
-import { IUsersService, UsersService } from '@server/services/user-service';
-import {
-  DealerToJoin,
-  Role,
-  User,
-  UserBase,
-  UsersList,
-} from '@shared/api-types/user';
+import { UsersService } from '@server/services/user-service';
+import { ChatService } from '@server/services/chat-service';
+import { DealerToJoin, Role } from '@shared/api-types/user';
 import { InitDealer, InitUser } from '@shared/api-types/init';
 import {
   GameSettings,
@@ -16,12 +11,13 @@ import {
   PointingPokerServer,
   PointingPokerServerSocket,
 } from 'types/server-socket';
-import { ChatMessage, ChatMessagesList } from '@shared/api-types/chat';
-import { ChatService, IChatService } from '@server/services/chat-service';
+import { IssueService } from '@server/services/issue-service';
+import { GameResults } from '@shared/api-types/issue';
 
-export class GameService implements IChatService {
-  private _userService: IUsersService = new UsersService();
-  private _chatService: IChatService = new ChatService();
+export class GameService {
+  private _userService: UsersService = new UsersService();
+  private _chatService: ChatService = new ChatService();
+  private _issueService: IssueService = new IssueService();
   private _gameSettings: GameSettings = getDefaultGameSettings();
   private _room: string = randomUUID();
   private _title: string;
@@ -33,7 +29,25 @@ export class GameService implements IChatService {
     { gameTitle, ...userBase }: DealerToJoin
   ) {
     this._title = gameTitle;
-    this.addUser(userBase, _dealer.id, Role.DEALER);
+    this.userService.addUser(userBase, Role.DEALER, _dealer);
+  }
+
+  public destroy(): void {
+    this._userService.destroy();
+    this._chatService.destroy();
+    this._issueService.destroy();
+  }
+
+  public get userService(): UsersService {
+    return this._userService;
+  }
+
+  public get chatService(): ChatService {
+    return this._chatService;
+  }
+
+  public get issueService(): IssueService {
+    return this._issueService;
   }
 
   public get room(): string {
@@ -60,40 +74,8 @@ export class GameService implements IChatService {
     this._title = title;
   }
 
-  public get isStarted(): boolean {
-    return this._isStarted;
-  }
-
   public get needDealerAdmitToJoin(): boolean {
     return this.isStarted && !this._gameSettings.autoJoinToGame;
-  }
-
-  public addMessage(userId: string, message: string): ChatMessage {
-    return this._chatService.addMessage(userId, message);
-  }
-
-  public getChatMessages(): ChatMessagesList {
-    return this._chatService.getChatMessages();
-  }
-
-  public isUserInStore(userData: UserBase): boolean {
-    return this._userService.isUserInStore(userData);
-  }
-
-  public addUser(userData: UserBase, id: string, role: Role): User {
-    return this._userService.addUser(userData, id, role);
-  }
-
-  public deleteUser(userId: string): void {
-    this._userService.deleteUser(userId);
-  }
-
-  public getUser(userId: string): User | undefined {
-    return this._userService.getUser(userId);
-  }
-
-  public getUsers(): UsersList {
-    return this._userService.getUsers();
   }
 
   public initDealer(): InitDealer {
@@ -114,14 +96,24 @@ export class GameService implements IChatService {
     if (!this.isStarted) {
       initUser.messages = this._chatService.getChatMessages();
     } else {
+      initUser.issues = this._issueService.getIssues();
       initUser.gameSettings = this._gameSettings;
-      initUser.gameResult = [];
+      initUser.gameResult = this._issueService.getResults();
     }
     return initUser;
   }
 
-  public destroy(): void {
-    this._userService.destroy();
-    this._chatService.destroy();
+  public get isStarted(): boolean {
+    return this._isStarted;
+  }
+
+  public startGame(gameSettings: GameSettings): void {
+    this._isStarted = true;
+    this._gameSettings = gameSettings;
+  }
+
+  public endGame(): GameResults {
+    this._isStarted = false;
+    return this._issueService.getResults();
   }
 }

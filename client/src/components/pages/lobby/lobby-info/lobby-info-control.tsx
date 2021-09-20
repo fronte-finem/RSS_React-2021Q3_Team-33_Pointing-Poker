@@ -1,26 +1,45 @@
+import React, { useCallback } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Button } from '@client/components/shared/button/button';
-import React from 'react';
-import { InfoControl } from './lobby-info-styles';
+import { useGameService } from '@client/providers/game-service';
+import { GameSettings } from '@shared/api-types/game-settings';
+import { InfoControl, StyleLobbyControl } from './lobby-info-styles';
 
-export const LobbyInfoControl: React.FC = () => {
-  const startGame = () => {
-    // TODO start game
-    console.log('start game');
-  };
+interface Props {
+  gameSettings: GameSettings;
+}
 
-  const cancelGame = () => {
-    // TODO cancel game
-    console.log('cancel game');
-  };
+export const LobbyInfoControl: React.FC<Props> = observer(
+  ({ gameSettings }) => {
+    const { gameState, gameSocketActions } = useGameService();
 
-  return (
-    <InfoControl>
-      <Button type="primary" onClick={startGame}>
-        Start game
-      </Button>
-      <Button type="default" onClick={cancelGame}>
-        Cancel game
-      </Button>
-    </InfoControl>
-  );
-};
+    const startGame = useCallback(() => {
+      console.log('start game\n', JSON.stringify(gameSettings, null, 2));
+      gameSocketActions.startGame(gameSettings).then(null);
+    }, [gameSettings]);
+
+    const exitLobby = async () => {
+      console.log('exit lobby');
+      gameState.isDealer
+        ? gameSocketActions.cancelGame()
+        : gameSocketActions.disconnect();
+    };
+
+    return gameState.isDealer ? (
+      <InfoControl>
+        <Button type="primary" onClick={startGame}>
+          Start game
+        </Button>
+        <Button type="default" onClick={exitLobby}>
+          Cancel game
+        </Button>
+      </InfoControl>
+    ) : (
+      <StyleLobbyControl>
+        <Button type="default" onClick={exitLobby}>
+          Exit
+        </Button>
+      </StyleLobbyControl>
+    );
+  }
+);

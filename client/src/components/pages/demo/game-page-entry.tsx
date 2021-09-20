@@ -19,7 +19,7 @@ export const PageGameEntryDemo: React.FC = observer(() => {
   };
 
   const onJoin = async ({ gameId }: { gameId: string }) => {
-    if (gameState.id === gameId) {
+    if (socketState.isConnected && gameState.id === gameId) {
       setVisibleLogin(true);
       return;
     }
@@ -88,7 +88,13 @@ export const PageGameEntryDemo: React.FC = observer(() => {
         style={{ padding: '20px', backgroundColor: '#0002' }}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 18 }}
-        onFinish={onJoin}>
+        onFinish={onJoin}
+        fields={[
+          {
+            name: 'gameId',
+            value: gameState.id,
+          },
+        ]}>
         <Form.Item label="game id" name="gameId">
           <Input />
         </Form.Item>

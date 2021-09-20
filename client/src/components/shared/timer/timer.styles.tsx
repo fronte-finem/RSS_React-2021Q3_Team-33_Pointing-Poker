@@ -5,11 +5,11 @@ import styled from 'styled-components';
 const StyledTimerWrapper = styled.div`
   width: 150px;
   height: 63px;
-  background-color: ${(props) => props.theme.bg};
+  color: ${({ theme }) => theme.timer.fg};
+  background-color: ${({ theme }) => theme.timer.bg};
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   position: relative;
   border-radius: 5px;
-  color: ${(props) => props.theme.fontColor};
   font-size: 64px;
   line-height: 64px;
 `;

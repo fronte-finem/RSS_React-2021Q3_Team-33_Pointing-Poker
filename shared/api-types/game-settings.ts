@@ -39,6 +39,10 @@ export interface GameSettings {
    */
   cardsSet: CardsSet;
   /**
+   * Название единиц измерения для значений карт
+   */
+  scoreType?: string;
+  /**
    * Если игра уже началась: впускать автоматически всех новых участников или впускать через механизм admit/reject.
    */
   autoJoinToGame: boolean;
@@ -59,6 +63,7 @@ export interface GameSettings {
 export const getDefaultGameSettings = (): GameSettings => ({
   dealerGamer: false,
   cardsSet: CardsSetDefault.FIBONACCI,
+  scoreType: 'SP',
   autoJoinToGame: true,
   autoOpenCards: true,
   changeAfterRoundEnd: false,

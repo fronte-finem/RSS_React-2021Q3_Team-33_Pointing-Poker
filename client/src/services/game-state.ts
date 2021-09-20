@@ -1,6 +1,9 @@
 import { runInAction } from 'mobx';
-import { GameSettings } from '@shared/api-types/game-settings';
-import { User, UsersList, UserToJoin } from '@shared/api-types/user';
+import {
+  GameSettings,
+  getDefaultGameSettings,
+} from '@shared/api-types/game-settings';
+import { Role, User, UsersList, UserToJoin } from '@shared/api-types/user';
 import {
   ChatMessage,
   ChatMessagesList,
@@ -8,19 +11,25 @@ import {
   KickVoteInit,
 } from '@shared/api-types/chat';
 import {
-  GameResult,
+  GameResults,
   Issue,
   IssueScore,
   IssuesList,
 } from '@shared/api-types/issue';
 import { InitDealer, InitUser } from '@shared/api-types/init';
+import { DefaultTheme } from 'styled-components';
+import { darkTheme, lightTheme } from '@client/themes/themes';
 
 export const enum GamePage {
   ENTRY = 'entry',
-  SETTINGS = 'settings',
   LOBBY = 'lobby',
   GAME = 'game',
   RESULTS = 'results',
+}
+
+export const enum ColorTheme {
+  DARK = 'dark',
+  LIGHT = 'light',
 }
 
 export interface AllowUserToJoin {
@@ -30,14 +39,16 @@ export interface AllowUserToJoin {
 
 export interface GameState {
   page: GamePage;
+  theme: DefaultTheme;
   id: string;
   title: string;
   selfUserId: string;
+  isDealer: boolean;
   users: UsersList;
   messages: ChatMessagesList;
   issues: IssuesList;
-  settings: null | GameSettings;
-  results: GameResult;
+  settings: GameSettings;
+  results: GameResults;
   allowUserToJoin: null | AllowUserToJoin;
   kickedReason: null | string;
   gameRun: boolean;
@@ -51,13 +62,15 @@ export interface GameState {
 
 export const getDefaultGameState = (): GameState => ({
   page: GamePage.ENTRY,
+  theme: lightTheme,
   id: '',
   title: '',
   selfUserId: '',
+  isDealer: false,
   users: [],
   messages: [],
   issues: [],
-  settings: null,
+  settings: getDefaultGameSettings(),
   results: [],
   allowUserToJoin: null,
   kickedReason: null,
@@ -73,15 +86,53 @@ export const getDefaultGameState = (): GameState => ({
 export class GameStateActions {
   constructor(private gameState: GameState) {}
 
+  public getDealer(): User | undefined {
+    return this.gameState.users.find((user) => user.role === Role.DEALER);
+  }
+
+  public toggleTheme(colorTheme: ColorTheme) {
+    runInAction(() => {
+      switch (colorTheme) {
+        case ColorTheme.DARK:
+          this.gameState.theme = darkTheme;
+          break;
+        case ColorTheme.LIGHT:
+          this.gameState.theme = lightTheme;
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
   public reset() {
     runInAction(() => {
-      this.gameState = getDefaultGameState();
+      const defaultGameState = getDefaultGameState();
+      this.gameState.page = GamePage.ENTRY;
+      this.gameState.id = defaultGameState.id;
+      this.gameState.title = defaultGameState.title;
+      this.gameState.selfUserId = defaultGameState.selfUserId;
+      this.gameState.isDealer = defaultGameState.isDealer;
+      this.gameState.users = defaultGameState.users;
+      this.gameState.messages = defaultGameState.messages;
+      this.gameState.issues = defaultGameState.issues;
+      this.gameState.settings = defaultGameState.settings;
+      this.gameState.results = defaultGameState.results;
+      this.gameState.allowUserToJoin = defaultGameState.allowUserToJoin;
+      this.gameState.kickedReason = defaultGameState.kickedReason;
+      this.gameState.gameRun = defaultGameState.gameRun;
+      this.gameState.roundRun = defaultGameState.roundRun;
+      this.gameState.roundIssueId = defaultGameState.roundIssueId;
+      this.gameState.roundProgress = defaultGameState.roundProgress;
+      this.gameState.kickVoteRun = defaultGameState.kickVoteRun;
+      this.gameState.kickVoteInit = defaultGameState.kickVoteInit;
+      this.gameState.kickResult = defaultGameState.kickResult;
     });
   }
 
   public setKicked(message: string) {
     runInAction(() => {
-      this.gameState = getDefaultGameState();
+      this.reset();
       this.gameState.kickedReason = message;
     });
   }
@@ -107,10 +158,11 @@ export class GameStateActions {
 
   public initDealer(initDealer: InitDealer, selfUserId: string) {
     runInAction(() => {
-      this.gameState.page = GamePage.SETTINGS;
+      this.gameState.page = GamePage.LOBBY;
       this.gameState.id = initDealer.gameId;
       this.gameState.title = initDealer.gameTitle;
       this.gameState.selfUserId = selfUserId;
+      this.gameState.isDealer = true;
       this.gameState.settings = initDealer.gameSettings;
       this.gameState.users = initDealer.users;
     });
@@ -122,6 +174,7 @@ export class GameStateActions {
       this.gameState.id = initUser.gameId;
       this.gameState.title = initUser.gameTitle;
       this.gameState.selfUserId = selfUserId;
+      this.gameState.isDealer = false;
       this.gameState.users = initUser.users;
       if (initUser.messages) this.gameState.messages = initUser.messages;
       if (initUser.issues) this.gameState.issues = initUser.issues;
@@ -227,7 +280,7 @@ export class GameStateActions {
     });
   }
 
-  public setResults(results: GameResult) {
+  public setResults(results: GameResults) {
     runInAction(() => {
       this.gameState.results = results;
     });
@@ -268,7 +321,7 @@ export class GameStateActions {
     });
   }
 
-  public endGame(results: GameResult) {
+  public endGame(results: GameResults) {
     runInAction(() => {
       this.gameState.page = GamePage.RESULTS;
       this.gameState.gameRun = false;

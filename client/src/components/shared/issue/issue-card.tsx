@@ -1,66 +1,63 @@
 import React from 'react';
-import { StyleIssueCard } from './issue-styles';
+import { observer } from 'mobx-react-lite';
+import { useGameService } from '@client/providers/game-service';
+import { Issue } from '@shared/api-types/issue';
+import { Tooltip } from 'antd';
 import {
-  StyleButton,
-  StyleCancelIcon,
-  StyleCurrentIssue,
-  StyleDeleteIcon,
-  StyleEditIcon,
-  StyleEditIssueWrapper,
-  StyleIssueCardWrapper,
-  StyleIssueText,
-  StyleIssueTitle,
+  StyledCancelIcon,
+  StyledMark,
+  StyledDangerButton,
+  StyledDefaultButton,
+  StyledDeleteIcon,
+  StyledEditIcon,
+  StyledIssuePriority,
+  StyledIssueTitle,
+  StyledIssueCardControls,
+  StyledIssueCardInfo,
+  StyleIssueCard,
 } from './issue-card-styles';
 
 export interface IssueProps {
-  title: string;
-  priority: string;
-  isGame: boolean;
-  isCurrent: boolean;
+  issue: Issue;
 }
 
-const editIssue = () => {
-  // TODO add edit issue
-};
+export const IssueCard: React.FC<IssueProps> = observer(({ issue }) => {
+  const { gameState } = useGameService();
 
-const deleteIssue = () => {
-  // TODO add delete issue
-};
+  const isGame = gameState.gameRun;
+  const isCurrent = isGame && gameState.roundIssueId === issue.id;
 
-const EditIssue: React.FC = () => {
-  return (
-    <StyleEditIssueWrapper>
-      <StyleButton type="link" icon={<StyleEditIcon />} onClick={editIssue} />
-      <StyleButton
-        type="link"
-        icon={<StyleDeleteIcon />}
-        onClick={deleteIssue}
-      />
-    </StyleEditIssueWrapper>
+  const editIssue = () => {}; // TODO: add edit issue
+  const deleteIssue = () => {}; // TODO: add delete issue
+
+  const editIcon = <StyledEditIcon />;
+  const deleteIcon = <StyledDeleteIcon />;
+  const cancelIcon = <StyledCancelIcon rotate={45} />;
+
+  const mark = isCurrent ? <StyledMark>Current</StyledMark> : null;
+  const editBtn = isGame ? null : (
+    <StyledDefaultButton type="link" icon={editIcon} onClick={editIssue} />
   );
-};
 
-export const IssueCard: React.FC<IssueProps> = (props) => {
-  const { title, priority, isGame, isCurrent } = props;
   return (
-    <StyleIssueCard>
-      <StyleIssueCardWrapper>
-        {isGame && isCurrent ? (
-          <StyleCurrentIssue>Current</StyleCurrentIssue>
-        ) : (
-          ''
-        )}
-        <StyleIssueTitle>{title}</StyleIssueTitle>
-        <StyleIssueText>{priority}</StyleIssueText>
-      </StyleIssueCardWrapper>
-      {isGame ? (
-        <StyleButton
-          type="link"
-          icon={<StyleCancelIcon rotate={45} onClick={deleteIssue} />}
-        />
-      ) : (
-        <EditIssue />
-      )}
+    <StyleIssueCard isCurrent={isCurrent}>
+      <Tooltip placement="bottom" title={issue.link}>
+        <StyledIssueCardInfo>
+          {mark}
+          <StyledIssueTitle>{issue.title}</StyledIssueTitle>
+          <StyledIssuePriority>{issue.priority}</StyledIssuePriority>
+        </StyledIssueCardInfo>
+      </Tooltip>
+      {gameState.isDealer ? (
+        <StyledIssueCardControls>
+          {editBtn}
+          <StyledDangerButton
+            type="link"
+            icon={isGame ? cancelIcon : deleteIcon}
+            onClick={deleteIssue}
+          />
+        </StyledIssueCardControls>
+      ) : null}
     </StyleIssueCard>
   );
-};
+});

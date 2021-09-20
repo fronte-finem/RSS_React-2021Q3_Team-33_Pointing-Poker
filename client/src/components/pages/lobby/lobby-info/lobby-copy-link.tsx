@@ -9,12 +9,13 @@ import {
   StyleLobbyCopyWrapper,
 } from './lobby-info-styles';
 
-export const LobbyCopyLink: React.FC = () => {
+export const LobbyCopyLink: React.FC<{ lobbyLink: string }> = (props) => {
   const { gameState } = useGameService();
   const lobbyId = gameState.id;
+  const { lobbyLink } = props;
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(lobbyId);
+    navigator.clipboard.writeText(lobbyLink).then(null);
   };
 
   return (

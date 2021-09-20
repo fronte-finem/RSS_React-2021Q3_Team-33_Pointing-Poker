@@ -1,20 +1,23 @@
 import React from 'react';
-import { StyleIssueCard } from './issue-styles';
 import {
   StyleAddIcon,
-  StyleButton,
+  StyledIssueButtonCard,
+  StyledIssueButtonCardControls,
+  StyledIssueButtonCardInfo,
   StyleIssueTitle,
 } from './issue-button-styles';
 
-const addIssue = () => {
-  // TODO add issue
-};
-
 export const IssueButton: React.FC = () => {
+  const addIssue = () => {}; // TODO add issue
+
   return (
-    <StyleIssueCard>
-      <StyleIssueTitle>Create new Issue</StyleIssueTitle>
-      <StyleButton type="link" icon={<StyleAddIcon />} onClick={addIssue} />
-    </StyleIssueCard>
+    <StyledIssueButtonCard onClick={addIssue}>
+      <StyledIssueButtonCardInfo>
+        <StyleIssueTitle>Create new Issue</StyleIssueTitle>
+      </StyledIssueButtonCardInfo>
+      <StyledIssueButtonCardControls>
+        <StyleAddIcon />
+      </StyledIssueButtonCardControls>
+    </StyledIssueButtonCard>
   );
 };

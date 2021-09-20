@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyledColon, TimerSection, TimerWrapper } from './timer-wrapper';
+import { StyledColon, TimerSection, TimerWrapper } from './timer.styles';
 
 const formatTime = (time: number): { minutes: number; seconds: number } => {
   const minutes = Math.floor(time / 60);

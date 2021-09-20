@@ -6,7 +6,7 @@ export const StyleAvatar = styled(AntAvatar)`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background: #60dabf;
+  background: ${({ theme }) => theme.avatar.bg};
   box-shadow: inset 0 4px 4px rgba(0, 0, 0, 0.25);
   cursor: default;
 
@@ -17,7 +17,7 @@ export const StyleAvatar = styled(AntAvatar)`
     font-size: 48px;
     line-height: 56px;
     text-align: center;
-    color: #ffffff;
+    color: ${({ theme }) => theme.avatar.fg};
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   }
 `;

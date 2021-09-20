@@ -3,32 +3,31 @@ import styled from 'styled-components';
 export const StyledGameCard = styled.div`
   width: 100px;
   height: 161px;
-  background-color: ${(props) => props.theme.bg};
+  color: ${({ theme }) => theme.gameCard.fg};
+  background-color: ${({ theme }) => theme.gameCard.bg};
   border-radius: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${(props) => props.theme.fontColor};
   transition: all 0.3s;
+  cursor: pointer;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 
-  :hover {
-    cursor: pointer;
+  &:hover {
     box-shadow: 8px 8px 8px rgba(47, 16, 185, 0.25);
-  }
 
-  &:hover ${'svg'} {
-    fill-opacity: 1;
+    & svg {
+      fill-opacity: 1;
+    }
   }
 `;
 
-export const StyledCardScore = styled.p`
-  font-size: 70px;
-  margin: 0;
+export const StyledCardScore = styled.div`
+  font-size: 50px;
 `;
-export const StyledCardScoreType = styled.p`
+
+export const StyledCardScoreType = styled.div`
   position: absolute;
-  font-size: 20px;
-  margin: 0;
+  font-size: 16px;
 `;

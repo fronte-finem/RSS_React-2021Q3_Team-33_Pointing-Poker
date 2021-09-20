@@ -1,13 +1,14 @@
 import React from 'react';
-import { PageExample } from '@client/components/pages/example/example';
 import { PageTimerDemo } from '@client/components/pages/demo/timer';
 import { PageGameCardDemo } from '@client/components/pages/demo/game-card';
 import { PageAvatarDemo } from '@client/components/pages/demo/avatar';
 import { PageIssueDemo } from '@client/components/pages/demo/issue';
 import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
-import { PageMessageDemo } from '@client/components/pages/demo/message';
+import { PageMessageDemo } from '@client/components/pages/demo/chat';
 import { PageGameRouterDemo } from '@client/components/pages/demo/game-router';
-import { PageLobby } from '../pages/lobby/lobby';
+import { PageComponentsDemo } from '@client/components/pages/demo/components';
+import { PageLobbyDemo } from '@client/components/pages/demo/page-lobby';
+import { PageGameRouter } from '@client/components/pages/game-router/game-router';
 
 interface RouteConf {
   path: string;
@@ -19,51 +20,56 @@ export const routes: RouteConf[] = [
   {
     path: '/',
     name: 'Home',
-    component: undefined,
+    component: PageGameRouter,
+  },
+  {
+    path: '/join/:id',
+    name: 'Home with id',
+    component: PageGameRouter,
+  },
+  {
+    path: '/demo/lobby',
+    name: 'Lobby demo (🚧 mutate game-state 🚧)',
+    component: PageLobbyDemo,
   },
   {
     path: '/demo/game-router',
-    name: 'Game Router Demo',
+    name: 'Game Router',
     component: PageGameRouterDemo,
   },
   {
-    path: '/example',
-    name: 'Example',
-    component: PageExample,
+    path: '/demo/components',
+    name: 'Components',
+    component: PageComponentsDemo,
   },
   {
     path: '/demo/timer',
-    name: 'Timer Demo',
+    name: 'Timer',
     component: PageTimerDemo,
   },
   {
     path: '/demo/game-card',
-    name: 'Game-Card Demo',
+    name: 'Game-Card',
     component: PageGameCardDemo,
   },
   {
     path: '/demo/avatar',
-    name: 'Avatar Demo',
+    name: 'Avatar',
     component: PageAvatarDemo,
   },
   {
     path: '/demo/issue',
-    name: 'Issue Demo',
+    name: 'Issue (🚧 mutate game-state 🚧)',
     component: PageIssueDemo,
   },
   {
     path: '/demo/user-card',
-    name: 'User-Card Demo',
+    name: 'User-Card (🚧 mutate game-state 🚧)',
     component: PageUserCardDemo,
   },
   {
-    path: '/demo/message',
-    name: 'Message Demo',
+    path: '/demo/chat',
+    name: 'Chat (🚧 mutate game-state 🚧)',
     component: PageMessageDemo,
-  },
-  {
-    path: '/lobby',
-    name: 'Lobby',
-    component: PageLobby,
   },
 ];

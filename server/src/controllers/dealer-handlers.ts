@@ -4,6 +4,7 @@ import { ApiServerEvents } from '@shared/api-types/api-events';
 import { GAME_ROOMS } from '@server/store/game-rooms';
 import { PointingPokerServerSocket } from 'types/server-socket';
 import { AckCallback, setFail, setOk } from '@shared/api-types/api-events-maps';
+import { GameSettings } from '@shared/api-types/game-settings';
 
 const TITLE_MAX_LENGTH = 250;
 
@@ -33,4 +34,28 @@ export const getCancelGameHandler =
     game.server.to(game.room).disconnectSockets(true);
     game.destroy();
     GAME_ROOMS.delete(game.room);
+  };
+
+export const getStartGameHandler =
+  (socket: PointingPokerServerSocket, game: GameService) =>
+  (gameSettings: GameSettings, ackCallback: AckCallback<GameSettings>) => {
+    if (game.isStarted) {
+      ackCallback(setFail(ApiFailMessage.GAME_STARTED));
+      return;
+    }
+    ackCallback(setOk(gameSettings));
+    game.server.to(game.room).emit(ApiServerEvents.GAME_STARTED, gameSettings);
+  };
+
+export const getEndGameHandler =
+  (socket: PointingPokerServerSocket, game: GameService) =>
+  (ackCallback: AckCallback<true>) => {
+    if (!game.isStarted) {
+      ackCallback(setFail(ApiFailMessage.GAME_NOT_STARTED));
+      return;
+    }
+    ackCallback(setOk(true));
+    game.server
+      .to(game.room)
+      .emit(ApiServerEvents.GAME_ENDED, game.issueService.getResults());
   };

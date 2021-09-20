@@ -15,6 +15,9 @@ module.exports = {
     'ts-jest': {
       isolatedModules: true,
     },
+    VITE_DEV_PORT: '42424',
+    DEV_MODE: true,
+    PROD_MODE: false,
   },
   roots: ['<rootDir>/client/src/', '<rootDir>/server/src/'],
   moduleDirectories: ['node_modules', 'client/src', 'server/src'],
@@ -33,4 +36,5 @@ module.exports = {
     '<rootDir>/tests-coverage/',
     '<rootDir>/tests-mocks/',
   ],
+  setupFilesAfterEnv: ['./tests-mocks/match-media.js'],
 };

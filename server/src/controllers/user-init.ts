@@ -15,7 +15,7 @@ export const getUserInitHandler =
       return;
     }
 
-    if (game.getUser(socket.id)) {
+    if (game.userService.getUser(socket.id)) {
       ackCallback(setFail(ApiFailMessage.USER_WITH_SOCKET_ID_EXIST));
       return;
     }

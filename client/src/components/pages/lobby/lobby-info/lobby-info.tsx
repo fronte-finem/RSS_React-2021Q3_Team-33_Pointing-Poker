@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { UserCard } from '@client/components/shared/user-card/user-card';
-import { Button } from '@client/components/shared/button/button';
+import { observer } from 'mobx-react-lite';
 import { useGameService } from '@client/providers/game-service';
+import { GameSettings } from '@shared/api-types/game-settings';
 import { StyleLobbyTitle } from '../lobby-styles';
 import {
   InfoMaster,
   InfoTitle,
-  StyleLobbyControl,
   StyleLobbyInfo,
   StyleLobbyMaster,
   StyleLobbyMasterText,
@@ -16,66 +16,43 @@ import { LobbyEditTitleModal } from '../lobby-modal';
 import { LobbyCopyLink } from './lobby-copy-link';
 import { LobbyInfoControl } from './lobby-info-control';
 
-export const LobbyInfoSection: React.FC = () => {
-  const { gameState } = useGameService();
-  const thisUser = gameState.users.find(
-    (user) => user.id === gameState.selfUserId
-  );
-  const isDealer = thisUser?.role === 'dealer';
-  const lobbyTitle = gameState.title;
-  const dealer = gameState.users.find((user) => user.role === 'dealer');
-  const isOwner = dealer?.id === gameState.selfUserId;
+interface Props {
+  gameSettings: GameSettings;
+}
 
-  const [isEditModal, setIsEditModal] = useState(false);
+export const LobbyInfoSection: React.FC<Props> = observer(
+  ({ gameSettings }) => {
+    const { gameState, gameStateActions } = useGameService();
 
-  const exitLobby = () => {
-    // TODO exit lobby for member
-    console.log('exit lobby');
-  };
+    const [isEditModal, setIsEditModal] = useState(false);
 
-  return (
-    <>
-      <InfoTitle>
-        <StyleLobbyInfo span={24}>
-          <StyleLobbyTitle
-            level={2}
-            style={{
-              fontSize: '24px',
-              lineHeight: '30px',
-              fontWeight: 'bold',
-            }}>
-            {lobbyTitle}
-          </StyleLobbyTitle>
-          {isDealer ? <EditTitleButton setEditModal={setIsEditModal} /> : ''}
-          <LobbyEditTitleModal
-            setEditModal={setIsEditModal}
-            visible={isEditModal}
+    return (
+      <>
+        <InfoTitle>
+          <StyleLobbyInfo span={24}>
+            <StyleLobbyTitle level={2}>{gameState.title}</StyleLobbyTitle>
+            {gameState.isDealer ? (
+              <EditTitleButton setEditModal={setIsEditModal} />
+            ) : null}
+            <LobbyEditTitleModal
+              isVisible={isEditModal}
+              setIsVisible={setIsEditModal}
+            />
+          </StyleLobbyInfo>
+        </InfoTitle>
+        <InfoMaster>
+          <StyleLobbyMaster>
+            <StyleLobbyMasterText>Scram master:</StyleLobbyMasterText>
+            <UserCard user={gameStateActions.getDealer()} />
+          </StyleLobbyMaster>
+        </InfoMaster>
+        {gameState.isDealer ? (
+          <LobbyCopyLink
+            lobbyLink={`${window.location.origin}/join/${gameState.id}`}
           />
-        </StyleLobbyInfo>
-      </InfoTitle>
-      <InfoMaster>
-        <StyleLobbyMaster>
-          <StyleLobbyMasterText>Scram master:</StyleLobbyMasterText>
-          <UserCard
-            firstName={dealer?.firstName!}
-            lastName={dealer?.lastName!}
-            position={dealer?.jobPosition!}
-            isOwner={isOwner}
-            avatar={dealer?.avatar!}
-            isDelete={false}
-          />
-        </StyleLobbyMaster>
-      </InfoMaster>
-      {isDealer ? <LobbyCopyLink /> : ''}
-      {isDealer ? (
-        <LobbyInfoControl />
-      ) : (
-        <StyleLobbyControl>
-          <Button type="default" onClick={exitLobby}>
-            Exit
-          </Button>
-        </StyleLobbyControl>
-      )}
-    </>
-  );
-};
+        ) : null}
+        <LobbyInfoControl gameSettings={gameSettings} />
+      </>
+    );
+  }
+);

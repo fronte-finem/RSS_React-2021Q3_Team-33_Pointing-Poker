@@ -14,6 +14,7 @@ import {
 interface IGameServiceContext {
   gameState: GameState;
   socketState: SocketState;
+  gameStateActions: GameStateActions;
   gameSocketActions: GameSocketActions;
 }
 
@@ -31,7 +32,7 @@ export const GameServiceProvider: React.FC = ({ children }) => {
   );
   return (
     <GameServiceContext.Provider
-      value={{ gameState, socketState, gameSocketActions }}>
+      value={{ gameState, socketState, gameStateActions, gameSocketActions }}>
       {children}
     </GameServiceContext.Provider>
   );

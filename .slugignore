@@ -1,0 +1,5 @@
+# Ignore build directory
+/dist/**/*
+
+# Ignore generated html-api-doc
+/server/doc/**/*
