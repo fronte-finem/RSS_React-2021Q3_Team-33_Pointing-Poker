@@ -31,6 +31,7 @@ export const LobbyEditTitleModal: React.FC<LobbyEditTitleModalProps> = observer(
     const cancelTitleChanges = () => {
       if (socketState.isLoading) return;
       setIsVisible(false);
+      setTitleValue(gameState.title);
     };
 
     const form = (

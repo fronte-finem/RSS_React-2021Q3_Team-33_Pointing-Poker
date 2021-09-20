@@ -2,6 +2,7 @@ import { UserCard } from '@client/components/shared/user-card/user-card';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useGameService } from '@client/providers/game-service';
+import { Role } from '@shared/api-types/user';
 import { StyleLobbyTitle, StyledLobbySection } from '../lobby-styles';
 import { StyleLobbyUsersGrid } from './lobby-users-styles';
 
@@ -12,9 +13,11 @@ export const LobbyUsersSection: React.FC = observer(() => {
     <StyledLobbySection>
       <StyleLobbyTitle level={2}>Members:</StyleLobbyTitle>
       <StyleLobbyUsersGrid>
-        {gameState.users.map((user) => (
-          <UserCard key={user.id} user={user} />
-        ))}
+        {gameState.users
+          .filter((user) => user.role !== Role.DEALER)
+          .map((user) => (
+            <UserCard key={user.id} user={user} />
+          ))}
       </StyleLobbyUsersGrid>
     </StyledLobbySection>
   );
