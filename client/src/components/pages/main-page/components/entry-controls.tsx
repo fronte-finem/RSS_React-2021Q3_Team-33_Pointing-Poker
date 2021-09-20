@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 import { useGameService } from '@client/providers/game-service';
 import { EntryModal } from './entry-modal';
 import {
@@ -36,7 +36,12 @@ export const EntryControls = observer(() => {
       return;
     }
     await gameSocketActions.joinGame(gameId);
-    if (!socketState.isFail) showJoinToGameModal();
+    if (socketState.isFail) {
+      gameSocketActions.disconnect();
+      message.error(socketState.failMessage);
+      return;
+    }
+    showJoinToGameModal();
   };
 
   const handleCancel = () => {
@@ -69,7 +74,9 @@ export const EntryControls = observer(() => {
           <StyledFormItem name="gameId" rules={[{ required: true }]}>
             <StyledInput />
           </StyledFormItem>
-          <StyledButton htmlType="submit">Connect</StyledButton>
+          <StyledButton htmlType="submit" loading={socketState.isLoading}>
+            Connect
+          </StyledButton>
         </StyledCustomRow>
       </Form>
 
