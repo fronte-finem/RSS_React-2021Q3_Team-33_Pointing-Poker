@@ -6,6 +6,11 @@ import { PageAvatarDemo } from '@client/components/pages/demo/avatar';
 import { PageIssueDemo } from '@client/components/pages/demo/issue';
 import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
 import { PageMessageDemo } from '@client/components/pages/demo/message';
+import { MainPage } from '../pages/main-page/main-page';
+import { KickPlayer } from '../pages/demo/kick-player';
+import { KickPlayerVoting } from '../pages/demo/kick-player-voting';
+import { EditIssue } from '../pages/demo/edit-issue';
+import { CreateIssue } from '../pages/demo/create-issue';
 import { PageGameRouterDemo } from '@client/components/pages/demo/game-router';
 import { PageLobby } from '../pages/lobby/lobby';
 
@@ -60,6 +65,31 @@ export const routes: RouteConf[] = [
     path: '/demo/message',
     name: 'Message Demo',
     component: PageMessageDemo,
+  },
+  {
+    path: '/demo/main-page',
+    name: 'Main Page',
+    component: MainPage,
+  },
+  {
+    path: '/demo/kick-player',
+    name: 'Kick Player',
+    component: KickPlayer,
+  },
+  {
+    path: '/demo/kick-player-voting',
+    name: 'Kick Player Voting',
+    component: KickPlayerVoting,
+  },
+  {
+    path: '/demo/edit-issue',
+    name: 'Edit Issue',
+    component: EditIssue,
+  },
+  {
+    path: '/demo/create-issue',
+    name: 'Create Issue',
+    component: CreateIssue,
   },
   {
     path: '/lobby',

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Select as AntSelect } from 'antd';
+import { Select as AntSelect, SelectProps } from 'antd';
 import styled from 'styled-components';
+import { SelectValue } from 'antd/lib/select';
 
 const StyledSelect = styled(AntSelect)`
   width: 267px;
@@ -8,21 +9,6 @@ const StyledSelect = styled(AntSelect)`
   text-align: left;
 `;
 
-interface IOption {
-  value: string;
-  label: string;
-}
-
-export const Select: React.FC<{ options: IOption[] }> = (props) => {
-  const { options } = props;
-
-  return (
-    <StyledSelect defaultValue={options[0].value} {...props}>
-      {options.map((option: IOption) => (
-        <StyledSelect.Option value={option.value} key={option.value}>
-          {option.label}
-        </StyledSelect.Option>
-      ))}
-    </StyledSelect>
-  );
+export const Select: React.FC<SelectProps<SelectValue>> = (props) => {
+  return <StyledSelect size="large" {...props} />;
 };
