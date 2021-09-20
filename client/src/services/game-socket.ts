@@ -13,12 +13,14 @@ import { Issue, IssueBase } from '@shared/api-types/issue';
 import { CardScore, GameSettings } from '@shared/api-types/game-settings';
 
 export interface SocketState {
+  isConnected: boolean;
   isLoading: boolean;
   isFail: boolean;
   failMessage: string;
 }
 
-export const getDefaultSocketState = () => ({
+export const getDefaultSocketState = (): SocketState => ({
+  isConnected: false,
   isLoading: false,
   isFail: false,
   failMessage: '',
@@ -47,6 +49,14 @@ export class GameSocketActions {
         this.socketState.isFail = true;
         this.socketState.failMessage = response.failMessage!;
       }
+    });
+  }
+
+  private failNoConnection() {
+    runInAction(() => {
+      this.socketState.isConnected = false;
+      this.socketState.isFail = true;
+      this.socketState.failMessage = 'No connection';
     });
   }
 
@@ -113,10 +123,11 @@ export class GameSocketActions {
   @action public async createGame(dealerToJoin: DealerToJoin) {
     this.beforeAsync();
     this.socket = await connect();
+    this.socketState.isConnected = true;
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.CREATE_GAME,
       dealerToJoin,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
     if (isOk(response)) {
@@ -134,15 +145,20 @@ export class GameSocketActions {
 
   @action public disconnect() {
     this.socket?.disconnect();
+    this.socketState.isConnected = false;
     this.gameStateActions.reset();
   }
 
   @action public async changeGameTitle(title: string) {
+    if (!this.socket) {
+      this.failNoConnection();
+      return;
+    }
     this.beforeAsync();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.CHANGE_GAME_TITLE,
       title,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
   }
@@ -150,10 +166,11 @@ export class GameSocketActions {
   @action public async joinGame(gameId: string) {
     this.beforeAsync();
     this.socket = await connect();
+    this.socketState.isConnected = true;
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.JOIN_GAME,
       gameId,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
     isOk(response)
@@ -162,14 +179,15 @@ export class GameSocketActions {
   }
 
   @action public async login(userToJoin: UserToJoin) {
-    if (!this.socket?.connected) {
-      throw new Error('Before login - join the game!');
+    if (!this.socket || !this.socket.connected) {
+      this.failNoConnection();
+      return;
     }
     this.beforeAsync();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.ADD_USER,
       userToJoin,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
     if (isOk(response)) {
@@ -180,109 +198,153 @@ export class GameSocketActions {
   }
 
   @action public async postMessage(message: string) {
+    if (!this.socket) {
+      this.failNoConnection();
+      return;
+    }
     this.beforeAsync();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.POST_MESSAGE,
       message,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
   }
 
   @action public async kick(userId: string) {
+    if (!this.socket) {
+      this.failNoConnection();
+      return;
+    }
     this.beforeAsync();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.KICK_USER,
       userId,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
   }
 
   @action public async kickVote(vote: boolean) {
+    if (!this.socket) {
+      this.failNoConnection();
+      return;
+    }
     this.beforeAsync();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.VOTE_TO_KICK_USER,
       vote,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
   }
 
   @action public async addIssue(issueBase: IssueBase) {
+    if (!this.socket) {
+      this.failNoConnection();
+      return;
+    }
     this.beforeAsync();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.ADD_ISSUE,
       issueBase,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
   }
 
   @action public async deleteIssue(issueId: string) {
+    if (!this.socket) {
+      this.failNoConnection();
+      return;
+    }
     this.beforeAsync();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.DELETE_ISSUE,
       issueId,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
   }
 
   @action public async editIssue(issue: Issue) {
+    if (!this.socket) {
+      this.failNoConnection();
+      return;
+    }
     this.beforeAsync();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.EDIT_ISSUE,
       issue,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
   }
 
   @action public async startGame(gameSettings: GameSettings) {
+    if (!this.socket) {
+      this.failNoConnection();
+      return;
+    }
     this.beforeAsync();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.START_GAME,
       gameSettings,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
   }
 
   @action public async endGame() {
+    if (!this.socket) {
+      this.failNoConnection();
+      return;
+    }
     this.beforeAsync();
     const response = await emitWithCallback(
       ApiClientEvents.END_GAME,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
   }
 
   @action public async startRound(issueId: string) {
+    if (!this.socket) {
+      this.failNoConnection();
+      return;
+    }
     this.beforeAsync();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.START_ROUND,
       issueId,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
   }
 
   @action public async endRound() {
+    if (!this.socket) {
+      this.failNoConnection();
+      return;
+    }
     this.beforeAsync();
     const response = await emitWithCallback(
       ApiClientEvents.END_ROUND,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
   }
 
   @action public async addScore(score: CardScore) {
+    if (!this.socket) {
+      this.failNoConnection();
+      return;
+    }
     this.beforeAsync();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.ADD_SCORE,
       score,
-      this.socket!
+      this.socket
     );
     this.afterAsync(response);
   }

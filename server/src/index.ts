@@ -21,9 +21,9 @@ app.use(express.static(buildPath));
 app.get('/api/test', (request, response) => {
   response.json({ message: 'Hello world!!!' });
 });
-// app.get('(/*)?', async (request, response) => {
-//   response.sendFile(path.join(buildPath, 'index.html'));
-// });
+app.get('(/*)?', async (request, response) => {
+  response.sendFile(path.join(buildPath, 'index.html'));
+});
 
 httpServer.listen(PORT);
 console.log(`Server started at: ${JSON.stringify(httpServer.address())}`);

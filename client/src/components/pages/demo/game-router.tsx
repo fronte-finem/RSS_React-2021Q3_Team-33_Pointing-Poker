@@ -12,8 +12,11 @@ export const PageGameRouterDemo: React.FC = observer(() => {
   return (
     <div>
       {gameState.page === GamePage.ENTRY && <PageGameEntryDemo />}
-      {gameState.page === GamePage.SETTINGS && <PageGameSettingsDemo />}
-      {gameState.page === GamePage.LOBBY && <PageGameLobbyDemo />}
+      {gameState.page === GamePage.LOBBY && gameState.isDealer ? (
+        <PageGameSettingsDemo />
+      ) : (
+        <PageGameLobbyDemo />
+      )}
     </div>
   );
 });

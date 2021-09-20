@@ -1,28 +1,18 @@
 import React from 'react';
 import { AvatarProps as AntAvatarProps } from 'antd';
+import { UserBase } from '@shared/api-types/user';
 import { StyleAvatar } from './avatar-styles';
-
-export interface AvatarContent {
-  firstName: string;
-  lastName: string;
-}
-
-interface AvatarProps {
-  content: AvatarContent;
-  mod?: AntAvatarProps;
-}
 
 export const abbreviateWord = (word: string) =>
   word.trimStart().slice(0, 1).toUpperCase();
 
-export const abbreviateName = (first: string, last: string) =>
-  `${abbreviateWord(first)}${abbreviateWord(
-    last || first.trimEnd().slice(-1)
+export const abbreviateName = ({ firstName, lastName }: UserBase) =>
+  `${abbreviateWord(firstName)}${abbreviateWord(
+    lastName || firstName.trimEnd().slice(-1)
   )}`;
 
-export const Avatar: React.FC<AvatarProps> = ({ content, mod }) => {
-  const { firstName, lastName } = content;
-  return (
-    <StyleAvatar {...mod}>{abbreviateName(firstName, lastName)}</StyleAvatar>
-  );
+type AvatarProps = { user: UserBase } & AntAvatarProps;
+
+export const Avatar: React.FC<AvatarProps> = ({ user, ...props }) => {
+  return <StyleAvatar {...props}>{abbreviateName(user)}</StyleAvatar>;
 };

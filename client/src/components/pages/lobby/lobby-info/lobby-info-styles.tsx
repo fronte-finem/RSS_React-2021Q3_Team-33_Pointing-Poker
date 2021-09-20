@@ -25,7 +25,7 @@ export const StyleEditTitleButton = styled(Button)`
 
 export const StyleLobbyEditTitleIcon = styled(EditOutlined)`
   font-size: 18px;
-  color: ${(props) => props.theme.fontColor};
+  color: ${(props) => props.theme.fg};
 `;
 
 export const InfoMaster = styled(Row)`
@@ -41,11 +41,11 @@ export const StyleLobbyMaster = styled(Col)`
 
 export const StyleLobbyMasterText = styled(Paragraph)`
   margin-bottom: 10px !important;
-  font-family: 'Ruda';
+  font-family: var(--font-ruda);
   font-weight: bold;
   font-size: 12px;
   line-height: 15px;
-  color: ${(props) => props.theme.fontColor};
+  color: ${(props) => props.theme.fg};
 `;
 
 export const InfoCopy = styled(Row)`
@@ -61,11 +61,11 @@ export const StyleLobbyCopy = styled(Col)`
 
 export const StyleLobbyCopyLabel = styled(Paragraph)`
   margin-bottom: 10px !important;
-  font-family: 'Roboto';
+  font-family: var(--font-roboto);
   font-weight: normal;
   font-size: 24px;
   line-height: 28px;
-  color: ${(props) => props.theme.fontColor};
+  color: ${(props) => props.theme.fg};
 `;
 
 export const StyleLobbyCopyWrapper = styled.div`

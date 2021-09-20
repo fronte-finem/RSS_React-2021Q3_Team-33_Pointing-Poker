@@ -1,30 +1,27 @@
 import React, { useState } from 'react';
-import { Upload as AntUpload, UploadProps } from 'antd';
-import styled from 'styled-components';
-import { Input } from '../input/input';
-import { Button } from '../button/button';
+import { UploadProps } from 'antd';
+import { Button } from '@client/components/shared/button/button';
+import {
+  StyledInput,
+  StyledUpload,
+} from '@client/components/shared/input-file/input-file.styles';
+import { UploadFile } from 'antd/lib/upload/interface';
 
-const StyledUpload = styled(AntUpload)`
-  .ant-upload {
-    display: flex;
-  }
-`;
+type Props = UploadProps & { onLoad: (file: UploadFile | null) => void };
 
-export const InputFile: React.FC<UploadProps> = (props) => {
-  const [placeholder, setPlaceholder] = useState('File chooser');
+export const InputFile: React.FC<Props> = ({ onLoad, ...props }) => {
+  const [placeholder, setPlaceholder] = useState('Choose file...');
 
-  const customRequest = (file: any) => setPlaceholder(file.file.name);
+  const handleUpload = (file: UploadFile) => {
+    setPlaceholder(file.name);
+    onLoad(file);
+    return false;
+  };
 
   return (
-    <StyledUpload
-      showUploadList={false}
-      {...props}
-      customRequest={customRequest}>
-      <Input
-        value={placeholder}
-        style={{ textAlign: 'center', cursor: 'pointer', width: '275px' }}
-      />
-      <Button>Button</Button>
+    <StyledUpload beforeUpload={handleUpload} showUploadList={false} {...props}>
+      <StyledInput value={placeholder} />
+      <Button>select</Button>
     </StyledUpload>
   );
 };

@@ -1,49 +1,63 @@
 import React from 'react';
 import { Avatar } from '@client/components/shared/avatar/avatar';
 import { Tooltip } from 'antd';
+import { Role, User, UserBase } from '@shared/api-types/user';
+import { useGameService } from '@client/providers/game-service';
+import { observer } from 'mobx-react-lite';
 import {
   StyleCard,
   StyleCardOwner,
-  StyleCardText,
-  StyleCardTitle,
-  StyleCardWrapper,
+  StyledAvatarContainer,
+  StyledBodyContainer,
+  StyledControlContainer,
+  StyledJobPosition,
+  StyledUsername,
+  StyledButton,
   StyleStopOutlined,
 } from './user-card-styles';
 
-export interface UserCardProps {
-  firstName: string;
-  lastName: string;
-  position: string;
-  isOwner: boolean;
-  isDelete: boolean;
-  avatar: string;
+const getFullName = ({ firstName, lastName }: UserBase) =>
+  [firstName, lastName].filter((name) => Boolean(name)).join(' ');
+
+interface UserCardProps {
+  user?: User | null;
 }
 
-const deleteUser = () => {
-  console.log('delete user');
-  // TODO: add delete user
-};
+export const UserCard: React.FC<UserCardProps> = observer(({ user }) => {
+  const { gameState, gameSocketActions } = useGameService();
 
-export const UserCard: React.FC<UserCardProps> = (props) => {
-  const { firstName, lastName, position, isOwner, isDelete, avatar } = props;
+  if (!user) return null;
+  const { id, firstName, lastName, avatar, jobPosition } = user;
+  const username = getFullName({ firstName, lastName });
+
+  const isOwner = gameState.selfUserId === id;
+  const isDelete = !isOwner && user.role !== Role.DEALER;
+
+  const onDelete = () => gameSocketActions.kick(id);
+
+  const deleteBtn = (
+    <StyledButton
+      type="link"
+      icon={<StyleStopOutlined rotate={90} />}
+      onClick={onDelete}
+    />
+  );
+
   return (
-    <StyleCard>
-      <Avatar
-        content={{ firstName, lastName }}
-        mod={{ size: 50, src: avatar }}
-      />
-      <StyleCardWrapper>
-        {isOwner ? <StyleCardOwner>It&prime;s you</StyleCardOwner> : ''}
-        <Tooltip title={`${firstName} ${lastName}`} placement="bottom">
-          <StyleCardTitle>
-            {firstName}
-            {lastName === '' ? '' : ' '}
-            {lastName}
-          </StyleCardTitle>
+    <StyleCard userRole={user.role}>
+      <StyledAvatarContainer>
+        <Avatar user={user} size={50} src={avatar} />
+      </StyledAvatarContainer>
+      <StyledBodyContainer>
+        {isOwner ? <StyleCardOwner>It&prime;s you</StyleCardOwner> : null}
+        <Tooltip title={username} placement="bottom">
+          <StyledUsername>{username}</StyledUsername>
         </Tooltip>
-        <StyleCardText>{position}</StyleCardText>
-      </StyleCardWrapper>
-      {isDelete ? <StyleStopOutlined rotate={90} onClick={deleteUser} /> : ''}
+        <StyledJobPosition>{jobPosition}</StyledJobPosition>
+      </StyledBodyContainer>
+      <StyledControlContainer>
+        {isDelete ? deleteBtn : null}
+      </StyledControlContainer>
     </StyleCard>
   );
-};
+});

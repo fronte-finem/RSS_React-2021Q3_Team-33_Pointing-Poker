@@ -8,6 +8,7 @@ export const StyledWrapper = styled.div`
   gap: 40px;
   padding: 100px;
 `;
+
 export const StyledInputWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -17,6 +18,15 @@ export const StyledInput = styled(Input)`
   width: 420px;
   border-radius: 0;
 `;
+
 export const StyledSelect = styled(Select)`
   margin-right: 153px;
+`;
+
+export const StyledText = styled.div`
+  font-family: var(--font-roboto);
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
 `;

@@ -1,8 +1,9 @@
 import React from 'react';
 import { DemoGrid } from '@client/components/pages/demo/demo-styles';
-import { Avatar, AvatarContent } from '@client/components/shared/avatar/avatar';
+import { Avatar } from '@client/components/shared/avatar/avatar';
+import { UserBase } from '@shared/api-types/user';
 
-const testData: AvatarContent[] = [
+const users: UserBase[] = [
   { firstName: 'abc', lastName: 'zyx' },
   { firstName: 'john', lastName: '' },
   { firstName: 'john', lastName: 'doe' },
@@ -16,9 +17,9 @@ const testData: AvatarContent[] = [
 export const PageAvatarDemo: React.FC = () => {
   return (
     <DemoGrid>
-      {testData.map((data) => (
+      {users.map((data) => (
         <div key={data.firstName + data.lastName}>
-          <Avatar content={data} />
+          <Avatar user={data} />
         </div>
       ))}
     </DemoGrid>

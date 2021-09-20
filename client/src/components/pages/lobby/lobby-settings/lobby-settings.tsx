@@ -1,114 +1,148 @@
+import React, { useState } from 'react';
 import { Select } from '@client/components/shared/select/select';
 import { Toggle } from '@client/components/shared/toggle/toggle';
-import { CardsSetDefault } from '@shared/api-types/game-settings';
-import React, { useState } from 'react';
+import { CardsSetDefault, GameSettings } from '@shared/api-types/game-settings';
 import { StyleLobbyTitle } from '../lobby-styles';
+import { SettingsItem } from './lobby-settings-item';
+import { LobbyTimer } from './lobby-timer';
 import {
   StyleLobbySettings,
-  StyleLobbySettingsDesc,
-  StyleLobbySettingsItem,
   StyleLobbySettingsScore,
   StyleLobbySettingsWrapper,
 } from './lobby-settings-styles';
-import { LobbyTimer } from './lobby-timer';
+
+type CardsSetOption = { value: CardsSetDefault; label: string };
+
+const cardsSetOption: CardsSetOption[] = [
+  { value: CardsSetDefault.FIBONACCI, label: 'Fibonacci numbers' },
+  { value: CardsSetDefault.POW_2, label: 'Power of two' },
+];
 
 type SettingsType = {
   title: string;
   component: JSX.Element;
 };
 
-type SettingsCardsType = {
-  value: string;
-  label: string;
-};
+interface SettingsProps {
+  state: [GameSettings, React.Dispatch<React.SetStateAction<GameSettings>>];
+}
 
-export const LobbySettingsSection: React.FC = () => {
-  const [dealerGame, setDealerGame] = useState(false);
-  const [autoJoinToGame, setAutoJoinToGame] = useState(false);
-  const [autoOpenCards, setAutoOpenCards] = useState(false);
-  const [changeAfterRoundEnd, setChangeAfterRoundEnd] = useState(false);
+export const LobbySettingsSection: React.FC<SettingsProps> = ({ state }) => {
+  const [gameSettings, setGameSettings] = state;
   const [isShowGameTimer, setIsShowGameTimer] = useState(false);
-  const [timeoutRound, setTimeoutRound] = useState(0);
-  const [scoreType, setScoreType] = useState('');
-  console.log(
-    dealerGame,
-    autoJoinToGame,
-    autoOpenCards,
-    changeAfterRoundEnd,
-    isShowGameTimer,
-    timeoutRound
-  );
 
-  const cards: Array<SettingsCardsType> = [
-    {
-      label: 'Fibonacci numbers',
-      value: CardsSetDefault.FIBONACCI,
-    },
-    {
-      label: 'Power of two',
-      value: CardsSetDefault.POW_2,
-    },
-  ];
+  const setDealerGamer = (dealerGamer: boolean) =>
+    setGameSettings((prev) => ({ ...prev, dealerGamer }));
 
-  const settings: Array<SettingsType> = [
+  const setAutoJoin = (autoJoinToGame: boolean) =>
+    setGameSettings((prev) => ({ ...prev, autoJoinToGame }));
+
+  const setAutoOpenCards = (autoOpenCards: boolean) =>
+    setGameSettings((prev) => ({ ...prev, autoOpenCards }));
+
+  const setChangeAfterRoundEnd = (changeAfterRoundEnd: boolean) =>
+    setGameSettings((prev) => ({ ...prev, changeAfterRoundEnd }));
+
+  const setTimeoutRound = (timeout: number) =>
+    setGameSettings((prev) => ({ ...prev, timeout }));
+
+  const toggleTimer = (isShow: boolean) => {
+    setIsShowGameTimer(isShow);
+    if (!isShow) {
+      setGameSettings((prev) => ({ ...prev, timeout: undefined }));
+    }
+  };
+
+  const setScoreType = (scoreType: string) =>
+    setGameSettings((prev) => ({ ...prev, scoreType }));
+
+  const selectCardSet = (cardsSet: CardsSetDefault) => {
+    setGameSettings((prev) => ({ ...prev, cardsSet }));
+  };
+
+  const toggleSettings: Array<SettingsType> = [
     {
       title: 'Scram master as player:',
-      component: <Toggle onChange={(value) => setDealerGame(value)} />,
+      component: (
+        <Toggle checked={gameSettings.dealerGamer} onChange={setDealerGamer} />
+      ),
     },
     {
       title: 'Auto join to game:',
-      component: <Toggle onChange={(value) => setAutoJoinToGame(value)} />,
+      component: (
+        <Toggle checked={gameSettings.autoJoinToGame} onChange={setAutoJoin} />
+      ),
     },
     {
       title: 'Auto open cards:',
-      component: <Toggle onChange={(value) => setAutoOpenCards(value)} />,
+      component: (
+        <Toggle
+          checked={gameSettings.autoOpenCards}
+          onChange={setAutoOpenCards}
+        />
+      ),
     },
     {
       title: 'Changing card in round end:',
-      component: <Toggle onChange={(value) => setChangeAfterRoundEnd(value)} />,
+      component: (
+        <Toggle
+          checked={gameSettings.changeAfterRoundEnd}
+          onChange={setChangeAfterRoundEnd}
+        />
+      ),
     },
     {
       title: 'Is timer needed:',
-      component: <Toggle onChange={(value) => setIsShowGameTimer(value)} />,
+      component: <Toggle onChange={toggleTimer} />,
     },
-    {
-      title: 'Round time:',
-      component: <LobbyTimer setTimeoutRound={setTimeoutRound} />,
-    },
+  ];
+
+  const cardSettings: Array<SettingsType> = [
     {
       title: 'Score type:',
       component: (
         <StyleLobbySettingsScore
           type="text"
-          value={scoreType}
+          value={gameSettings.scoreType}
           onChange={(e) => setScoreType(e.target.value)}
         />
       ),
     },
     {
       title: 'A set of cards will be used:',
-      component: <Select options={cards} />,
+      component: (
+        <Select
+          options={cardsSetOption}
+          onChange={(value) => selectCardSet(value as CardsSetDefault)}
+        />
+      ),
     },
   ];
 
   return (
     <StyleLobbySettings>
-      <StyleLobbyTitle
-        level={2}
-        style={{
-          fontSize: '24px',
-          lineHeight: '30px',
-          fontWeight: 'bold',
-        }}>
-        Game settings:
-      </StyleLobbyTitle>
+      <StyleLobbyTitle level={2}>Game settings:</StyleLobbyTitle>
       <StyleLobbySettingsWrapper>
-        {settings.map((setting, index) => {
+        {toggleSettings.map(({ title, component }) => {
           return (
-            <StyleLobbySettingsItem key={index.toString()}>
-              <StyleLobbySettingsDesc>{setting.title}</StyleLobbySettingsDesc>
-              {setting.component}
-            </StyleLobbySettingsItem>
+            <SettingsItem key={title} title={title}>
+              {component}
+            </SettingsItem>
+          );
+        })}
+        {isShowGameTimer ? (
+          <SettingsItem title="Round time:">
+            <LobbyTimer
+              initialTime={gameSettings.timeout}
+              setTimeoutRound={setTimeoutRound}
+            />
+          </SettingsItem>
+        ) : null}
+        {cardSettings.map(({ title, component }) => {
+          return (
+            <SettingsItem key={title} title={title}>
+              {component}
+            </SettingsItem>
           );
         })}
       </StyleLobbySettingsWrapper>

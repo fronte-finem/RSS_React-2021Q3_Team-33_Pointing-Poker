@@ -1,93 +1,21 @@
 import { UserCard } from '@client/components/shared/user-card/user-card';
-import { Role, User } from '@shared/api-types/user';
 import React from 'react';
-import { StyleLobbyTitle } from '../lobby-styles';
-import { StyleLobbyUsers, StyleLobbyUsersWrapper } from './lobby-users-styles';
+import { observer } from 'mobx-react-lite';
+import { useGameService } from '@client/providers/game-service';
+import { StyleLobbyTitle, StyledLobbySection } from '../lobby-styles';
+import { StyleLobbyUsersGrid } from './lobby-users-styles';
 
-export const LobbyUsersSection: React.FC = () => {
-  const users: Array<User> = [
-    {
-      firstName: 'David',
-      lastName: 'Blane',
-      jobPosition: 'senior software engineer',
-      avatar: '',
-      id: '1',
-      role: Role.GAMER,
-    },
-    {
-      firstName: 'Dayana',
-      lastName: 'Ross',
-      jobPosition: 'junior software engineer',
-      avatar: '',
-      id: '2',
-      role: Role.GAMER,
-    },
-    {
-      firstName: 'Daniel',
-      lastName: 'Horn',
-      jobPosition: '',
-      avatar: '',
-      id: '3',
-      role: Role.GAMER,
-    },
-    {
-      firstName: 'Mark',
-      lastName: 'Single',
-      jobPosition: 'senior software engineer',
-      avatar: '',
-      id: '4',
-      role: Role.GAMER,
-    },
-    {
-      firstName: 'Jane',
-      lastName: 'Ring',
-      jobPosition: 'software engineer',
-      avatar: '',
-      id: '5',
-      role: Role.GAMER,
-    },
-    {
-      firstName: 'Larry',
-      lastName: 'King',
-      jobPosition: 'junior software engineer',
-      avatar: '',
-      id: '6',
-      role: Role.GAMER,
-    },
-    {
-      firstName: 'Fill',
-      lastName: '',
-      jobPosition: 'QA engineer',
-      avatar: '',
-      id: '7',
-      role: Role.GAMER,
-    },
-  ];
+export const LobbyUsersSection: React.FC = observer(() => {
+  const { gameState } = useGameService();
 
   return (
-    <StyleLobbyUsers>
-      <StyleLobbyTitle
-        level={2}
-        style={{
-          fontSize: '24px',
-          lineHeight: '30px',
-          fontWeight: 'bold',
-        }}>
-        Members:
-      </StyleLobbyTitle>
-      <StyleLobbyUsersWrapper gutter={[0, 20]}>
-        {users.map((user: User) => (
-          <UserCard
-            firstName={user.firstName}
-            lastName={user.lastName!}
-            position={user.jobPosition!}
-            avatar={user.avatar!}
-            isOwner={false}
-            isDelete
-            key={user.id}
-          />
+    <StyledLobbySection>
+      <StyleLobbyTitle level={2}>Members:</StyleLobbyTitle>
+      <StyleLobbyUsersGrid>
+        {gameState.users.map((user) => (
+          <UserCard key={user.id} user={user} />
         ))}
-      </StyleLobbyUsersWrapper>
-    </StyleLobbyUsers>
+      </StyleLobbyUsersGrid>
+    </StyledLobbySection>
   );
-};
+});

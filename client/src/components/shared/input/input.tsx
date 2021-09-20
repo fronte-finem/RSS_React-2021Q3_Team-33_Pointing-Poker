@@ -1,16 +1,10 @@
 import React from 'react';
-import { Input as AntInput, InputProps } from 'antd';
-import styled from 'styled-components';
+import { InputProps, Input as AntInput } from 'antd';
+import { StyledInput } from '@client/components/shared/input/input.styles';
 
-const StyledInput = styled(AntInput)`
-  border: 1px solid ${(props) => props.theme.componentColor};
-  border-radius: 0px 0px 0px 10px;
-  background: transparent;
-  color: ${(props) => props.theme.componentColor};
-  font-size: 24px;
-`;
-
-export const Input: React.FC<InputProps> = (props) => {
-  const { size } = props;
-  return <StyledInput size={size} {...props} />;
-};
+export const Input: React.FC<InputProps> = React.forwardRef<
+  AntInput,
+  InputProps
+>((props, ref) => {
+  return <StyledInput {...props} ref={ref} />;
+});
