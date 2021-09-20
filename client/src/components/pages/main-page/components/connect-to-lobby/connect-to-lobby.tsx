@@ -4,6 +4,7 @@ import { Input } from '@client/components/shared/input/input';
 import { Modal } from '@client/components/shared/modal/modal';
 import { Toggle } from '@client/components/shared/toggle/toggle';
 import { ModalFuncProps } from 'antd';
+import { UploadFile } from 'antd/lib/upload/interface';
 import React, { useState } from 'react';
 import {
   StyledErrorLabel,
@@ -18,7 +19,7 @@ export const ConnectToLobby: React.FC<ModalFuncProps> = (props) => {
   const [lastName, setLastName] = useState('');
   const [jobPosition, setJobPosition] = useState('');
   const [isObserver, setIsObserver] = useState(false);
-  const [avatar, setAvatar] = useState(undefined);
+  const [avatar, setAvatar] = useState('');
   const [isFirstNameError, setIsFirstNameError] = useState(false);
 
   const onChangeFirstName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,8 +39,9 @@ export const ConnectToLobby: React.FC<ModalFuncProps> = (props) => {
     setIsObserver(!isObserver);
   };
 
-  const handlePreview = async (file: any) => {
-    setAvatar(file.url);
+  const handlePreview = async (file: UploadFile<string>) => {
+    setAvatar(file.url as string);
+    console.log(file)
   };
 
   return (
