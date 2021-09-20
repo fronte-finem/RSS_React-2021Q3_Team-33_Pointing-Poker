@@ -1,4 +1,3 @@
-import { StyledText } from '@client/components/pages/main-page/components/connect-to-lobby/connect-to-lobby-styleds';
 import { Modal } from '@client/components/shared/modal/modal';
 import { SelectValue } from 'antd/lib/select';
 import React, { useState } from 'react';
@@ -6,6 +5,7 @@ import {
   StyledInput,
   StyledInputWrapper,
   StyledSelect,
+  StyledText,
   StyledWrapper,
 } from './modal-edit-issue-styleds';
 
@@ -55,27 +55,25 @@ export const ModalEditIssue: React.FC<IProps> = (props) => {
       title={!title ? 'Create Issue' : 'Edit Issue'}
       visible={visible}
       onOk={onOK}
-      onCancel={onCancel}
-      content={
-        <StyledWrapper>
-          <StyledInputWrapper>
-            <StyledText>Title:</StyledText>
-            <StyledInput value={titleField} onChange={onChangeTitle} />
-          </StyledInputWrapper>
-          <StyledInputWrapper>
-            <StyledText>Link:</StyledText>
-            <StyledInput value={linkField} onChange={onChangeLink} />
-          </StyledInputWrapper>
-          <StyledInputWrapper>
-            <StyledText>Priority:</StyledText>
-            <StyledSelect
-              defaultValue={!title ? options[0].value : priorityField}
-              options={options}
-              onChange={onChangePriority}
-            />
-          </StyledInputWrapper>
-        </StyledWrapper>
-      }
-    />
+      onCancel={onCancel}>
+      <StyledWrapper>
+        <StyledInputWrapper>
+          <StyledText>Title:</StyledText>
+          <StyledInput value={titleField} onChange={onChangeTitle} />
+        </StyledInputWrapper>
+        <StyledInputWrapper>
+          <StyledText>Link:</StyledText>
+          <StyledInput value={linkField} onChange={onChangeLink} />
+        </StyledInputWrapper>
+        <StyledInputWrapper>
+          <StyledText>Priority:</StyledText>
+          <StyledSelect
+            defaultValue={!title ? options[0].value : priorityField}
+            options={options}
+            onChange={onChangePriority}
+          />
+        </StyledInputWrapper>
+      </StyledWrapper>
+    </Modal>
   );
 };

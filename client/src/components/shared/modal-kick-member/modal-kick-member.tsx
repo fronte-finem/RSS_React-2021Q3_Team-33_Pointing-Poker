@@ -18,24 +18,21 @@ export const ModalKickMember: React.FC<IProps> = (props) => {
       title={!player ? 'Kick player?' : 'Kick'}
       visible={visible}
       onOk={onOK}
-      onCancel={onCancel}
-      content={
-        !player ? (
+      onCancel={onCancel}>
+      {!player ? (
+        <p>
+          Are you really want to remove player{' '}
+          <span style={{ color: '#66999B' }}>{member}</span> from game session?
+        </p>
+      ) : (
+        <>
           <p>
-            Are you really want to remove player{' '}
-            <span style={{ color: '#66999B' }}>{member}</span> from game
-            session?
+            <span style={{ color: '#66999B' }}>{player}</span> want to kick
+            member <span style={{ color: '#66999B' }}>{member}</span>
           </p>
-        ) : (
-          <>
-            <p>
-              <span style={{ color: '#66999B' }}>{player}</span> want to kick
-              member <span style={{ color: '#66999B' }}>{member}</span>
-            </p>
-            <p>Do you agree with it?</p>
-          </>
-        )
-      }
-    />
+          <p>Do you agree with it?</p>
+        </>
+      )}
+    </Modal>
   );
 };
