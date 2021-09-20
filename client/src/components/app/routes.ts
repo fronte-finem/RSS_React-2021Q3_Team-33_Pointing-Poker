@@ -5,6 +5,11 @@ import { PageAvatarDemo } from '@client/components/pages/demo/avatar';
 import { PageIssueDemo } from '@client/components/pages/demo/issue';
 import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
 import { PageChatDemo } from '@client/components/pages/demo/chat';
+import { MainPage } from '@client/components/pages/main-page/main-page';
+import { KickPlayer } from '@client/components/pages/demo/kick-player';
+import { KickPlayerVoting } from '@client/components/pages/demo/kick-player-voting';
+import { EditIssue } from '@client/components/pages/demo/edit-issue';
+import { CreateIssue } from '@client/components/pages/demo/create-issue';
 import { PageGameRouterDemo } from '@client/components/pages/demo/game-router';
 import { PageComponentsDemo } from '@client/components/pages/demo/components';
 import { PageLobbyDemo } from '@client/components/pages/demo/page-lobby';
@@ -71,5 +76,30 @@ export const routes: RouteConf[] = [
     path: '/demo/chat',
     name: 'Chat (🚧 mutate game-state 🚧)',
     component: PageChatDemo,
+  },
+  {
+    path: '/demo/main-page',
+    name: 'Main Page',
+    component: MainPage,
+  },
+  {
+    path: '/demo/kick-player',
+    name: 'Kick Player',
+    component: KickPlayer,
+  },
+  {
+    path: '/demo/kick-player-voting',
+    name: 'Kick Player Voting',
+    component: KickPlayerVoting,
+  },
+  {
+    path: '/demo/edit-issue',
+    name: 'Edit Issue',
+    component: EditIssue,
+  },
+  {
+    path: '/demo/create-issue',
+    name: 'Create Issue',
+    component: CreateIssue,
   },
 ];

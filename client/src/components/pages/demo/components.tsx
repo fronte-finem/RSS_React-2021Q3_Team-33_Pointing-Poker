@@ -48,7 +48,7 @@ export const PageComponentsDemo: React.FC = () => {
       </div>
       <div>
         <FormItem label="Avatar upload">
-          <InputFile />
+          <InputFile onLoad={() => {}} />
         </FormItem>
       </div>
       <div>
