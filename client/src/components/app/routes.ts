@@ -84,12 +84,12 @@ export const routes: RouteConf[] = [
   },
   {
     path: '/demo/kick-player',
-    name: 'Kick Player',
+    name: 'Kick Player (🚧 mutate game-state 🚧)',
     component: KickPlayer,
   },
   {
     path: '/demo/kick-player-voting',
-    name: 'Kick Player Voting',
+    name: 'Kick Player Voting (🚧 mutate game-state 🚧)',
     component: KickPlayerVoting,
   },
   {
