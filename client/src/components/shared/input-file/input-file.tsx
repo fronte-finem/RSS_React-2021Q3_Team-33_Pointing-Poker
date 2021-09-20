@@ -12,6 +12,8 @@ export const InputFile: React.FC<UploadProps> = (props) => {
   const onChange = (file: { file: { name: React.SetStateAction<string> } }) =>
     setPlaceholder(file.file.name);
 
+  // const customRequest = (file: any) => setPlaceholder(file.file.name);
+
   return (
     <StyledUpload showUploadList={false} {...props} onChange={onChange}>
       <StyledInput value={placeholder} />
