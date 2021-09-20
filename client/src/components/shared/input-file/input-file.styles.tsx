@@ -5,11 +5,13 @@ import { Input } from '@client/components/shared/input/input';
 export const StyledUpload = styled(AntUpload)`
   .ant-upload {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 `;
 
 export const StyledInput = styled(Input)`
-  width: 275px;
+  flex: 1 1 250px;
   text-align: center;
 
   cursor: pointer;
