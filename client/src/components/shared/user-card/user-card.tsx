@@ -24,22 +24,24 @@ interface UserCardProps {
 }
 
 export const UserCard: React.FC<UserCardProps> = observer(({ user }) => {
-  const { gameState, gameSocketActions } = useGameService();
+  const { gameState, gameStateActions } = useGameService();
 
   if (!user) return null;
   const { id, firstName, lastName, avatar, jobPosition } = user;
   const username = getFullName({ firstName, lastName });
 
   const isOwner = gameState.selfUserId === id;
-  const isDelete = !isOwner && user.role !== Role.DEALER;
+  const isKickPossible = !isOwner && user.role !== Role.DEALER;
 
-  const onDelete = () => gameSocketActions.kick(id);
+  const onKick = async () => {
+    gameStateActions.initKick(id);
+  };
 
-  const deleteBtn = (
+  const kickBtn = (
     <StyledButton
       type="link"
       icon={<StyleStopOutlined rotate={90} />}
-      onClick={onDelete}
+      onClick={onKick}
     />
   );
 
@@ -56,7 +58,7 @@ export const UserCard: React.FC<UserCardProps> = observer(({ user }) => {
         <StyledJobPosition>{jobPosition}</StyledJobPosition>
       </StyledBodyContainer>
       <StyledControlContainer>
-        {isDelete ? deleteBtn : null}
+        {isKickPossible ? kickBtn : null}
       </StyledControlContainer>
     </StyleCard>
   );
