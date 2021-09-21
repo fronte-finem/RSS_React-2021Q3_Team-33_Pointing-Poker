@@ -98,7 +98,12 @@ export const ChatModal: React.FC<ModalProps> = observer(
     ];
 
     return (
-      <StyledModal closable visible={visible} footer={footer} {...props}>
+      <StyledModal
+        closable
+        visible={visible}
+        footer={footer}
+        zIndex={10}
+        {...props}>
         <StyledFrame>
           <StyledChatContainer ref={refChat}>
             <Chat />

@@ -16,7 +16,13 @@ export const Modal: React.FC<ModalProps> = ({ children, ...props }) => {
   ];
 
   return (
-    <StyledModal title={title} footer={footer} closable={false} {...props}>
+    <StyledModal
+      title={title}
+      footer={footer}
+      closable={false}
+      maskStyle={{ background: '#000c', backdropFilter: 'blur(5px)' }}
+      zIndex={1000}
+      {...props}>
       {children}
     </StyledModal>
   );
