@@ -3,8 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { message } from 'antd';
 import { Modal } from '@client/components/shared/modal/modal';
 import { useGameService } from '@client/providers/game-service';
-import { GamePage } from '@client/services/game-state';
-import { userFormat } from '@client/components/shared/modal-kick/user-format';
 import { Highlight } from './modal-kick.styles';
 
 export const ModalKickInit: React.FC = observer(() => {
@@ -14,31 +12,29 @@ export const ModalKickInit: React.FC = observer(() => {
   const onOk = async () => {
     if (!gameState.kickInit) return;
     await gameSocketActions.kick(gameState.kickInit);
+    gameStateActions.initKickReset();
     if (socketState.isFail) {
       message.error(socketState.failMessage);
     }
-    gameStateActions.initKickReset();
   };
 
   const onCancel = () => {
     gameStateActions.initKickReset();
   };
 
-  if (!gameState.kickInit) return null;
-  const visible =
-    gameState.page !== GamePage.ENTRY && Boolean(gameState.kickInit);
-  const whoKick = userFormat(gameStateActions.getUser(gameState.kickInit));
+  if (!gameStateActions.isKickInit || !gameState.kickInit) return null;
 
   return (
     <Modal
       okText="Yes"
       cancelText="No"
       title="Kick"
-      visible={visible}
+      visible={gameStateActions.isKickInit}
       onOk={onOk}
       onCancel={onCancel}>
       <p>
-        Are you really want to remove player <Highlight>{whoKick}</Highlight>{' '}
+        Are you really want to remove player{' '}
+        <Highlight>{gameStateActions.formatUser(gameState.kickInit)}</Highlight>{' '}
         from game session?
       </p>
     </Modal>

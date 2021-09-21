@@ -4,7 +4,6 @@ import { message } from 'antd';
 import { Modal } from '@client/components/shared/modal/modal';
 import { useGameService } from '@client/providers/game-service';
 import { GamePage } from '@client/services/game-state';
-import { userFormat } from '@client/components/shared/modal-kick/user-format';
 import { Highlight } from './modal-kick.styles';
 
 export const ModalKick: React.FC = observer(() => {
@@ -21,8 +20,6 @@ export const ModalKick: React.FC = observer(() => {
   const onOk = () => makeVote(true);
   const onCancel = () => makeVote(false);
 
-  const initiator = userFormat(gameStateActions.getUserWhoInitKick());
-  const whoKick = userFormat(gameStateActions.getUserForKick());
   const visible = gameState.page !== GamePage.ENTRY && gameState.kickVoteRun;
 
   return (
@@ -35,8 +32,9 @@ export const ModalKick: React.FC = observer(() => {
       onCancel={onCancel}>
       <>
         <p>
-          <Highlight>{initiator}</Highlight> want to kick member{' '}
-          <Highlight>{whoKick}</Highlight>
+          <Highlight>{gameStateActions.formatUserWhoInitKick()}</Highlight> want
+          to kick member{' '}
+          <Highlight>{gameStateActions.formatUserForKick()}</Highlight>
         </p>
         <p>Do you agree with it?</p>
       </>
