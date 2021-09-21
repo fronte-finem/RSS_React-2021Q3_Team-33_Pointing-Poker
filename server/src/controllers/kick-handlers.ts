@@ -16,11 +16,12 @@ const validate = (
 };
 
 const dealerKick = (userId: string, game: GameService) => {
-  const badUserSocket = game.userService.getUserSocket(userId)!;
+  const badUserSocket = game.userService.getUserSocket(userId);
   const kickResult = game.userService.kick(userId, true);
-  badUserSocket.emit(ApiServerEvents.KICKED, kickResult.reason);
-  badUserSocket.disconnect();
   game.server.to(game.room).emit(ApiServerEvents.USER_KICK_RESULT, kickResult);
+  badUserSocket?.emit(ApiServerEvents.KICKED, kickResult.reason);
+  badUserSocket?.disconnect();
+  game.userService.deleteUser(userId);
 };
 
 export const getKickHandler =
@@ -33,6 +34,7 @@ export const getKickHandler =
     }
 
     if (socket.id === game.dealerSocket.id) {
+      ackCallback(setOk(userId));
       dealerKick(userId, game);
       return;
     }
@@ -74,4 +76,10 @@ export const getKickVoteHandler =
     if (!result) return;
 
     game.server.to(game.room).emit(ApiServerEvents.USER_KICK_RESULT, result);
+    if (result.kicked) {
+      const badUserSocket = game.userService.getUserSocket(result.badUserId);
+      badUserSocket?.emit(ApiServerEvents.KICKED, result.reason);
+      badUserSocket?.disconnect();
+      game.userService.deleteUser(result.badUserId);
+    }
   };

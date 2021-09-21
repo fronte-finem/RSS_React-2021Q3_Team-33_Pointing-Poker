@@ -108,7 +108,6 @@ export class UsersService {
 
   public kick(badUserId: string, dealer?: boolean): KickResult {
     this.stopKickVote();
-    this.deleteUser(badUserId);
     return {
       kicked: true,
       badUserId,
