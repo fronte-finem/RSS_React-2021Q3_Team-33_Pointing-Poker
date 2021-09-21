@@ -1,9 +1,9 @@
 import React from 'react';
+import { SelectProps, SelectValue } from 'antd/lib/select';
 import {
   StyledSelect,
   StyledOption,
 } from '@client/components/shared/select/select.styles';
-import { SelectProps, SelectValue } from 'antd/lib/select';
 
 export interface IOption {
   value: string;

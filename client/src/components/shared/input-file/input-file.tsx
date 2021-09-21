@@ -5,17 +5,23 @@ import {
   StyledInput,
   StyledUpload,
 } from '@client/components/shared/input-file/input-file.styles';
+import { UploadFile } from 'antd/lib/upload/interface';
 
-export const InputFile: React.FC<UploadProps> = (props) => {
-  const [placeholder, setPlaceholder] = useState('File chooser');
+type Props = UploadProps & { onLoad: (file: UploadFile | null) => void };
 
-  const onChange = (file: { file: { name: React.SetStateAction<string> } }) =>
-    setPlaceholder(file.file.name);
+export const InputFile: React.FC<Props> = ({ onLoad, ...props }) => {
+  const [placeholder, setPlaceholder] = useState('Choose file...');
+
+  const handleUpload = (file: UploadFile) => {
+    setPlaceholder(file.name);
+    onLoad(file);
+    return false;
+  };
 
   return (
-    <StyledUpload showUploadList={false} {...props} onChange={onChange}>
+    <StyledUpload beforeUpload={handleUpload} showUploadList={false} {...props}>
       <StyledInput value={placeholder} />
-      <Button>Button</Button>
+      <Button>select</Button>
     </StyledUpload>
   );
 };
