@@ -1,15 +1,12 @@
 import React, { createContext, useContext } from 'react';
 import { observable } from 'mobx';
+import { GameState, getDefaultGameState } from '@client/services/game-state';
 import {
-  GameState,
-  GameStateActions,
-  getDefaultGameState,
-} from '@client/services/game-state';
-import {
-  GameSocketActions,
   getDefaultSocketState,
   SocketState,
 } from '@client/services/game-socket';
+import { GameStateActions } from '@client/services/game-state-actions';
+import { GameSocketActions } from '@client/services/game-socket-actions';
 
 interface IGameServiceContext {
   gameState: GameState;
