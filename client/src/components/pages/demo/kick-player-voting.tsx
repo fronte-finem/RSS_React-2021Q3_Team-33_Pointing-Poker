@@ -1,8 +1,8 @@
-import { ModalKick } from '@client/components/shared/modal-kick/modal-kick';
 import React, { useEffect } from 'react';
+import { Alert } from 'antd';
+import { ModalKick } from '@client/components/shared/modal-kick/modal-kick';
 import { Role, UsersList } from '@shared/api-types/user';
 import { useGameService } from '@client/providers/game-service';
-import { ErrorBoundary } from '@client/utils/error-boundary';
 
 const users: UsersList = [
   {
@@ -44,8 +44,8 @@ export const KickPlayerVoting: React.FC = () => {
   }, []);
 
   return (
-    <ErrorBoundary>
+    <Alert.ErrorBoundary>
       <ModalKick />
-    </ErrorBoundary>
+    </Alert.ErrorBoundary>
   );
 };
