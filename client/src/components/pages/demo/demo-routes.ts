@@ -4,7 +4,7 @@ import { PageGameCardDemo } from '@client/components/pages/demo/game-card';
 import { PageAvatarDemo } from '@client/components/pages/demo/avatar';
 import { PageIssueDemo } from '@client/components/pages/demo/issue';
 import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
-import { PageChatDemo } from '@client/components/pages/demo/chat';
+import { PageChatDemo } from '@client/components/pages/demo/modal-chat';
 import { ModalKickInitDemo } from '@client/components/pages/demo/modal-kick-init';
 import { ModalKickVotingDemo } from '@client/components/pages/demo/modal-kick-voting';
 import { ModalIssueEditDemo } from '@client/components/pages/demo/modal-issue-edit';

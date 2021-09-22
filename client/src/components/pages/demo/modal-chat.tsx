@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { message } from 'antd';
 import { Chat } from '@client/components/shared/chat/chat';
 import { Role } from '@shared/api-types/user';
-import { ChatMessageFE, UserFE } from '@client/services/game-state';
+import { UserFE } from '@client/services/game-state';
 import { useGameService } from '@client/providers/game-service';
 import { observer } from 'mobx-react-lite';
 import { repeat } from '@shared/utils/array';
+import { ChatMessageFE } from '@client/services/modal-state';
 
 const users: UserFE[] = [
   {
@@ -40,25 +41,28 @@ const messages: ChatMessageFE[] = [
   {
     userId: '3',
     message: 'Somebody wants to see street magic?',
-    date: new Date(2121, 12, 23, 13, 23, 56).toISOString(),
+    date: '2021',
   },
   {
     userId: '2',
     message: 'To be, or not to be, that is the question...',
-    date: new Date(2121, 12, 23, 13, 24, 23).toISOString(),
+    date: '2021',
   },
   {
     userId: '4',
     message: "It's OK 🙂",
-    date: new Date(2121, 12, 23, 13, 25, 25).toISOString(),
+    date: '2021',
   },
   {
     userId: '1',
     message:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin tincidunt dui eu ante porttitor porttitor.',
-    date: new Date(2121, 12, 23, 13, 26, 32).toISOString(),
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin tincidunt dui eu ante porttitor.',
+    date: '2021',
   },
 ];
+
+const getDate = (min: number) =>
+  new Date(2121, 12, 23, 13, min, Math.trunc(60 * Math.random())).toISOString();
 
 export const PageChatDemo = observer(() => {
   const { modalState, gameStateActions } = useGameService();
@@ -69,9 +73,14 @@ export const PageChatDemo = observer(() => {
         gameId: '123',
         gameTitle: 'Demo chat list',
         users: repeat(users, 5),
-        messages: repeat(messages, 5),
       },
       users[3].id
+    );
+    modalState.initMessages(
+      repeat(messages, 5).map((msg, index) => ({
+        ...msg,
+        date: getDate(index),
+      }))
     );
   }, []);
 
