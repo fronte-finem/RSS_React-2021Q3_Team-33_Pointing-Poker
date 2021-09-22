@@ -5,12 +5,13 @@ import { PageAvatarDemo } from '@client/components/pages/demo/avatar';
 import { PageIssueDemo } from '@client/components/pages/demo/issue';
 import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
 import { PageChatDemo } from '@client/components/pages/demo/chat';
-import { KickPlayer } from '@client/components/pages/demo/kick-player';
-import { KickPlayerVoting } from '@client/components/pages/demo/kick-player-voting';
-import { EditIssue } from '@client/components/pages/demo/edit-issue';
-import { CreateIssue } from '@client/components/pages/demo/create-issue';
+import { ModalKickInitDemo } from '@client/components/pages/demo/modal-kick-init';
+import { ModalKickVotingDemo } from '@client/components/pages/demo/modal-kick-voting';
+import { ModalIssueEditDemo } from '@client/components/pages/demo/modal-issue-edit';
+import { ModalIssueCreateDemo } from '@client/components/pages/demo/modal-issue-create';
 import { PageComponentsDemo } from '@client/components/pages/demo/components';
 import { PageLobbyDemo } from '@client/components/pages/demo/page-lobby';
+import { ModalIssueDeleteDemo } from '@client/components/pages/demo/modal-issue-delete';
 
 export const demoRoutes: RouteConf[] = [
   {
@@ -55,22 +56,27 @@ export const demoRoutes: RouteConf[] = [
   },
   {
     path: '/kick-player',
-    name: 'Kick Player (🚧 mutate game-state 🚧)',
-    component: KickPlayer,
+    name: 'Modal - Kick Player (🚧 mutate game-state 🚧)',
+    component: ModalKickInitDemo,
   },
   {
     path: '/kick-player-voting',
-    name: 'Kick Player Voting (🚧 mutate game-state 🚧)',
-    component: KickPlayerVoting,
-  },
-  {
-    path: '/edit-issue',
-    name: 'Edit Issue',
-    component: EditIssue,
+    name: 'Modal - Kick Player Voting (🚧 mutate game-state 🚧)',
+    component: ModalKickVotingDemo,
   },
   {
     path: '/create-issue',
-    name: 'Create Issue',
-    component: CreateIssue,
+    name: 'Modal - Create Issue (🚧 mutate game-state 🚧)',
+    component: ModalIssueCreateDemo,
+  },
+  {
+    path: '/edit-issue',
+    name: 'Modal - Edit Issue (🚧 mutate game-state 🚧)',
+    component: ModalIssueEditDemo,
+  },
+  {
+    path: '/delete-issue',
+    name: 'Modal - Delete Issue (🚧 mutate game-state 🚧)',
+    component: ModalIssueDeleteDemo,
   },
 ];

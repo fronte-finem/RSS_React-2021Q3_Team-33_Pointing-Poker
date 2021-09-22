@@ -28,7 +28,7 @@ const users: UsersList = [
   },
 ];
 
-export const KickPlayerVoting: React.FC = () => {
+export const ModalKickVotingDemo: React.FC = () => {
   const { gameStateActions } = useGameService();
 
   useEffect(() => {
