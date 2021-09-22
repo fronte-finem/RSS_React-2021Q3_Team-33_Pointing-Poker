@@ -57,25 +57,27 @@ export class GameSocketActions {
       this.gameStateActions.setTitle(title)
     );
     this.socket?.on(ApiServerEvents.USER_JOINED, (user) => {
-      this.modalState.initSystemMessage(
-        `${user.firstName} ${user.lastName || ''} - joined`
-      );
       this.gameStateActions.addUser(user);
+      const userName = this.gameStateActions.formatUser(user.id);
+      this.modalState.initSystemMessage(`${userName} - joined`);
+      this.modalState.addChatSystemMessage(user.id, 'joined');
     });
     this.socket?.on(ApiServerEvents.USER_DISCONNECTED, (userId) => {
-      const message = this.gameStateActions.formatUserDisconnected(userId);
-      this.modalState.initSystemMessage(message);
+      const userName = this.gameStateActions.formatUser(userId);
+      this.modalState.initSystemMessage(`${userName} - disconnected`);
+      this.modalState.addChatSystemMessage(userId, 'disconnected');
       this.gameStateActions.setUserDisconnected(userId);
     });
     this.socket?.on(ApiServerEvents.USER_KICK_RESULT, (kickResult) => {
-      const message = this.gameStateActions.formatKickResult(kickResult);
-      this.modalState.initKickResult(kickResult);
-      this.modalState.initSystemMessage(message);
+      const { badUserId, reason } = kickResult;
+      const userName = this.gameStateActions.formatUser(badUserId);
+      this.modalState.initSystemMessage(`${userName} - ${reason}`);
+      this.modalState.addChatSystemMessage(badUserId, reason);
       this.gameStateActions.setUserKickResult(kickResult);
     });
-    this.socket?.on(ApiServerEvents.MESSAGE_POSTED, (message) =>
-      this.gameStateActions.addMessage(message)
-    );
+    this.socket?.on(ApiServerEvents.MESSAGE_POSTED, (message) => {
+      this.modalState.addMessage(message);
+    });
     this.socket?.on(ApiServerEvents.ISSUE_ADDED, (issue) =>
       this.gameStateActions.addIssue(issue)
     );
@@ -194,9 +196,12 @@ export class GameSocketActions {
     );
     this.afterAsync(response);
     if (isOk(response)) {
-      this.gameStateActions.initUser(response.data!, this.socket.id);
       this.setListeners();
       this.setUserListeners();
+      if (!response.data) return;
+      this.gameStateActions.initUser(response.data, this.socket.id);
+      if (!response.data.messages) return;
+      this.modalState.initMessages(response.data.messages);
     }
   }
 

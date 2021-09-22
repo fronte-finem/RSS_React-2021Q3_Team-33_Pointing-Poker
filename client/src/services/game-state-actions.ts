@@ -1,4 +1,4 @@
-import { action, computed, runInAction } from 'mobx';
+import { computed, runInAction } from 'mobx';
 import { Role, User, UsersList, UserToJoin } from '@shared/api-types/user';
 import { darkTheme, lightTheme } from '@client/themes/themes';
 import { KickResult } from '@shared/api-types/chat';
@@ -11,7 +11,6 @@ import {
 } from '@shared/api-types/issue';
 import { GameSettings } from '@shared/api-types/game-settings';
 import {
-  ChatMessageFE,
   ColorTheme,
   GamePage,
   GameState,
@@ -71,32 +70,6 @@ export class GameStateActions {
     return `${firstName} ${lastName || ''}`;
   }
 
-  @computed
-  public get messagesCount(): number {
-    return this.gameState.messages.length;
-  }
-
-  @computed
-  public get newMessagesCount(): number {
-    if (this.gameState.chatIsOpen) return 0;
-    return this.gameState.messages.length - this.gameState.chatOldMessages;
-  }
-
-  @action
-  public openChat() {
-    runInAction(() => {
-      this.gameState.chatIsOpen = true;
-    });
-  }
-
-  @action
-  public closeChat() {
-    runInAction(() => {
-      this.gameState.chatIsOpen = false;
-      this.gameState.chatOldMessages = this.gameState.messages.length;
-    });
-  }
-
   public toggleTheme(colorTheme: ColorTheme) {
     runInAction(() => {
       switch (colorTheme) {
@@ -116,14 +89,11 @@ export class GameStateActions {
     runInAction(() => {
       const defaultGameState = getDefaultGameState();
       this.gameState.page = GamePage.ENTRY;
-      this.gameState.chatIsOpen = defaultGameState.chatIsOpen;
-      this.gameState.chatOldMessages = defaultGameState.chatOldMessages;
       this.gameState.id = defaultGameState.id;
       this.gameState.title = defaultGameState.title;
       this.gameState.selfUserId = defaultGameState.selfUserId;
       this.gameState.isDealer = defaultGameState.isDealer;
       this.gameState.users = defaultGameState.users;
-      this.gameState.messages = defaultGameState.messages;
       this.gameState.issues = defaultGameState.issues;
       this.gameState.settings = defaultGameState.settings;
       this.gameState.results = defaultGameState.results;
@@ -149,15 +119,9 @@ export class GameStateActions {
 
   public formatKickResult(result: KickResult): null | string {
     const { badUserId, reason } = result;
-    const user = this.getUser(badUserId);
-    if (!user) return null;
-    return `${user.firstName} ${user.lastName || ''} - ${reason}`;
-  }
-
-  public formatUserDisconnected(userId: string): null | string {
-    const user = this.getUser(userId);
-    if (!user) return null;
-    return `${user.firstName} ${user.lastName || ''} - disconnected`;
+    const userName = this.formatUser(badUserId);
+    if (!userName) return null;
+    return `${userName} - ${reason}`;
   }
 
   public setUserKickResult({ badUserId, kicked, reason }: KickResult) {
@@ -167,12 +131,6 @@ export class GameStateActions {
         if (index < 0) return;
         this.gameState.users[index].kicked = { reason };
       }
-      this.gameState.messages.push({
-        system: true,
-        userId: badUserId,
-        message: reason,
-        date: new Date().toISOString(),
-      });
     });
   }
 
@@ -181,12 +139,6 @@ export class GameStateActions {
       const index = this.getUserIndex(userId);
       if (index < 0) return;
       this.gameState.users[index].disconnected = true;
-      this.gameState.messages.push({
-        system: true,
-        userId,
-        message: 'disconnected',
-        date: new Date().toISOString(),
-      });
     });
   }
 
@@ -210,7 +162,6 @@ export class GameStateActions {
       this.gameState.selfUserId = selfUserId;
       this.gameState.isDealer = false;
       this.gameState.users = initUser.users;
-      if (initUser.messages) this.gameState.messages = initUser.messages;
       if (initUser.issues) this.gameState.issues = initUser.issues;
       if (initUser.gameResult) this.gameState.results = initUser.gameResult;
       if (initUser.gameSettings)
@@ -262,18 +213,6 @@ export class GameStateActions {
   ) {
     runInAction(() => {
       this.gameState.allowUserToJoin = { userToJoin, callback };
-    });
-  }
-
-  public setMessages(messages: ChatMessageFE[]) {
-    runInAction(() => {
-      this.gameState.messages = messages;
-    });
-  }
-
-  public addMessage(message: ChatMessageFE) {
-    runInAction(() => {
-      this.gameState.messages.push(message);
     });
   }
 

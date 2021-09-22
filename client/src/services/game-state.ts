@@ -3,7 +3,6 @@ import {
   getDefaultGameSettings,
 } from '@shared/api-types/game-settings';
 import { User, UserToJoin } from '@shared/api-types/user';
-import { ChatMessage } from '@shared/api-types/chat';
 import { GameResults, IssuesList } from '@shared/api-types/issue';
 import { DefaultTheme } from 'styled-components';
 import { lightTheme } from '@client/themes/themes';
@@ -30,21 +29,14 @@ export interface UserFE extends User {
   disconnected?: boolean;
 }
 
-export interface ChatMessageFE extends ChatMessage {
-  system?: boolean;
-}
-
 export interface GameState {
   page: GamePage;
   theme: DefaultTheme;
-  chatIsOpen: boolean;
-  chatOldMessages: number;
   id: string;
   title: string;
   selfUserId: string;
   isDealer: boolean;
   users: UserFE[];
-  messages: ChatMessageFE[];
   issues: IssuesList;
   settings: GameSettings;
   results: GameResults;
@@ -59,14 +51,11 @@ export interface GameState {
 export const getDefaultGameState = (): GameState => ({
   page: GamePage.ENTRY,
   theme: lightTheme,
-  chatIsOpen: false,
-  chatOldMessages: 0,
   id: '',
   title: '',
   selfUserId: '',
   isDealer: false,
   users: [],
-  messages: [],
   issues: [],
   settings: getDefaultGameSettings(),
   results: [],
