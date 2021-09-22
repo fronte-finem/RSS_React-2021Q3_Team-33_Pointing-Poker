@@ -8,7 +8,7 @@ import { ModalIssue } from '@client/components/shared/modal-issue/modal-issue';
 export const ModalIssueCreate = observer(() => {
   const { modalState, gameSocketActions } = useGameService();
 
-  const updateHook = (form: FormInstance) => {
+  const initFieldsHook = (form: FormInstance) => {
     useEffect(() => {
       form.setFieldsValue({ priority: Priority.HIGH });
     }, [modalState.createIssue]);
@@ -26,7 +26,7 @@ export const ModalIssueCreate = observer(() => {
     <ModalIssue
       visible={modalState.createIssue}
       title="Create Issue"
-      setUpdateHook={updateHook}
+      initFieldsHook={initFieldsHook}
       onReset={onReset}
       onSubmit={onSubmit}
     />

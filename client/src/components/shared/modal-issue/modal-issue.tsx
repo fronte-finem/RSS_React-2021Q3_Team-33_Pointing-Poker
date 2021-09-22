@@ -20,17 +20,17 @@ const options: IOption[] = Object.entries(Priority).map(([value, label]) => ({
 interface Props {
   visible: boolean;
   title: string;
-  setUpdateHook: (form: FormInstance) => void;
+  initFieldsHook: (form: FormInstance) => void;
   onReset: () => void;
   onSubmit: (issue: IssueBase) => Promise<void>;
 }
 
 export const ModalIssue: React.FC<Props> = observer(
-  ({ visible, title, setUpdateHook, onReset, onSubmit }) => {
+  ({ visible, title, initFieldsHook, onReset, onSubmit }) => {
     const { socketState } = useGameService();
     const [form] = Form.useForm();
 
-    setUpdateHook(form);
+    initFieldsHook(form);
 
     const resetForm = () => {
       form.resetFields();
@@ -58,7 +58,8 @@ export const ModalIssue: React.FC<Props> = observer(
         visible={visible}
         onOk={submitForm}
         onCancel={resetForm}
-        confirmLoading={socketState.isLoading}>
+        confirmLoading={socketState.isLoading}
+        forceRender>
         <Form
           form={form}
           onFinish={onFinish}
