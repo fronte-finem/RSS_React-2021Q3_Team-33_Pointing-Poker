@@ -32,7 +32,7 @@ export const IssueCard: React.FC<IssueProps> = observer(({ issue }) => {
   };
 
   const deleteIssue = () => {
-    modalState.initDeleteIssue(issue.id);
+    modalState.initDeleteIssue(issue);
   };
 
   const editIcon = <StyledEditIcon />;

@@ -4,7 +4,7 @@ import { Issue } from '@shared/api-types/issue';
 export class ModalState {
   @observable public createIssue: boolean = false;
   @observable public editIssue: null | Issue = null;
-  @observable public deleteIssue: null | string = null;
+  @observable public deleteIssue: null | Issue = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -34,8 +34,8 @@ export class ModalState {
     this.editIssue = null;
   }
 
-  @action public initDeleteIssue(issueId: string) {
-    this.deleteIssue = issueId;
+  @action public initDeleteIssue(issue: Issue) {
+    this.deleteIssue = issue;
   }
 
   @action public resetDeleteIssue() {

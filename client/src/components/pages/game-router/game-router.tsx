@@ -10,6 +10,7 @@ import { ModalKick } from '@client/components/shared/modal-kick/modal-kick';
 import { ModalKickInit } from '@client/components/shared/modal-kick/modal-kick-init';
 import { ModalIssueCreate } from '@client/components/shared/modal-issue/modal-issue-create';
 import { ModalIssueEdit } from '@client/components/shared/modal-issue/modal-issue-edit';
+import { ModalIssueDelete } from '@client/components/shared/modal-issue/modal-issue-delete';
 
 export const PageGameRouter: React.FC = observer(() => {
   const { gameState, gameStateActions } = useGameService();
@@ -47,6 +48,10 @@ export const PageGameRouter: React.FC = observer(() => {
 
       <Alert.ErrorBoundary>
         <ModalIssueEdit />
+      </Alert.ErrorBoundary>
+
+      <Alert.ErrorBoundary>
+        <ModalIssueDelete />
       </Alert.ErrorBoundary>
     </div>
   );
