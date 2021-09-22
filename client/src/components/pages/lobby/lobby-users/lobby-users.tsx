@@ -10,9 +10,15 @@ export const LobbyUsersSection: React.FC = observer(() => {
 
   return (
     <StyledLobbySection>
-      <StyleLobbyTitle level={2}>Members:</StyleLobbyTitle>
+      <StyleLobbyTitle level={2}>Gamers:</StyleLobbyTitle>
       <StyleLobbyUsersGrid>
-        {gameStateActions.getUsers(false).map((user) => (
+        {gameStateActions.getGamers(false).map((user) => (
+          <UserCard key={user.id} user={user} />
+        ))}
+      </StyleLobbyUsersGrid>
+      <StyleLobbyTitle level={2}>Spectators:</StyleLobbyTitle>
+      <StyleLobbyUsersGrid>
+        {gameStateActions.getSpectators(false).map((user) => (
           <UserCard key={user.id} user={user} />
         ))}
       </StyleLobbyUsersGrid>
