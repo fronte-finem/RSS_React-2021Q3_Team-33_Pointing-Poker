@@ -12,12 +12,14 @@ import {
 import { Issue, IssueBase } from '@shared/api-types/issue';
 import { CardScore, GameSettings } from '@shared/api-types/game-settings';
 import { SocketState } from '@client/services/game-socket';
+import { ModalState } from '@client/services/modal-state';
 
 export class GameSocketActions {
   private socket?: PointingPokerClientSocket;
 
   constructor(
     private socketState: SocketState,
+    private modalState: ModalState,
     private gameStateActions: GameStateActions
   ) {}
 
@@ -54,12 +56,23 @@ export class GameSocketActions {
     this.socket?.on(ApiServerEvents.GAME_TITLE_CHANGED, (title) =>
       this.gameStateActions.setTitle(title)
     );
-    this.socket?.on(ApiServerEvents.USER_JOINED, (user) =>
-      this.gameStateActions.addUser(user)
-    );
-    this.socket?.on(ApiServerEvents.USER_DISCONNECTED, (userId) =>
-      this.gameStateActions.markDisconnectedUser(userId)
-    );
+    this.socket?.on(ApiServerEvents.USER_JOINED, (user) => {
+      this.modalState.initSystemMessage(
+        `${user.firstName} ${user.lastName || ''} - joined`
+      );
+      this.gameStateActions.addUser(user);
+    });
+    this.socket?.on(ApiServerEvents.USER_DISCONNECTED, (userId) => {
+      const message = this.gameStateActions.formatUserDisconnected(userId);
+      this.modalState.initSystemMessage(message);
+      this.gameStateActions.setUserDisconnected(userId);
+    });
+    this.socket?.on(ApiServerEvents.USER_KICK_RESULT, (kickResult) => {
+      const message = this.gameStateActions.formatKickResult(kickResult);
+      this.modalState.initKickResult(kickResult);
+      this.modalState.initSystemMessage(message);
+      this.gameStateActions.setUserKickResult(kickResult);
+    });
     this.socket?.on(ApiServerEvents.MESSAGE_POSTED, (message) =>
       this.gameStateActions.addMessage(message)
     );
@@ -87,14 +100,11 @@ export class GameSocketActions {
     this.socket?.on(ApiServerEvents.SCORE_ADDED, (userId) =>
       this.gameStateActions.progressRound(userId)
     );
-    this.socket?.on(ApiServerEvents.USER_KICK_RESULT, (kickResult) =>
-      this.gameStateActions.endKick(kickResult)
-    );
   }
 
   private setUserListeners() {
     this.socket?.on(ApiServerEvents.KICK_VOTE_STARTED, (kickVoteInit) =>
-      this.gameStateActions.startKickVote(kickVoteInit)
+      this.modalState.initKickVote(kickVoteInit)
     );
     this.socket?.on(ApiServerEvents.KICKED, (message) =>
       this.gameStateActions.setKicked(message)
@@ -233,7 +243,6 @@ export class GameSocketActions {
       this.socket
     );
     this.afterAsync(response);
-    this.gameStateActions.kickVoteProcessed();
   }
 
   @action

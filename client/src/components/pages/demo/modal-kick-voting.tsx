@@ -29,7 +29,7 @@ const users: UsersList = [
 ];
 
 export const ModalKickVotingDemo: React.FC = () => {
-  const { gameStateActions } = useGameService();
+  const { modalState, gameStateActions } = useGameService();
 
   useEffect(() => {
     gameStateActions.initUser(
@@ -40,7 +40,7 @@ export const ModalKickVotingDemo: React.FC = () => {
       },
       users[0].id
     );
-    gameStateActions.startKickVote({ initiatorId: '3', badUserId: '1' });
+    modalState.initKickVote({ initiatorId: '3', badUserId: '1' });
   }, []);
 
   return (

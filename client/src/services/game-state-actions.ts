@@ -1,7 +1,7 @@
-import { action, computed, observable, runInAction } from 'mobx';
+import { action, computed, runInAction } from 'mobx';
 import { Role, User, UsersList, UserToJoin } from '@shared/api-types/user';
 import { darkTheme, lightTheme } from '@client/themes/themes';
-import { KickResult, KickVoteInit } from '@shared/api-types/chat';
+import { KickResult } from '@shared/api-types/chat';
 import { InitDealer, InitUser } from '@shared/api-types/init';
 import {
   GameResults,
@@ -28,23 +28,7 @@ export const filterOnlineUser = (
 };
 
 export class GameStateActions {
-  @observable private _initKick?: string;
-
   constructor(private gameState: GameState) {}
-
-  @action
-  public initKick(userId: string) {
-    runInAction(() => {
-      this.gameState.kickInit = userId;
-    });
-  }
-
-  @action
-  public initKickReset() {
-    runInAction(() => {
-      this.gameState.kickInit = null;
-    });
-  }
 
   public getDealer(): User | undefined {
     return this.gameState.users.find((user) => user.role === Role.DEALER);
@@ -85,16 +69,6 @@ export class GameStateActions {
     if (!user) return unknown;
     const { firstName, lastName } = user;
     return `${firstName} ${lastName || ''}`;
-  }
-
-  @computed
-  public formatUserForKick(): string {
-    return this.formatUser(this.gameState.kickVoteInit?.badUserId);
-  }
-
-  @computed
-  public formatUserWhoInitKick(): string {
-    return this.formatUser(this.gameState.kickVoteInit?.initiatorId);
   }
 
   @computed
@@ -159,9 +133,6 @@ export class GameStateActions {
       this.gameState.roundRun = defaultGameState.roundRun;
       this.gameState.roundIssueId = defaultGameState.roundIssueId;
       this.gameState.roundProgress = defaultGameState.roundProgress;
-      this.gameState.kickVoteRun = defaultGameState.kickVoteRun;
-      this.gameState.kickVoteInit = defaultGameState.kickVoteInit;
-      this.gameState.kickResult = defaultGameState.kickResult;
     });
   }
 
@@ -172,67 +143,51 @@ export class GameStateActions {
     });
   }
 
-  public startKickVote(kickVoteInit: KickVoteInit) {
-    runInAction(() => {
-      this.gameState.kickVoteRun = true;
-      this.gameState.kickVoteInit = kickVoteInit;
-      this.gameState.kickResult = null;
-    });
+  private getUserIndex(userId: string): number {
+    return this.gameState.users.findIndex((user) => user.id === userId);
   }
 
-  @computed
-  public get isKickInit() {
-    return (
-      this.gameState.page !== GamePage.ENTRY && Boolean(this.gameState.kickInit)
-    );
+  public formatKickResult(result: KickResult): null | string {
+    const { badUserId, reason } = result;
+    const user = this.getUser(badUserId);
+    if (!user) return null;
+    return `${user.firstName} ${user.lastName || ''} - ${reason}`;
   }
 
-  public kickVoteProcessed() {
-    runInAction(() => {
-      this.gameState.kickVoteRun = false;
-    });
+  public formatUserDisconnected(userId: string): null | string {
+    const user = this.getUser(userId);
+    if (!user) return null;
+    return `${user.firstName} ${user.lastName || ''} - disconnected`;
   }
 
-  public endKick(kickResult: KickResult) {
+  public setUserKickResult({ badUserId, kicked, reason }: KickResult) {
     runInAction(() => {
-      this.gameState.kickVoteRun = false;
-      this.gameState.kickVoteInit = null;
-      this.gameState.kickResult = kickResult;
-      if (kickResult.kicked) {
-        const index = this.gameState.users.findIndex(
-          (user) => user.id === kickResult.badUserId
-        );
+      if (kicked) {
+        const index = this.getUserIndex(badUserId);
         if (index < 0) return;
-        this.gameState.users[index].kicked = {
-          reason: kickResult.reason,
-        };
+        this.gameState.users[index].kicked = { reason };
       }
       this.gameState.messages.push({
-        isKickMessage: true,
-        userId: kickResult.badUserId,
-        message: kickResult.reason,
+        system: true,
+        userId: badUserId,
+        message: reason,
         date: new Date().toISOString(),
       });
     });
   }
 
-  public markDisconnectedUser(userId: string) {
+  public setUserDisconnected(userId: string) {
     runInAction(() => {
-      const index = this.gameState.users.findIndex(
-        (user) => user.id === userId
-      );
+      const index = this.getUserIndex(userId);
       if (index < 0) return;
       this.gameState.users[index].disconnected = true;
+      this.gameState.messages.push({
+        system: true,
+        userId,
+        message: 'disconnected',
+        date: new Date().toISOString(),
+      });
     });
-  }
-
-  @computed
-  public get kickResult(): null | string {
-    if (!this.gameState.kickResult) return null;
-    const { badUserId, reason } = this.gameState.kickResult;
-    const user = this.getUser(badUserId);
-    if (!user) return null;
-    return `${user.firstName} ${user.lastName || ''} - ${reason}`;
   }
 
   public initDealer(initDealer: InitDealer, selfUserId: string) {

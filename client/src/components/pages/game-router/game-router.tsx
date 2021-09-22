@@ -13,14 +13,14 @@ import { ModalIssueEdit } from '@client/components/shared/modal-issue/modal-issu
 import { ModalIssueDelete } from '@client/components/shared/modal-issue/modal-issue-delete';
 
 export const PageGameRouter: React.FC = observer(() => {
-  const { gameState, gameStateActions } = useGameService();
+  const { modalState, gameState, gameStateActions } = useGameService();
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
   useEffect(() => {
-    if (!gameStateActions.kickResult) return;
-    message.info(gameStateActions.kickResult).then(null);
-  }, [gameStateActions.kickResult]);
+    if (!modalState.systemMessage) return;
+    message.info(modalState.systemMessage).then(null);
+  }, [modalState.systemMessage]);
 
   if (id) {
     gameStateActions.setId(id);

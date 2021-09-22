@@ -22,14 +22,15 @@ const GameServiceContext = createContext<IGameServiceContext | undefined>(
 );
 
 export const GameServiceProvider: React.FC = ({ children }) => {
+  const modalState = new ModalState();
   const gameState = observable<GameState>(getDefaultGameState());
   const socketState = observable<SocketState>(getDefaultSocketState());
   const gameStateActions = new GameStateActions(gameState);
   const gameSocketActions = new GameSocketActions(
     socketState,
+    modalState,
     gameStateActions
   );
-  const modalState = new ModalState();
 
   return (
     <GameServiceContext.Provider

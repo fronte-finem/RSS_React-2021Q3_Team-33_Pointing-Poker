@@ -61,7 +61,7 @@ const messages: ChatMessageFE[] = [
 ];
 
 export const PageChatDemo = observer(() => {
-  const { gameStateActions } = useGameService();
+  const { modalState, gameStateActions } = useGameService();
 
   useEffect(() => {
     gameStateActions.initUser(
@@ -78,7 +78,7 @@ export const PageChatDemo = observer(() => {
   useEffect(() => {
     setTimeout(
       () =>
-        gameStateActions.endKick({
+        gameStateActions.setUserKickResult({
           kicked: true,
           badUserId: '3',
           reason: 'kicked by scram master',
@@ -88,9 +88,9 @@ export const PageChatDemo = observer(() => {
   }, []);
 
   useEffect(() => {
-    if (!gameStateActions.kickResult) return;
-    message.info(gameStateActions.kickResult).then(null);
-  }, [gameStateActions.kickResult]);
+    if (!modalState.systemMessage) return;
+    message.info(modalState.systemMessage).then(null);
+  }, [modalState.systemMessage]);
 
   return (
     <div style={{ padding: 20 }}>
