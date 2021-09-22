@@ -1,12 +1,11 @@
 import { GameService } from '@server/services/game-service';
-import { ApiFailMessage } from '@server/api-fail-message';
+import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { ApiServerEvents } from '@shared/api-types/api-events';
 import { PointingPokerServerSocket } from 'types/server-socket';
 import { AckCallback, setFail, setOk } from '@shared/api-types/api-events-maps';
 import { Issue, IssueBase, Priority } from '@shared/api-types/issue';
 import { CardScore } from '@shared/api-types/game-settings';
-
-const TITLE_MAX_LENGTH = 50;
+import { ISSUE_TITLE_MAX_LENGTH } from '@shared/api-validation/api-constants';
 
 const getPriorities = () => Object.values(Priority).join(', ');
 
@@ -24,8 +23,8 @@ const conditionalEmit = (
 
 const validateAddIssue = ({ title, priority }: IssueBase) => {
   if (!title) return ApiFailMessage.ISSUE_NEED_TITLE;
-  if (title.length > TITLE_MAX_LENGTH)
-    return `${ApiFailMessage.ISSUE_TITLE_TO_LONG}${TITLE_MAX_LENGTH}`;
+  if (title.length > ISSUE_TITLE_MAX_LENGTH)
+    return `${ApiFailMessage.ISSUE_TITLE_TO_LONG}${ISSUE_TITLE_MAX_LENGTH}`;
   if (!priority)
     return `${ApiFailMessage.ISSUE_NEED_PRIORITY}${getPriorities()}`;
   return null;

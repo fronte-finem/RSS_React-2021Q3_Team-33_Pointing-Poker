@@ -7,25 +7,50 @@ import {
   StyledChat,
   StyledDateTime,
   StyledMessageWrapper,
+  StyledPost,
+  StyledSystemMessageWrapper,
+  StyledSystemPost,
 } from './chat.styles';
 
-export const Chat: React.FC = observer(() => {
-  const { gameState } = useGameService();
+export const Chat = observer(() => {
+  const { gameState, gameStateActions } = useGameService();
   return (
     <StyledChat>
-      {gameState.messages.map(({ message, userId, date }) => {
-        const maybeUser = gameState.users.find((user) => user.id === userId);
-        if (!maybeUser) return null;
-        return (
-          <>
-            <StyledMessageWrapper userRole={maybeUser.role}>
-              <StyledMessage>{message}</StyledMessage>
-              <StyledDateTime>{new Date(date).toLocaleString()}</StyledDateTime>
-            </StyledMessageWrapper>
-            <UserCard user={maybeUser} />
-          </>
-        );
-      })}
+      {gameState.messages.map(
+        ({ message, userId, date, isKickMessage }, index) => {
+          const maybeUser = gameStateActions.getUser(userId);
+          if (!maybeUser) return null;
+
+          if (isKickMessage) {
+            return (
+              <StyledSystemPost key={userId + date + index.toString()}>
+                <StyledSystemMessageWrapper userRole={maybeUser.role}>
+                  <UserCard user={maybeUser} style={{ opacity: 1 }} />
+                  <StyledMessage>{message}</StyledMessage>
+                  <StyledDateTime>
+                    {new Date(date).toLocaleTimeString()}
+                  </StyledDateTime>
+                </StyledSystemMessageWrapper>
+              </StyledSystemPost>
+            );
+          }
+
+          const isKicked = Boolean(maybeUser.kicked);
+          return (
+            <StyledPost key={userId + date + index.toString()}>
+              <UserCard user={maybeUser} />
+              <StyledMessageWrapper
+                userRole={maybeUser.role}
+                userKicked={isKicked}>
+                <StyledMessage>{message}</StyledMessage>
+                <StyledDateTime>
+                  {new Date(date).toLocaleTimeString()}
+                </StyledDateTime>
+              </StyledMessageWrapper>
+            </StyledPost>
+          );
+        }
+      )}
     </StyledChat>
   );
 });

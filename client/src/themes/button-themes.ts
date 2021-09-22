@@ -25,9 +25,9 @@ export const lightButtonTheme: ButtonTheme = {
 };
 
 const darkA: InteractiveColors = {
-  normal: DarkThemeColor.PRIMARY_MID,
-  hover: DarkThemeColor.PRIMARY_LIGHT,
-  active: DarkThemeColor.WHITE,
+  normal: DarkThemeColor.PRIMARY_LIGHT,
+  hover: DarkThemeColor.WHITE,
+  active: DarkThemeColor.BLACK,
 };
 
 const darkB: InteractiveColors = {

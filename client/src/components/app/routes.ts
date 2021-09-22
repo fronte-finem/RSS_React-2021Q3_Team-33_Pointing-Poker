@@ -4,7 +4,7 @@ import { PageGameCardDemo } from '@client/components/pages/demo/game-card';
 import { PageAvatarDemo } from '@client/components/pages/demo/avatar';
 import { PageIssueDemo } from '@client/components/pages/demo/issue';
 import { PageUserCardDemo } from '@client/components/pages/demo/user-card';
-import { PageMessageDemo } from '@client/components/pages/demo/chat';
+import { PageChatDemo } from '@client/components/pages/demo/chat';
 import { MainPage } from '@client/components/pages/main-page/main-page';
 import { KickPlayer } from '@client/components/pages/demo/kick-player';
 import { KickPlayerVoting } from '@client/components/pages/demo/kick-player-voting';
@@ -75,7 +75,7 @@ export const routes: RouteConf[] = [
   {
     path: '/demo/chat',
     name: 'Chat (🚧 mutate game-state 🚧)',
-    component: PageMessageDemo,
+    component: PageChatDemo,
   },
   {
     path: '/demo/main-page',
@@ -84,12 +84,12 @@ export const routes: RouteConf[] = [
   },
   {
     path: '/demo/kick-player',
-    name: 'Kick Player',
+    name: 'Kick Player (🚧 mutate game-state 🚧)',
     component: KickPlayer,
   },
   {
     path: '/demo/kick-player-voting',
-    name: 'Kick Player Voting',
+    name: 'Kick Player Voting (🚧 mutate game-state 🚧)',
     component: KickPlayerVoting,
   },
   {

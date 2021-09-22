@@ -39,10 +39,14 @@ export interface UserCardTheme extends ForeGroundBackGround {
   deleteBtn: InteractiveColors;
 }
 
+export interface ChatModalTheme extends ForeGroundBackGround {
+  failMessage: string;
+}
 export interface ChatMessageTheme extends ForeGroundBackGround {
   dateTime: string;
 }
 export interface ChatTheme {
+  modal: ChatModalTheme;
   message: ChatMessageTheme;
 }
 
@@ -60,6 +64,9 @@ export interface HeaderTheme extends ForeGroundBackGround {
     letter1: string;
     letter2: string;
     rhombus: string;
+  };
+  btn: {
+    chat: InteractiveColors;
   };
 }
 

@@ -1,6 +1,6 @@
 import {
   AvatarTheme,
-  ChatMessageTheme,
+  ChatTheme,
   GameCardTheme,
   InputTheme,
   InteractiveColors,
@@ -75,8 +75,8 @@ export const darkUserCardTheme: UserCardTheme = {
   owner: DarkThemeColor.ACCENT_DARK,
   jobPosition: DarkThemeColor.PRIMARY_MID,
   dealer: {
-    bg: DarkThemeColor.BLACK,
-    fg: DarkThemeColor.PRIMARY_LIGHT,
+    bg: DarkThemeColor.PRIMARY_LIGHT,
+    fg: DarkThemeColor.BLACK,
   },
   deleteBtn: {
     normal: DarkThemeColor.PRIMARY_LIGHT,
@@ -85,11 +85,25 @@ export const darkUserCardTheme: UserCardTheme = {
   },
 };
 
-export const lightChatMessageTheme: ChatMessageTheme = {
-  ...lightDefaultTheme,
-  dateTime: LightThemeColor.PRIMARY_MID,
+export const lightChatTheme: ChatTheme = {
+  modal: {
+    fg: LightThemeColor.BLACK,
+    bg: LightThemeColor.WHITE,
+    failMessage: LightThemeColor.ACCENT_DARK,
+  },
+  message: {
+    ...lightDefaultTheme,
+    dateTime: LightThemeColor.PRIMARY_MID,
+  },
 };
-export const darkChatMessageTheme: ChatMessageTheme = {
-  ...darkDefaultTheme,
-  dateTime: DarkThemeColor.PRIMARY_MID,
+export const darkChatTheme: ChatTheme = {
+  modal: {
+    fg: DarkThemeColor.WHITE,
+    bg: DarkThemeColor.PRIMARY_MID,
+    failMessage: DarkThemeColor.ACCENT_DARK,
+  },
+  message: {
+    ...darkDefaultTheme,
+    dateTime: DarkThemeColor.PRIMARY_MID,
+  },
 };

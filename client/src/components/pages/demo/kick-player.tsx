@@ -1,19 +1,38 @@
-import { ModalKickMember } from '@client/components/shared/modal-kick-member/modal-kick-member';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { ErrorBoundary } from '@client/utils/error-boundary';
+import { ModalKickInit } from '@client/components/shared/modal-kick/modal-kick-init';
+import { observer } from 'mobx-react-lite';
+import { useGameService } from '@client/providers/game-service';
+import { Role, UsersList } from '@shared/api-types/user';
 
-export const KickPlayer: React.FC = () => {
-  const [isModalVisible, setIsModalVisible] = useState(true);
+const users: UsersList = [
+  {
+    id: '1',
+    firstName: 'David',
+    lastName: 'Blane',
+    jobPosition: 'senior tester',
+    role: Role.GAMER,
+  },
+];
 
-  const closeModal = () => {
-    setIsModalVisible(false);
-  };
+export const KickPlayer: React.FC = observer(() => {
+  const { gameStateActions } = useGameService();
+
+  useEffect(() => {
+    gameStateActions.initUser(
+      {
+        gameId: '42',
+        gameTitle: 'Awesome',
+        users,
+      },
+      users[0].id
+    );
+    gameStateActions.initKick('1');
+  }, []);
 
   return (
-    <ModalKickMember
-      visible={isModalVisible}
-      member="David Blane"
-      onCancel={closeModal}
-      onOK={closeModal}
-    />
+    <ErrorBoundary>
+      <ModalKickInit />
+    </ErrorBoundary>
   );
-};
+});

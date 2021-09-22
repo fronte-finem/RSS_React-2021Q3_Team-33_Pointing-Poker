@@ -1,7 +1,8 @@
 import React from 'react';
 import { Avatar } from '@client/components/shared/avatar/avatar';
 import { Tooltip } from 'antd';
-import { Role, User, UserBase } from '@shared/api-types/user';
+import { Role, UserBase } from '@shared/api-types/user';
+import { UserFE } from '@client/services/game-state';
 import { useGameService } from '@client/providers/game-service';
 import { observer } from 'mobx-react-lite';
 import {
@@ -20,31 +21,41 @@ const getFullName = ({ firstName, lastName }: UserBase) =>
   [firstName, lastName].filter((name) => Boolean(name)).join(' ');
 
 interface UserCardProps {
-  user?: User | null;
+  user?: UserFE | null;
+  style?: React.CSSProperties | undefined;
 }
 
-export const UserCard: React.FC<UserCardProps> = observer(({ user }) => {
-  const { gameState, gameSocketActions } = useGameService();
+export const UserCard: React.FC<UserCardProps> = observer(({ user, style }) => {
+  const { gameState, gameStateActions } = useGameService();
 
   if (!user) return null;
-  const { id, firstName, lastName, avatar, jobPosition } = user;
+  const { id, firstName, lastName, avatar, jobPosition, role } = user;
   const username = getFullName({ firstName, lastName });
+  const isKicked = Boolean(user.kicked);
+  const isDisconnected = Boolean(user.disconnected);
 
   const isOwner = gameState.selfUserId === id;
-  const isDelete = !isOwner && user.role !== Role.DEALER;
+  const isKickPossible =
+    !isDisconnected && !isKicked && !isOwner && role !== Role.DEALER;
 
-  const onDelete = () => gameSocketActions.kick(id);
+  const onKick = async () => {
+    gameStateActions.initKick(id);
+  };
 
-  const deleteBtn = (
+  const kickBtn = (
     <StyledButton
       type="link"
       icon={<StyleStopOutlined rotate={90} />}
-      onClick={onDelete}
+      onClick={onKick}
     />
   );
 
   return (
-    <StyleCard userRole={user.role}>
+    <StyleCard
+      userRole={role}
+      userKicked={isKicked}
+      userDisconnected={isDisconnected}
+      style={style}>
       <StyledAvatarContainer>
         <Avatar user={user} size={50} src={avatar} />
       </StyledAvatarContainer>
@@ -56,7 +67,7 @@ export const UserCard: React.FC<UserCardProps> = observer(({ user }) => {
         <StyledJobPosition>{jobPosition}</StyledJobPosition>
       </StyledBodyContainer>
       <StyledControlContainer>
-        {isDelete ? deleteBtn : null}
+        {isKickPossible ? kickBtn : null}
       </StyledControlContainer>
     </StyleCard>
   );

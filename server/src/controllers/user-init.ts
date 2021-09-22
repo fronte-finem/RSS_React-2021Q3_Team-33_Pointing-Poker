@@ -1,5 +1,5 @@
 import { ApiClientEvents } from '@shared/api-types/api-events';
-import { ApiFailMessage } from '@server/api-fail-message';
+import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { GAME_ROOMS } from '@server/store/game-rooms';
 import { getLoginHandler } from '@server/controllers/user-init-login-handler';
 import { PointingPokerServerSocket } from 'types/server-socket';
