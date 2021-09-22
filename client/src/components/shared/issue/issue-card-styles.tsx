@@ -54,6 +54,7 @@ export const StyledIssuePriority = styled.div`
   font-weight: 300;
   font-size: 12px;
   line-height: 12px;
+  text-transform: uppercase;
 `;
 
 const StyledButton = styled(AntButton)`
