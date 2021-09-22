@@ -14,6 +14,7 @@ import { PageGameRouterDemo } from '@client/components/pages/demo/game-router';
 import { PageComponentsDemo } from '@client/components/pages/demo/components';
 import { PageLobbyDemo } from '@client/components/pages/demo/page-lobby';
 import { PageGameRouter } from '@client/components/pages/game-router/game-router';
+import { DemoGameResultPage } from '../pages/game-result/demo-geme-results';
 
 interface RouteConf {
   path: string;
@@ -101,5 +102,10 @@ export const routes: RouteConf[] = [
     path: '/demo/create-issue',
     name: 'Create Issue',
     component: CreateIssue,
+  },
+  {
+    path: '/demo/game-result',
+    name: 'Game Result',
+    component: DemoGameResultPage,
   },
 ];
