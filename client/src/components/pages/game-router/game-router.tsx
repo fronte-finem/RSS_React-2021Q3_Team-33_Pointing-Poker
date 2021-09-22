@@ -8,6 +8,7 @@ import { PageLobby } from '@client/components/pages/lobby/lobby';
 import { useHistory, useParams } from 'react-router-dom';
 import { ModalKick } from '@client/components/shared/modal-kick/modal-kick';
 import { ModalKickInit } from '@client/components/shared/modal-kick/modal-kick-init';
+import { ModalCreateIssue } from '@client/components/shared/modal-edit-issue/modal-create-issue';
 
 export const PageGameRouter: React.FC = observer(() => {
   const { gameState, gameStateActions } = useGameService();
@@ -37,6 +38,10 @@ export const PageGameRouter: React.FC = observer(() => {
 
       <Alert.ErrorBoundary>
         <ModalKick />
+      </Alert.ErrorBoundary>
+
+      <Alert.ErrorBoundary>
+        <ModalCreateIssue />
       </Alert.ErrorBoundary>
     </div>
   );

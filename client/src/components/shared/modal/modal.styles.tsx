@@ -40,7 +40,13 @@ export const StyledModal = styled(AntModal)`
   .ant-modal-footer {
     border: 0;
     display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
     justify-content: space-between;
     padding: 0;
+  }
+
+  &&&& .ant-modal-footer .ant-btn {
+    margin: 0;
   }
 `;
