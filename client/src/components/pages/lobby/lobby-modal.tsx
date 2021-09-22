@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Input } from '@client/components/shared/input/input';
 import { Modal } from '@client/components/shared/modal/modal';
 import { useGameService } from '@client/providers/game-service';
+import { message } from 'antd';
 
 interface LobbyEditTitleModalProps {
   isVisible: boolean;
@@ -25,7 +26,11 @@ export const LobbyEditTitleModal: React.FC<LobbyEditTitleModalProps> = observer(
 
     const takeTitleChanges = async () => {
       await gameSocketActions.changeGameTitle(titleValue);
-      if (!socketState.isFail) setIsVisible(false);
+      if (socketState.isFail) {
+        message.error(socketState.failMessage);
+      } else {
+        setIsVisible(false);
+      }
     };
 
     const cancelTitleChanges = () => {
@@ -33,13 +38,6 @@ export const LobbyEditTitleModal: React.FC<LobbyEditTitleModalProps> = observer(
       setIsVisible(false);
       setTitleValue(gameState.title);
     };
-
-    const form = (
-      <>
-        <Input type="text" value={titleValue} onChange={handleTitleChange} />
-        {socketState.isFail ? <div>socketState.failMessage</div> : null}
-      </>
-    );
 
     return (
       <Modal
@@ -52,7 +50,7 @@ export const LobbyEditTitleModal: React.FC<LobbyEditTitleModalProps> = observer(
         onCancel={cancelTitleChanges}
         visible={isVisible}
         confirmLoading={socketState.isLoading}>
-        {form}
+        <Input type="text" value={titleValue} onChange={handleTitleChange} />
       </Modal>
     );
   }
