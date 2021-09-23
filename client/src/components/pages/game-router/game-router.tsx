@@ -8,16 +8,20 @@ import { PageLobby } from '@client/components/pages/lobby/lobby';
 import { useHistory, useParams } from 'react-router-dom';
 import { ModalKick } from '@client/components/shared/modal-kick/modal-kick';
 import { ModalKickInit } from '@client/components/shared/modal-kick/modal-kick-init';
+import { ModalIssueCreate } from '@client/components/shared/modal-issue/modal-issue-create';
+import { ModalIssueEdit } from '@client/components/shared/modal-issue/modal-issue-edit';
+import { ModalIssueDelete } from '@client/components/shared/modal-issue/modal-issue-delete';
+import { ModalChat } from '@client/components/shared/modal-chat/modal-chat';
 
 export const PageGameRouter: React.FC = observer(() => {
-  const { gameState, gameStateActions } = useGameService();
+  const { modalState, gameState, gameStateActions } = useGameService();
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
   useEffect(() => {
-    if (!gameStateActions.kickResult) return;
-    message.info(gameStateActions.kickResult).then(null);
-  }, [gameStateActions.kickResult]);
+    if (!modalState.systemMessage) return;
+    message.info(modalState.systemMessage).then(null);
+  }, [modalState.systemMessage]);
 
   if (id) {
     gameStateActions.setId(id);
@@ -37,6 +41,22 @@ export const PageGameRouter: React.FC = observer(() => {
 
       <Alert.ErrorBoundary>
         <ModalKick />
+      </Alert.ErrorBoundary>
+
+      <Alert.ErrorBoundary>
+        <ModalIssueCreate />
+      </Alert.ErrorBoundary>
+
+      <Alert.ErrorBoundary>
+        <ModalIssueEdit />
+      </Alert.ErrorBoundary>
+
+      <Alert.ErrorBoundary>
+        <ModalIssueDelete />
+      </Alert.ErrorBoundary>
+
+      <Alert.ErrorBoundary>
+        <ModalChat />
       </Alert.ErrorBoundary>
     </div>
   );

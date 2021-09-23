@@ -3,38 +3,50 @@ import { observer } from 'mobx-react-lite';
 import { message } from 'antd';
 import { Modal } from '@client/components/shared/modal/modal';
 import { useGameService } from '@client/providers/game-service';
+import { GamePage } from '@client/services/game-state';
 import { Highlight } from './modal-kick.styles';
 
 export const ModalKickInit: React.FC = observer(() => {
-  const { gameState, socketState, gameStateActions, gameSocketActions } =
-    useGameService();
+  const {
+    modalState,
+    gameState,
+    socketState,
+    gameStateActions,
+    gameSocketActions,
+  } = useGameService();
+
+  const onCancel = () => {
+    modalState.resetKickUser();
+  };
 
   const onOk = async () => {
-    if (!gameState.kickInit) return;
-    await gameSocketActions.kick(gameState.kickInit);
-    gameStateActions.initKickReset();
+    if (!modalState.kickUser) return;
+    await gameSocketActions.kick(modalState.kickUser);
     if (socketState.isFail) {
       message.error(socketState.failMessage);
+    } else {
+      onCancel();
     }
   };
 
-  const onCancel = () => {
-    gameStateActions.initKickReset();
-  };
-
-  if (!gameStateActions.isKickInit || !gameState.kickInit) return null;
+  if (!modalState.kickUser) return null;
+  const visible =
+    gameState.page !== GamePage.ENTRY && modalState.isKickUserActive;
 
   return (
     <Modal
+      title="Start kick?"
       okText="Yes"
       cancelText="No"
-      title="Kick"
-      visible={gameStateActions.isKickInit}
+      visible={visible}
       onOk={onOk}
-      onCancel={onCancel}>
+      onCancel={onCancel}
+      confirmLoading={socketState.isLoading}>
       <p>
         Are you really want to remove player{' '}
-        <Highlight>{gameStateActions.formatUser(gameState.kickInit)}</Highlight>{' '}
+        <Highlight>
+          {gameStateActions.formatUser(modalState.kickUser)}
+        </Highlight>{' '}
         from game session?
       </p>
     </Modal>

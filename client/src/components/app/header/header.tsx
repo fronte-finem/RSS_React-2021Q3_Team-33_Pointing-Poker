@@ -6,9 +6,6 @@ import { Button } from '@client/components/shared/button/button';
 import {
   HeaderLayoutContainer,
   LogoWrapper,
-  StyledChatButton,
-  StyledChatButtonIcon,
-  StyledChatButtonNum,
   StyledControlsWrapper,
   StyledHeader,
 } from '@client/components/app/header/header.styles';
@@ -16,29 +13,13 @@ import { Logo } from '@client/components/app/header/logo';
 import { ColorTheme, GamePage } from '@client/services/game-state';
 import { useGameService } from '@client/providers/game-service';
 import { Toggle } from '@client/components/shared/toggle/toggle';
-import { ChatModal } from '@client/components/app/header/chat-modal';
+import { ChatToggleButton } from '@client/components/shared/chat/chat-toggle-button';
 
 export const Header = observer(() => {
   const { gameState, gameStateActions } = useGameService();
 
   const toggleTheme = (checked: boolean) =>
     gameStateActions.toggleTheme(checked ? ColorTheme.DARK : ColorTheme.LIGHT);
-
-  const onShowChat = () => gameStateActions.openChat();
-  const onHideChat = () => gameStateActions.closeChat();
-
-  const chatBtn = (
-    <StyledChatButton
-      type="link"
-      icon={<StyledChatButtonIcon />}
-      onClick={onShowChat}>
-      {gameStateActions.newMessagesCount > 0 ? (
-        <StyledChatButtonNum>
-          {gameStateActions.newMessagesCount}
-        </StyledChatButtonNum>
-      ) : null}
-    </StyledChatButton>
-  );
 
   return (
     <StyledHeader>
@@ -58,10 +39,9 @@ export const Header = observer(() => {
             checkedChildren={ColorTheme.DARK}
             onChange={toggleTheme}
           />
-          {gameState.page !== GamePage.ENTRY ? chatBtn : null}
+          {gameState.page !== GamePage.ENTRY ? <ChatToggleButton /> : null}
         </StyledControlsWrapper>
       </HeaderLayoutContainer>
-      <ChatModal visible={gameState.chatIsOpen} onCancel={onHideChat} />
     </StyledHeader>
   );
 });

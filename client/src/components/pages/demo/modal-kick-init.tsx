@@ -15,8 +15,8 @@ const users: UsersList = [
   },
 ];
 
-export const KickPlayer: React.FC = observer(() => {
-  const { gameStateActions } = useGameService();
+export const ModalKickInitDemo: React.FC = observer(() => {
+  const { modalState, gameStateActions } = useGameService();
 
   useEffect(() => {
     gameStateActions.initUser(
@@ -27,7 +27,7 @@ export const KickPlayer: React.FC = observer(() => {
       },
       users[0].id
     );
-    gameStateActions.initKick('1');
+    modalState.initKickUser('1');
   }, []);
 
   return (

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Modal } from '@client/components/shared/modal/modal';
-import { Button } from '@client/components/shared/button/button';
+import { CloseCircleFilled } from '@ant-design/icons';
 
 export const StyledModal = styled(Modal)`
   --bg: ${({ theme }) => theme.chat.modal.bg};
@@ -9,10 +9,21 @@ export const StyledModal = styled(Modal)`
   .ant-modal-content {
     background-color: var(--bg);
   }
+
+  .ant-modal-body {
+    padding: 0;
+  }
+
+  .ant-modal-close-x {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export const StyledFrame = styled.div`
   position: relative;
+  margin-bottom: 10px;
 
   &::after {
     content: '';
@@ -45,22 +56,6 @@ export const StyledFooter = styled.div`
   gap: 10px;
 `;
 
-export const StyledFormContainer = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr auto;
-
-  .ant-form-item {
-    margin: 0;
-  }
-`;
-
-export const StyledButtonSend = styled(Button)`
-  min-width: 50px;
-`;
-
-export const StyledFailMessage = styled.div`
-  color: ${({ theme }) => theme.chat.modal.failMessage};
-  text-align: left;
-  font-size: 20px;
+export const StyledCloseIcon = styled(CloseCircleFilled)`
+  font-size: 30px;
 `;

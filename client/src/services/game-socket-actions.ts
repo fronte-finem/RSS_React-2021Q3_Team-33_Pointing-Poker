@@ -12,12 +12,14 @@ import {
 import { Issue, IssueBase } from '@shared/api-types/issue';
 import { CardScore, GameSettings } from '@shared/api-types/game-settings';
 import { SocketState } from '@client/services/game-socket';
+import { ModalState } from '@client/services/modal-state';
 
 export class GameSocketActions {
   private socket?: PointingPokerClientSocket;
 
   constructor(
     private socketState: SocketState,
+    private modalState: ModalState,
     private gameStateActions: GameStateActions
   ) {}
 
@@ -54,15 +56,28 @@ export class GameSocketActions {
     this.socket?.on(ApiServerEvents.GAME_TITLE_CHANGED, (title) =>
       this.gameStateActions.setTitle(title)
     );
-    this.socket?.on(ApiServerEvents.USER_JOINED, (user) =>
-      this.gameStateActions.addUser(user)
-    );
-    this.socket?.on(ApiServerEvents.USER_DISCONNECTED, (userId) =>
-      this.gameStateActions.markDisconnectedUser(userId)
-    );
-    this.socket?.on(ApiServerEvents.MESSAGE_POSTED, (message) =>
-      this.gameStateActions.addMessage(message)
-    );
+    this.socket?.on(ApiServerEvents.USER_JOINED, (user) => {
+      this.gameStateActions.addUser(user);
+      const userName = this.gameStateActions.formatUser(user.id);
+      this.modalState.initSystemMessage(`${userName} - joined`);
+      this.modalState.addChatSystemMessage(user.id, 'joined');
+    });
+    this.socket?.on(ApiServerEvents.USER_DISCONNECTED, (userId) => {
+      const userName = this.gameStateActions.formatUser(userId);
+      this.modalState.initSystemMessage(`${userName} - disconnected`);
+      this.modalState.addChatSystemMessage(userId, 'disconnected');
+      this.gameStateActions.setUserDisconnected(userId);
+    });
+    this.socket?.on(ApiServerEvents.USER_KICK_RESULT, (kickResult) => {
+      const { badUserId, reason } = kickResult;
+      const userName = this.gameStateActions.formatUser(badUserId);
+      this.modalState.initSystemMessage(`${userName} - ${reason}`);
+      this.modalState.addChatSystemMessage(badUserId, reason);
+      this.gameStateActions.setUserKickResult(kickResult);
+    });
+    this.socket?.on(ApiServerEvents.MESSAGE_POSTED, (message) => {
+      this.modalState.addMessage(message);
+    });
     this.socket?.on(ApiServerEvents.ISSUE_ADDED, (issue) =>
       this.gameStateActions.addIssue(issue)
     );
@@ -87,14 +102,11 @@ export class GameSocketActions {
     this.socket?.on(ApiServerEvents.SCORE_ADDED, (userId) =>
       this.gameStateActions.progressRound(userId)
     );
-    this.socket?.on(ApiServerEvents.USER_KICK_RESULT, (kickResult) =>
-      this.gameStateActions.endKick(kickResult)
-    );
   }
 
   private setUserListeners() {
     this.socket?.on(ApiServerEvents.KICK_VOTE_STARTED, (kickVoteInit) =>
-      this.gameStateActions.startKickVote(kickVoteInit)
+      this.modalState.initKickVote(kickVoteInit)
     );
     this.socket?.on(ApiServerEvents.KICKED, (message) =>
       this.gameStateActions.setKicked(message)
@@ -184,9 +196,12 @@ export class GameSocketActions {
     );
     this.afterAsync(response);
     if (isOk(response)) {
-      this.gameStateActions.initUser(response.data!, this.socket.id);
       this.setListeners();
       this.setUserListeners();
+      if (!response.data) return;
+      this.gameStateActions.initUser(response.data, this.socket.id);
+      if (!response.data.messages) return;
+      this.modalState.initMessages(response.data.messages);
     }
   }
 
@@ -233,7 +248,6 @@ export class GameSocketActions {
       this.socket
     );
     this.afterAsync(response);
-    this.gameStateActions.kickVoteProcessed();
   }
 
   @action

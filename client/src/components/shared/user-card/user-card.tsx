@@ -26,7 +26,7 @@ interface UserCardProps {
 }
 
 export const UserCard: React.FC<UserCardProps> = observer(({ user, style }) => {
-  const { gameState, gameStateActions } = useGameService();
+  const { modalState, gameState } = useGameService();
 
   if (!user) return null;
   const { id, firstName, lastName, avatar, jobPosition, role } = user;
@@ -39,7 +39,7 @@ export const UserCard: React.FC<UserCardProps> = observer(({ user, style }) => {
     !isDisconnected && !isKicked && !isOwner && role !== Role.DEALER;
 
   const onKick = async () => {
-    gameStateActions.initKick(id);
+    modalState.initKickUser(id);
   };
 
   const kickBtn = (

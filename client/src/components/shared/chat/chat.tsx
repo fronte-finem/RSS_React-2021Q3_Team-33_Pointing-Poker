@@ -1,56 +1,18 @@
 import React from 'react';
-import { UserCard } from '@client/components/shared/user-card/user-card';
 import { useGameService } from '@client/providers/game-service';
 import { observer } from 'mobx-react-lite';
-import {
-  StyledMessage,
-  StyledChat,
-  StyledDateTime,
-  StyledMessageWrapper,
-  StyledPost,
-  StyledSystemMessageWrapper,
-  StyledSystemPost,
-} from './chat.styles';
+import { Post, SystemPost } from '@client/components/shared/chat/post';
+import { StyledChat } from './chat.styles';
 
 export const Chat = observer(() => {
-  const { gameState, gameStateActions } = useGameService();
+  const { modalState } = useGameService();
   return (
     <StyledChat>
-      {gameState.messages.map(
-        ({ message, userId, date, isKickMessage }, index) => {
-          const maybeUser = gameStateActions.getUser(userId);
-          if (!maybeUser) return null;
-
-          if (isKickMessage) {
-            return (
-              <StyledSystemPost key={userId + date + index.toString()}>
-                <StyledSystemMessageWrapper userRole={maybeUser.role}>
-                  <UserCard user={maybeUser} style={{ opacity: 1 }} />
-                  <StyledMessage>{message}</StyledMessage>
-                  <StyledDateTime>
-                    {new Date(date).toLocaleTimeString()}
-                  </StyledDateTime>
-                </StyledSystemMessageWrapper>
-              </StyledSystemPost>
-            );
-          }
-
-          const isKicked = Boolean(maybeUser.kicked);
-          return (
-            <StyledPost key={userId + date + index.toString()}>
-              <UserCard user={maybeUser} />
-              <StyledMessageWrapper
-                userRole={maybeUser.role}
-                userKicked={isKicked}>
-                <StyledMessage>{message}</StyledMessage>
-                <StyledDateTime>
-                  {new Date(date).toLocaleTimeString()}
-                </StyledDateTime>
-              </StyledMessageWrapper>
-            </StyledPost>
-          );
-        }
-      )}
+      {modalState.messages.map((post) => {
+        const PostComponent = post.system ? SystemPost : Post;
+        const key = post.userId + post.date;
+        return <PostComponent key={key} post={post} />;
+      })}
     </StyledChat>
   );
 });
