@@ -43,6 +43,7 @@ import {
   darkContentTheme,
   lightContentTheme,
 } from '@client/themes/content-themes';
+import { DarkMainPageTheme, LightMainPageTheme } from './pages-theme';
 
 export const lightTheme: DefaultTheme = {
   ...lightDefaultTheme,
@@ -60,6 +61,7 @@ export const lightTheme: DefaultTheme = {
   header: lightHeaderTheme,
   footer: lightFooterTheme,
   content: lightContentTheme,
+  pages: { main: LightMainPageTheme },
 };
 
 export const darkTheme: DefaultTheme = {
@@ -78,4 +80,5 @@ export const darkTheme: DefaultTheme = {
   header: darkHeaderTheme,
   footer: darkFooterTheme,
   content: darkContentTheme,
+  pages: { main: DarkMainPageTheme },
 };

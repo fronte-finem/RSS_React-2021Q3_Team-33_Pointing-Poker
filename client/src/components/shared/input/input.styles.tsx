@@ -6,5 +6,6 @@ export const StyledInput = styled(AntInput)`
   border: 1px solid ${({ theme }) => theme.input.fg};
   background: ${({ theme }) => theme.input.bg};
   color: ${({ theme }) => theme.input.fg};
+  box-shadow: ${({ theme }) => theme.input.shadow};
   font-size: 24px;
 `;

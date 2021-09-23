@@ -14,9 +14,11 @@ export const LayoutContainer = styled.div`
 
 export const Content = styled(AntdLayout.Content)`
   padding: 20px;
-  background: ${(props) => props.theme.content.bg};
+  background: ${({ theme }) => theme.content.bg};
+  box-shadow: ${({ theme }) => theme.content.shadow};
+  z-index: 1;
 `;
 
 export const ContentLayoutContainer = styled(LayoutContainer)`
-  background: ${(props) => props.theme.content.fg};
+  background: ${({ theme }) => theme.content.bg};
 `;

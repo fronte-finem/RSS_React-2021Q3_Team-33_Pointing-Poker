@@ -14,6 +14,7 @@ import {
   darkDefaultTheme,
   lightDefaultTheme,
 } from '@client/themes/default-color-themes';
+import { Shadows } from './shadows';
 
 export const lightLinkTheme: InteractiveColors = {
   normal: LightThemeColor.PRIMARY_MID,
@@ -35,8 +36,17 @@ export const darkToggleTheme: ToggleTheme = {
   unchecked: DarkThemeColor.PRIMARY_MID,
 };
 
-export const lightInputTheme: InputTheme = lightDefaultTheme;
-export const darkInputTheme: InputTheme = darkDefaultTheme;
+export const lightInputTheme: InputTheme = {
+  fg: LightThemeColor.PRIMARY,
+  bg: LightThemeColor.WHITE,
+  shadow: Shadows.MAIN,
+};
+
+export const darkInputTheme: InputTheme = {
+  fg: DarkThemeColor.WHITE,
+  bg: DarkThemeColor.PRIMARY,
+  shadow: Shadows.MAIN,
+};
 
 export const lightGameCardTheme: GameCardTheme = lightDefaultTheme;
 export const darkGameCardTheme: GameCardTheme = darkDefaultTheme;

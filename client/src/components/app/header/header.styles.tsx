@@ -5,10 +5,9 @@ import { LayoutContainer } from '@client/components/app/layout/layout.style';
 export const StyledHeader = styled(Layout.Header)`
   height: 80px;
   color: ${({ theme }) => theme.header.fg};
-  background-color: ${({ theme }) => theme.header.bg};
-  background-image: linear-gradient(to bottom, #0002, #0002);
-  background-size: 100% 60px;
-  background-repeat: no-repeat;
+  background: ${({ theme }) => theme.header.bg};
+  box-shadow: ${({ theme }) => theme.header.shadow};
+  z-index: 2;
 `;
 
 export const HeaderLayoutContainer = styled(LayoutContainer)`

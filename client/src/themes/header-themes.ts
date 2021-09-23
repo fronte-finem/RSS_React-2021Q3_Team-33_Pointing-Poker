@@ -1,22 +1,25 @@
 import { HeaderTheme } from 'types/styled';
 import { DarkThemeColor, LightThemeColor } from '@client/themes/colors';
+import { Shadows } from './shadows';
 
 export const lightHeaderTheme: HeaderTheme = {
-  fg: LightThemeColor.PRIMARY_MID,
-  bg: LightThemeColor.PRIMARY_LIGHT,
+  fg: LightThemeColor.FONT_TEXT,
+  bg: LightThemeColor.PRIMARY,
   logo: {
-    letter1: LightThemeColor.ACCENT_LIGHT,
+    letter1: LightThemeColor.WHITE,
     letter2: LightThemeColor.WHITE,
-    rhombus: LightThemeColor.PRIMARY_DARK,
+    rhombus: LightThemeColor.ACCENT,
   },
+  shadow: Shadows.MEDIUM,
 };
 
 export const darkHeaderTheme: HeaderTheme = {
-  fg: DarkThemeColor.PRIMARY_LIGHT,
-  bg: DarkThemeColor.PRIMARY_DARK,
+  fg: DarkThemeColor.FONT_TEXT,
+  bg: DarkThemeColor.PRIMARY,
   logo: {
     letter1: DarkThemeColor.WHITE,
-    letter2: DarkThemeColor.ACCENT_LIGHT,
-    rhombus: DarkThemeColor.PRIMARY_LIGHT,
+    letter2: DarkThemeColor.WHITE,
+    rhombus: DarkThemeColor.ACCENT,
   },
+  shadow: Shadows.MEDIUM,
 };

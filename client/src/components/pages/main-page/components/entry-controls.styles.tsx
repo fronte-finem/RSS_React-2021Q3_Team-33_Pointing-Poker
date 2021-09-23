@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from '@client/components/shared/button/button';
+import { Button, ButtonInput } from '@client/components/shared/button/button';
 import { Input } from '@client/components/shared/input/input';
 import { FormItem } from '@client/components/shared/form-item/form-item';
 
@@ -14,7 +14,7 @@ export const StyledTitle = styled.div`
   font-weight: bold;
   font-size: 48px;
   line-height: 56px;
-  color: #66999b;
+  color: ${({ theme }) => theme.pages.main.title};
   margin: 30px 0;
   text-align: center;
 `;
@@ -45,6 +45,8 @@ export const StyledButton = styled(Button)`
   flex: 0 0 240px;
 `;
 
+export const StyledButtonInput = styled(ButtonInput)``;
+
 export const StyledLabel = styled.div`
   flex: 1;
   font-family: var(--font-roboto);
@@ -52,9 +54,10 @@ export const StyledLabel = styled.div`
   font-weight: 300;
   font-size: 24px;
   line-height: 28px;
-  color: #000000;
+  color: ${({ theme }) => theme.pages.main.subtitle};
 `;
 
 export const Highlight = styled.span`
-  color: #66999b;
+  font-weight: 700;
+  color: ${({ theme }) => theme.pages.main.title};
 `;

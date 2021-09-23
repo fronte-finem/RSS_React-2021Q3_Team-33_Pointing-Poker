@@ -26,7 +26,9 @@ export interface ForeGroundBackGround {
   bg: string;
 }
 
-export interface InputTheme extends ForeGroundBackGround {}
+export interface InputTheme extends ForeGroundBackGround {
+  shadow: string;
+}
 export interface GameCardTheme extends ForeGroundBackGround {}
 export interface TimerTheme extends ForeGroundBackGround {}
 export interface ModalTheme extends ForeGroundBackGround {}
@@ -61,6 +63,7 @@ export interface HeaderTheme extends ForeGroundBackGround {
     letter2: string;
     rhombus: string;
   };
+  shadow: string;
 }
 
 export interface FooterTheme extends ForeGroundBackGround {
@@ -71,7 +74,22 @@ export interface FooterTheme extends ForeGroundBackGround {
   };
 }
 
-export interface ContentTheme extends ForeGroundBackGround {}
+export interface ContentTheme extends ForeGroundBackGround {
+  shadow: string;
+  wrapper: {
+    shadow: string;
+  };
+}
+
+export interface MainPageTheme {
+  title: string;
+  subtitle: string;
+  text: string;
+}
+
+export interface PagesTheme {
+  main: MainPageTheme;
+}
 
 declare module 'styled-components' {
   export interface DefaultTheme extends ForeGroundBackGround {
@@ -89,5 +107,6 @@ declare module 'styled-components' {
     header: HeaderTheme;
     footer: FooterTheme;
     content: ContentTheme;
+    pages: PagesTheme;
   }
 }
