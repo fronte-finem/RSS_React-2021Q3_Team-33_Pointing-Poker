@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { observer } from 'mobx-react-lite';
 import { Form, message } from 'antd';
 import { FormItem } from '@client/components/shared/form-item/form-item';
@@ -9,11 +9,11 @@ import { Input } from '@client/components/shared/input/input';
 import { StyledButtonSend, StyledFormContainer } from './send-form.styles';
 
 export const SendForm = observer(() => {
-  const { socketState, gameSocketActions } = useGameService();
+  const { socketState } = useStateService();
   const [form] = Form.useForm();
 
   const onSend = async (post: { message: string }) => {
-    await gameSocketActions.postMessage(post.message);
+    await socketState.postMessage(post.message);
     if (socketState.isFail) {
       message.error(socketState.failMessage);
     } else {

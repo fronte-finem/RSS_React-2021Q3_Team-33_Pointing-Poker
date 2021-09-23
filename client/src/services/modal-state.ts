@@ -5,21 +5,23 @@ import {
   ChatMessagesList,
   KickVoteInit,
 } from '@shared/api-types/chat';
+import { AllowUserToJoin } from '@client/services/game-state';
 
 export interface ChatMessageFE extends ChatMessage {
   system?: boolean;
 }
 
 export class ModalState {
-  @observable public systemMessage: null | string = null;
+  @observable public systemMessage?: null | string = null;
   @observable public messages: ChatMessageFE[] = [];
   @observable public chatIsOpen: boolean = false;
   @observable public chatOldMessages: number = 0;
   @observable public createIssue: boolean = false;
-  @observable public editIssue: null | Issue = null;
-  @observable public deleteIssue: null | Issue = null;
-  @observable public kickUser: null | string = null;
-  @observable public kickVote: null | KickVoteInit = null;
+  @observable public editIssue?: null | Issue = null;
+  @observable public deleteIssue?: null | Issue = null;
+  @observable public kickUser?: null | string = null;
+  @observable public kickVote?: null | KickVoteInit = null;
+  @observable public allowUserToJoin?: null | AllowUserToJoin = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -29,7 +31,7 @@ export class ModalState {
     return Boolean(this.systemMessage);
   }
 
-  @action public initSystemMessage(message: null | string) {
+  @action public initSystemMessage(message?: string) {
     this.systemMessage = message;
   }
 
@@ -126,5 +128,17 @@ export class ModalState {
 
   @action public resetKickVote() {
     this.kickVote = null;
+  }
+
+  @computed public get isAllowUserToJoin(): boolean {
+    return Boolean(this.allowUserToJoin);
+  }
+
+  @action public initAllowUserToJoin(init: AllowUserToJoin) {
+    this.allowUserToJoin = init;
+  }
+
+  @action public resetAllowUserToJoin() {
+    this.allowUserToJoin = null;
   }
 }

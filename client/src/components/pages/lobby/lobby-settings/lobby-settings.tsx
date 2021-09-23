@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Select } from '@client/components/shared/select/select';
 import { Toggle } from '@client/components/shared/toggle/toggle';
-import { CardsSetDefault, GameSettings } from '@shared/api-types/game-settings';
+import { observer } from 'mobx-react-lite';
+import { useStateService } from '@client/providers/state-service';
+import { CardsSetType } from '@client/utils/get-score-sequence';
 import { StyleLobbyTitle } from '../lobby-styles';
 import { SettingsItem } from './lobby-settings-item';
 import { LobbyTimer } from './lobby-timer';
@@ -11,11 +13,12 @@ import {
   StyleLobbySettingsWrapper,
 } from './lobby-settings-styles';
 
-type CardsSetOption = { value: CardsSetDefault; label: string };
+type CardsSetOption = { value: CardsSetType; label: string };
 
 const cardsSetOption: CardsSetOption[] = [
-  { value: CardsSetDefault.FIBONACCI, label: 'Fibonacci numbers' },
-  { value: CardsSetDefault.POW_2, label: 'Power of two' },
+  { value: CardsSetType.FIBONACCI, label: 'Fibonacci numbers' },
+  { value: CardsSetType.POW_2, label: 'Power of two' },
+  { value: CardsSetType.CUSTOM, label: 'Custom set' },
 ];
 
 type SettingsType = {
@@ -23,61 +26,61 @@ type SettingsType = {
   component: JSX.Element;
 };
 
-interface SettingsProps {
-  state: [GameSettings, React.Dispatch<React.SetStateAction<GameSettings>>];
-}
-
-export const LobbySettingsSection: React.FC<SettingsProps> = ({ state }) => {
-  const [gameSettings, setGameSettings] = state;
+export const LobbySettingsSection = observer(() => {
+  const { gameState } = useStateService();
   const [isShowGameTimer, setIsShowGameTimer] = useState(false);
 
   const setDealerGamer = (dealerGamer: boolean) =>
-    setGameSettings((prev) => ({ ...prev, dealerGamer }));
+    gameState.setDealerGamer(dealerGamer);
 
   const setAutoJoin = (autoJoinToGame: boolean) =>
-    setGameSettings((prev) => ({ ...prev, autoJoinToGame }));
+    gameState.setAutoJoinToGame(autoJoinToGame);
 
   const setAutoOpenCards = (autoOpenCards: boolean) =>
-    setGameSettings((prev) => ({ ...prev, autoOpenCards }));
+    gameState.setAutoOpenCards(autoOpenCards);
 
   const setChangeAfterRoundEnd = (changeAfterRoundEnd: boolean) =>
-    setGameSettings((prev) => ({ ...prev, changeAfterRoundEnd }));
+    gameState.setChangeAfterRoundEnd(changeAfterRoundEnd);
 
-  const setTimeoutRound = (timeout: number) =>
-    setGameSettings((prev) => ({ ...prev, timeout }));
+  const setTimeoutRound = (timeout: number) => gameState.setTimeout(timeout);
 
   const toggleTimer = (isShow: boolean) => {
     setIsShowGameTimer(isShow);
     if (!isShow) {
-      setGameSettings((prev) => ({ ...prev, timeout: undefined }));
+      gameState.setTimeout(undefined);
     }
   };
 
-  const setScoreType = (scoreType: string) =>
-    setGameSettings((prev) => ({ ...prev, scoreType }));
+  const setScoreType = (scoreType: string) => gameState.setScoreType(scoreType);
 
-  const selectCardSet = (cardsSet: CardsSetDefault) => {
-    setGameSettings((prev) => ({ ...prev, cardsSet }));
+  const selectCardSet = (cardsSetType: CardsSetType) => {
+    gameState.setCardSet(cardsSetType);
   };
 
   const toggleSettings: Array<SettingsType> = [
     {
       title: 'Scram master as player:',
       component: (
-        <Toggle checked={gameSettings.dealerGamer} onChange={setDealerGamer} />
+        <Toggle
+          checked={gameState.settings.dealerGamer}
+          onChange={setDealerGamer}
+        />
       ),
     },
     {
       title: 'Auto join to game:',
       component: (
-        <Toggle checked={gameSettings.autoJoinToGame} onChange={setAutoJoin} />
+        <Toggle
+          checked={gameState.settings.autoJoinToGame}
+          onChange={setAutoJoin}
+        />
       ),
     },
     {
       title: 'Auto open cards:',
       component: (
         <Toggle
-          checked={gameSettings.autoOpenCards}
+          checked={gameState.settings.autoOpenCards}
           onChange={setAutoOpenCards}
         />
       ),
@@ -86,7 +89,7 @@ export const LobbySettingsSection: React.FC<SettingsProps> = ({ state }) => {
       title: 'Changing card in round end:',
       component: (
         <Toggle
-          checked={gameSettings.changeAfterRoundEnd}
+          checked={gameState.settings.changeAfterRoundEnd}
           onChange={setChangeAfterRoundEnd}
         />
       ),
@@ -103,7 +106,7 @@ export const LobbySettingsSection: React.FC<SettingsProps> = ({ state }) => {
       component: (
         <StyleLobbySettingsScore
           type="text"
-          value={gameSettings.scoreType}
+          value={gameState.settings.scoreType}
           onChange={(e) => setScoreType(e.target.value)}
         />
       ),
@@ -113,7 +116,7 @@ export const LobbySettingsSection: React.FC<SettingsProps> = ({ state }) => {
       component: (
         <Select
           options={cardsSetOption}
-          onChange={(value) => selectCardSet(value as CardsSetDefault)}
+          onChange={(value) => selectCardSet(value as CardsSetType)}
         />
       ),
     },
@@ -133,7 +136,7 @@ export const LobbySettingsSection: React.FC<SettingsProps> = ({ state }) => {
         {isShowGameTimer ? (
           <SettingsItem title="Round time:">
             <LobbyTimer
-              initialTime={gameSettings.timeout}
+              initialTime={gameState.settings.timeout}
               setTimeoutRound={setTimeoutRound}
             />
           </SettingsItem>
@@ -148,4 +151,4 @@ export const LobbySettingsSection: React.FC<SettingsProps> = ({ state }) => {
       </StyleLobbySettingsWrapper>
     </StyleLobbySettings>
   );
-};
+});

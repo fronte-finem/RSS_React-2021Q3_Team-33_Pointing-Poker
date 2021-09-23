@@ -1,27 +1,36 @@
-import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
 import React from 'react';
-
+import { CardScore, ExtraScoreKind } from '@shared/api-types/game-settings';
+import { CoffeeOutlined } from '@ant-design/icons';
+import { useStateService } from '@client/providers/state-service';
 import {
+  StyledBottomScore,
   StyledCardScore,
-  StyledCardScoreType,
   StyledGameCard,
+  StyledTopScore,
 } from './game-card-styles';
 
-export const GameCard: React.FC<{
-  score: number | AntdIconProps;
-  scoreType: string;
-}> = (props) => {
-  const { score, scoreType } = props;
+interface Props {
+  score: CardScore;
+}
+
+const getScoreType = (score: CardScore, scoreType = 'SP') => {
+  if (typeof score === 'number') return scoreType;
+  if (score === ExtraScoreKind.ZERO) return scoreType;
+  if (score === ExtraScoreKind.ONE_HALF) return scoreType;
+  return '#';
+};
+
+export const GameCard: React.FC<Props> = ({ score }) => {
+  const { gameState } = useStateService();
+  const cardScoreType = getScoreType(score, gameState.settings.scoreType);
+
   return (
-    <StyledGameCard {...props}>
-      <StyledCardScore>{score}</StyledCardScore>
-      <StyledCardScoreType style={{ top: '5px', left: '15px' }}>
-        {scoreType}
-      </StyledCardScoreType>
-      <StyledCardScoreType
-        style={{ bottom: '5px', right: '15px', transform: 'rotate(180deg)' }}>
-        {scoreType}
-      </StyledCardScoreType>
+    <StyledGameCard>
+      <StyledCardScore>
+        {score === ExtraScoreKind.COFFEE ? <CoffeeOutlined /> : score}
+      </StyledCardScore>
+      <StyledTopScore>{cardScoreType}</StyledTopScore>
+      <StyledBottomScore>{cardScoreType}</StyledBottomScore>
     </StyledGameCard>
   );
 };

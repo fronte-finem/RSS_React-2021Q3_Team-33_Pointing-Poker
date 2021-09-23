@@ -3,7 +3,7 @@ import { message } from 'antd';
 import { Chat } from '@client/components/shared/chat/chat';
 import { Role } from '@shared/api-types/user';
 import { UserFE } from '@client/services/game-state';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { observer } from 'mobx-react-lite';
 import { repeat } from '@shared/utils/array';
 import { ChatMessageFE } from '@client/services/modal-state';
@@ -65,10 +65,10 @@ const getDate = (min: number) =>
   new Date(2121, 12, 23, 13, min, Math.trunc(60 * Math.random())).toISOString();
 
 export const PageChatDemo = observer(() => {
-  const { modalState, gameStateActions } = useGameService();
+  const { modalState, gameState } = useStateService();
 
   useEffect(() => {
-    gameStateActions.initUser(
+    gameState.initUser(
       {
         gameId: '123',
         gameTitle: 'Demo chat list',
@@ -87,7 +87,7 @@ export const PageChatDemo = observer(() => {
   useEffect(() => {
     setTimeout(
       () =>
-        gameStateActions.setUserKickResult({
+        gameState.setUserKickResult({
           kicked: true,
           badUserId: '3',
           reason: 'kicked by scram master',

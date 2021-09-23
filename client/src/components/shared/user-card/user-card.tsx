@@ -3,7 +3,7 @@ import { Avatar } from '@client/components/shared/avatar/avatar';
 import { Tooltip } from 'antd';
 import { Role, UserBase } from '@shared/api-types/user';
 import { UserFE } from '@client/services/game-state';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { observer } from 'mobx-react-lite';
 import {
   StyleCard,
@@ -26,7 +26,7 @@ interface UserCardProps {
 }
 
 export const UserCard: React.FC<UserCardProps> = observer(({ user, style }) => {
-  const { modalState, gameState } = useGameService();
+  const { modalState, gameState } = useStateService();
 
   if (!user) return null;
   const { id, firstName, lastName, avatar, jobPosition, role } = user;

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { IOption } from '@client/components/shared/select/select';
 import { Modal } from '@client/components/shared/modal/modal';
 import { IssueBase, Priority } from '@shared/api-types/issue';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { Form, FormInstance, message } from 'antd';
 import {
   StyledFormItem,
@@ -27,7 +27,7 @@ interface Props {
 
 export const ModalIssue: React.FC<Props> = observer(
   ({ visible, title, initFieldsHook, onReset, onSubmit }) => {
-    const { socketState } = useGameService();
+    const { socketState } = useStateService();
     const [form] = Form.useForm();
 
     initFieldsHook(form);

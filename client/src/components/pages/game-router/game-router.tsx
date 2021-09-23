@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Alert, message } from 'antd';
 import { observer } from 'mobx-react-lite';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { GamePage } from '@client/services/game-state';
 import { MainPage } from '@client/components/pages/main-page/main-page';
 import { PageLobby } from '@client/components/pages/lobby/lobby';
@@ -12,9 +12,10 @@ import { ModalIssueCreate } from '@client/components/shared/modal-issue/modal-is
 import { ModalIssueEdit } from '@client/components/shared/modal-issue/modal-issue-edit';
 import { ModalIssueDelete } from '@client/components/shared/modal-issue/modal-issue-delete';
 import { ModalChat } from '@client/components/shared/modal-chat/modal-chat';
+import { PageGame } from '@client/components/pages/game/game';
 
 export const PageGameRouter: React.FC = observer(() => {
-  const { modalState, gameState, gameStateActions } = useGameService();
+  const { modalState, gameState } = useStateService();
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
@@ -24,7 +25,7 @@ export const PageGameRouter: React.FC = observer(() => {
   }, [modalState.systemMessage]);
 
   if (id) {
-    gameStateActions.setId(id);
+    gameState.setId(id);
     history.push('/');
   }
 
@@ -32,7 +33,7 @@ export const PageGameRouter: React.FC = observer(() => {
     <div>
       {gameState.page === GamePage.ENTRY && <MainPage />}
       {gameState.page === GamePage.LOBBY && <PageLobby />}
-      {gameState.page === GamePage.GAME && <div>Page Game</div>}
+      {gameState.page === GamePage.GAME && <PageGame />}
       {gameState.page === GamePage.RESULTS && <div>Page Game Results</div>}
 
       <Alert.ErrorBoundary>

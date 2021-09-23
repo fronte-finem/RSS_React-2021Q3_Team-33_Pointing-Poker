@@ -1,24 +1,24 @@
 import { UserCard } from '@client/components/shared/user-card/user-card';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { StyleLobbyTitle, StyledLobbySection } from '../lobby-styles';
 import { StyleLobbyUsersGrid } from './lobby-users-styles';
 
 export const LobbyUsersSection: React.FC = observer(() => {
-  const { gameStateActions } = useGameService();
+  const { gameState } = useStateService();
 
   return (
     <StyledLobbySection>
       <StyleLobbyTitle level={2}>Gamers:</StyleLobbyTitle>
       <StyleLobbyUsersGrid>
-        {gameStateActions.getGamers(false).map((user) => (
+        {gameState.getGamers().map((user) => (
           <UserCard key={user.id} user={user} />
         ))}
       </StyleLobbyUsersGrid>
       <StyleLobbyTitle level={2}>Spectators:</StyleLobbyTitle>
       <StyleLobbyUsersGrid>
-        {gameStateActions.getSpectators(false).map((user) => (
+        {gameState.getSpectators().map((user) => (
           <UserCard key={user.id} user={user} />
         ))}
       </StyleLobbyUsersGrid>

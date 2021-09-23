@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { IssueBase } from '@shared/api-types/issue';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { FormInstance } from 'antd';
 import { ModalIssue } from '@client/components/shared/modal-issue/modal-issue';
 
 export const ModalIssueEdit = observer(() => {
-  const { modalState, gameSocketActions } = useGameService();
+  const { modalState, socketState } = useStateService();
 
   const initFieldsHook = (form: FormInstance) => {
     useEffect(() => {
@@ -20,7 +20,7 @@ export const ModalIssueEdit = observer(() => {
 
   const onSubmit = async (issue: IssueBase) => {
     if (!modalState.editIssue) return;
-    await gameSocketActions.editIssue({ ...modalState.editIssue, ...issue });
+    await socketState.editIssue({ ...modalState.editIssue, ...issue });
   };
 
   return (

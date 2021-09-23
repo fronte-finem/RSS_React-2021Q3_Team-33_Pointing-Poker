@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { UserCard } from '@client/components/shared/user-card/user-card';
 import { ChatMessageFE } from '@client/services/modal-state';
 import {
@@ -18,9 +18,9 @@ interface PostProps {
 
 export const Post = observer(
   ({ post: { userId, message, date } }: PostProps) => {
-    const { gameStateActions } = useGameService();
+    const { gameState } = useStateService();
 
-    const maybeUser = gameStateActions.getUser(userId);
+    const maybeUser = gameState.getUser(userId);
     if (!maybeUser) return null;
 
     const isKicked = Boolean(maybeUser.kicked);
@@ -39,9 +39,9 @@ export const Post = observer(
 
 export const SystemPost = observer(
   ({ post: { userId, message, date } }: PostProps) => {
-    const { gameStateActions } = useGameService();
+    const { gameState } = useStateService();
 
-    const maybeUser = gameStateActions.getUser(userId);
+    const maybeUser = gameState.getUser(userId);
     if (!maybeUser) return null;
 
     return (

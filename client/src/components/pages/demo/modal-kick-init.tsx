@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ErrorBoundary } from '@client/utils/error-boundary';
 import { ModalKickInit } from '@client/components/shared/modal-kick/modal-kick-init';
 import { observer } from 'mobx-react-lite';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { Role, UsersList } from '@shared/api-types/user';
 
 const users: UsersList = [
@@ -16,10 +16,10 @@ const users: UsersList = [
 ];
 
 export const ModalKickInitDemo: React.FC = observer(() => {
-  const { modalState, gameStateActions } = useGameService();
+  const { modalState, gameState } = useStateService();
 
   useEffect(() => {
-    gameStateActions.initUser(
+    gameState.initUser(
       {
         gameId: '42',
         gameTitle: 'Awesome',

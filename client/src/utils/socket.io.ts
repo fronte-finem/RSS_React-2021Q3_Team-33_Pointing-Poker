@@ -38,22 +38,22 @@ type EventCallbackResponse<E extends EventSubset> = EventCallbackArgs<E>[0];
 export function emitWithPayloadAndCallback<Event extends EventSubset>(
   event: Event,
   payload: EventPayload<Event>,
-  socket: PointingPokerClientSocket
+  socket?: PointingPokerClientSocket
 ): Promise<EventCallbackResponse<Event>> {
   return new Promise((resolve) => {
     // @ts-ignore
-    socket.emit(event, payload, resolve);
+    socket?.emit(event, payload, resolve);
   });
 }
 
 export function emitWithCallback<Event extends ApiClientEventsWithCallback>(
   event: Event,
-  socket: PointingPokerClientSocket
+  socket?: PointingPokerClientSocket
 ): Promise<
   Parameters<Parameters<PointingPokerClientToServerEvents[Event]>[0]>[0]
 > {
   return new Promise((resolve) => {
     // @ts-ignore
-    socket.emit(event, resolve);
+    socket?.emit(event, resolve);
   });
 }

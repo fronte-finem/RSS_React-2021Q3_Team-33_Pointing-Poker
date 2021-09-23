@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { Issue } from '@shared/api-types/issue';
 import { Tooltip } from 'antd';
 import {
@@ -22,7 +22,7 @@ export interface IssueProps {
 }
 
 export const IssueCard: React.FC<IssueProps> = observer(({ issue }) => {
-  const { gameState, modalState } = useGameService();
+  const { gameState, modalState } = useStateService();
 
   const isGame = gameState.gameRun;
   const isCurrent = isGame && gameState.roundIssueId === issue.id;

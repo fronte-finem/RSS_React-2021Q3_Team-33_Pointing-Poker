@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Alert } from 'antd';
 import { ModalKick } from '@client/components/shared/modal-kick/modal-kick';
 import { Role, UsersList } from '@shared/api-types/user';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 
 const users: UsersList = [
   {
@@ -29,10 +29,10 @@ const users: UsersList = [
 ];
 
 export const ModalKickVotingDemo: React.FC = () => {
-  const { modalState, gameStateActions } = useGameService();
+  const { modalState, gameState } = useStateService();
 
   useEffect(() => {
-    gameStateActions.initUser(
+    gameState.initUser(
       {
         gameId: '42',
         gameTitle: 'Awesome',

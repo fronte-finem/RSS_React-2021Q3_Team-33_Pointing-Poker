@@ -5,7 +5,7 @@ import { Header } from '@client/components/app/header/header';
 import { Footer } from '@client/components/app/footer/footer';
 import { routes } from '@client/components/app/routes';
 import { Layout } from '@client/components/app/layout/layout';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { observer } from 'mobx-react-lite';
 import {
   Content,
@@ -14,7 +14,7 @@ import {
 import { DemoPagesRouter } from '@client/components/pages/demo/demo-router';
 
 export const App: React.FC = observer(() => {
-  const { themeState } = useGameService();
+  const { themeState } = useStateService();
   return (
     <ThemeProvider theme={themeState.theme}>
       <BrowserRouter>

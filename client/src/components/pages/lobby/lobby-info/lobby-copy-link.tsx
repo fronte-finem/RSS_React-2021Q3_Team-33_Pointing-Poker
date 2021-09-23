@@ -1,6 +1,6 @@
 import { Button } from '@client/components/shared/button/button';
 import { Input } from '@client/components/shared/input/input';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import React from 'react';
 import {
   InfoCopy,
@@ -10,7 +10,7 @@ import {
 } from './lobby-info-styles';
 
 export const LobbyCopyLink: React.FC<{ lobbyLink: string }> = (props) => {
-  const { gameState } = useGameService();
+  const { gameState } = useStateService();
   const lobbyId = gameState.id;
   const { lobbyLink } = props;
 

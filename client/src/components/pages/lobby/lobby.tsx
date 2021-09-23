@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { LobbyCardsSection } from './lobby-cards/lobby-cards';
 import { LobbyInfoSection } from './lobby-info/lobby-info';
 import { LobbyIssueSection } from './lobby-issue/lobby-issue';
@@ -9,20 +9,21 @@ import { StyleLobbyPage } from './lobby-styles';
 import { LobbyUsersSection } from './lobby-users/lobby-users';
 
 export const PageLobby: React.FC = observer(() => {
-  const { gameState } = useGameService();
-  const stateGameSettings = useState(gameState.settings);
+  const { gameState } = useStateService();
+
+  const getDealerSection = () => (
+    <>
+      <LobbyIssueSection />
+      <LobbySettingsSection />
+      <LobbyCardsSection />
+    </>
+  );
 
   return (
     <StyleLobbyPage>
-      <LobbyInfoSection gameSettings={stateGameSettings[0]} />
+      <LobbyInfoSection />
       <LobbyUsersSection />
-      {gameState.isDealer ? (
-        <>
-          <LobbyIssueSection />
-          <LobbySettingsSection state={stateGameSettings} />
-          <LobbyCardsSection gameSettings={stateGameSettings[0]} />
-        </>
-      ) : null}
+      {gameState.isDealer ? getDealerSection() : null}
     </StyleLobbyPage>
   );
 });

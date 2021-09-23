@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import './index.css';
 import { App } from '@client/components/app/app';
-import { GameServiceProvider } from '@client/providers/game-service';
+import { StateServiceProvider } from '@client/providers/state-service';
 
 ReactDOM.render(
   <React.StrictMode>
-    <GameServiceProvider>
+    <StateServiceProvider>
       <App />
-    </GameServiceProvider>
+    </StateServiceProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

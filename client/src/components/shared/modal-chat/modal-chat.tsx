@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Alert } from 'antd';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { Chat } from '@client/components/shared/chat/chat';
 import { SendForm } from '@client/components/shared/chat/send-form';
 import {
@@ -13,7 +13,7 @@ import {
 } from './modal-chat.styles';
 
 export const ModalChat = observer(() => {
-  const { modalState } = useGameService();
+  const { modalState } = useStateService();
   const refChat = useRef<HTMLDivElement | null>(null);
   const refChatEnd = useRef<HTMLDivElement | null>(null);
 

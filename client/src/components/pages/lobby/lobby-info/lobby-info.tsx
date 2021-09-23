@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { UserCard } from '@client/components/shared/user-card/user-card';
 import { observer } from 'mobx-react-lite';
-import { useGameService } from '@client/providers/game-service';
-import { GameSettings } from '@shared/api-types/game-settings';
+import { useStateService } from '@client/providers/state-service';
 import { StyleLobbyTitle } from '../lobby-styles';
 import {
   InfoMaster,
@@ -16,43 +15,36 @@ import { LobbyEditTitleModal } from '../lobby-modal';
 import { LobbyCopyLink } from './lobby-copy-link';
 import { LobbyInfoControl } from './lobby-info-control';
 
-interface Props {
-  gameSettings: GameSettings;
-}
+export const LobbyInfoSection = observer(() => {
+  const { gameState } = useStateService();
+  const [isEditModal, setIsEditModal] = useState(false);
 
-export const LobbyInfoSection: React.FC<Props> = observer(
-  ({ gameSettings }) => {
-    const { gameState, gameStateActions } = useGameService();
-
-    const [isEditModal, setIsEditModal] = useState(false);
-
-    return (
-      <>
-        <InfoTitle>
-          <StyleLobbyInfo span={24}>
-            <StyleLobbyTitle level={2}>{gameState.title}</StyleLobbyTitle>
-            {gameState.isDealer ? (
-              <EditTitleButton setEditModal={setIsEditModal} />
-            ) : null}
-            <LobbyEditTitleModal
-              isVisible={isEditModal}
-              setIsVisible={setIsEditModal}
-            />
-          </StyleLobbyInfo>
-        </InfoTitle>
-        <InfoMaster>
-          <StyleLobbyMaster>
-            <StyleLobbyMasterText>Scram master:</StyleLobbyMasterText>
-            <UserCard user={gameStateActions.getDealer()} />
-          </StyleLobbyMaster>
-        </InfoMaster>
-        {gameState.isDealer ? (
-          <LobbyCopyLink
-            lobbyLink={`${window.location.origin}/join/${gameState.id}`}
+  return (
+    <>
+      <InfoTitle>
+        <StyleLobbyInfo span={24}>
+          <StyleLobbyTitle level={2}>{gameState.title}</StyleLobbyTitle>
+          {gameState.isDealer ? (
+            <EditTitleButton setEditModal={setIsEditModal} />
+          ) : null}
+          <LobbyEditTitleModal
+            isVisible={isEditModal}
+            setIsVisible={setIsEditModal}
           />
-        ) : null}
-        <LobbyInfoControl gameSettings={gameSettings} />
-      </>
-    );
-  }
-);
+        </StyleLobbyInfo>
+      </InfoTitle>
+      <InfoMaster>
+        <StyleLobbyMaster>
+          <StyleLobbyMasterText>Scram master:</StyleLobbyMasterText>
+          <UserCard user={gameState.getDealer()} />
+        </StyleLobbyMaster>
+      </InfoMaster>
+      {gameState.isDealer ? (
+        <LobbyCopyLink
+          lobbyLink={`${window.location.origin}/join/${gameState.id}`}
+        />
+      ) : null}
+      <LobbyInfoControl />
+    </>
+  );
+});

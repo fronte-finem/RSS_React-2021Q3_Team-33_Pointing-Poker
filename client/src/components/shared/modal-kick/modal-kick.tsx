@@ -2,21 +2,15 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { message } from 'antd';
 import { Modal } from '@client/components/shared/modal/modal';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { GamePage } from '@client/services/game-state';
 import { Highlight } from './modal-kick.styles';
 
 export const ModalKick: React.FC = observer(() => {
-  const {
-    modalState,
-    gameState,
-    socketState,
-    gameStateActions,
-    gameSocketActions,
-  } = useGameService();
+  const { modalState, gameState, socketState } = useStateService();
 
   const makeVote = async (vote: boolean) => {
-    await gameSocketActions.kickVote(vote);
+    await socketState.kickVote(vote);
     if (socketState.isFail) {
       message.error(socketState.failMessage);
     }
@@ -42,11 +36,11 @@ export const ModalKick: React.FC = observer(() => {
       <>
         <p>
           <Highlight>
-            {gameStateActions.formatUser(modalState.kickVote?.initiatorId)}
+            {gameState.formatUser(modalState.kickVote?.initiatorId)}
           </Highlight>{' '}
           want to kick member{' '}
           <Highlight>
-            {gameStateActions.formatUser(modalState.kickVote?.badUserId)}
+            {gameState.formatUser(modalState.kickVote?.badUserId)}
           </Highlight>
         </p>
         <p>Do you agree with it?</p>

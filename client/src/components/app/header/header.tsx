@@ -11,12 +11,12 @@ import {
 } from '@client/components/app/header/header.styles';
 import { Logo } from '@client/components/app/header/logo';
 import { GamePage } from '@client/services/game-state';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { ChatToggleButton } from '@client/components/shared/chat/chat-toggle-button';
 import { ThemeToggle } from '@client/components/shared/toggle-theme/toggle-theme';
 
 export const Header = observer(() => {
-  const { gameState } = useGameService();
+  const { gameState } = useStateService();
 
   return (
     <StyledHeader>

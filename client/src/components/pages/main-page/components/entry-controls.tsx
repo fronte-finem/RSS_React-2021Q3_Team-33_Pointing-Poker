@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Form, message } from 'antd';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { EntryModal } from './entry-modal';
 import {
   StyledButton,
@@ -16,7 +16,7 @@ import {
 } from './entry-controls.styles';
 
 export const EntryControls = observer(() => {
-  const { gameState, socketState, gameSocketActions } = useGameService();
+  const { gameState, socketState } = useStateService();
   const [createGame, setCreateGame] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -35,9 +35,9 @@ export const EntryControls = observer(() => {
       showJoinToGameModal();
       return;
     }
-    await gameSocketActions.joinGame(gameId);
+    await socketState.joinGame(gameId);
     if (socketState.isFail) {
-      gameSocketActions.disconnect();
+      socketState.disconnect();
       message.error(socketState.failMessage);
       return;
     }
