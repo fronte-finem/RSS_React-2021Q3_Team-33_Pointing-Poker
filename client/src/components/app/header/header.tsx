@@ -10,16 +10,13 @@ import {
   StyledHeader,
 } from '@client/components/app/header/header.styles';
 import { Logo } from '@client/components/app/header/logo';
-import { ColorTheme, GamePage } from '@client/services/game-state';
+import { GamePage } from '@client/services/game-state';
 import { useGameService } from '@client/providers/game-service';
-import { Toggle } from '@client/components/shared/toggle/toggle';
 import { ChatToggleButton } from '@client/components/shared/chat/chat-toggle-button';
+import { ThemeToggle } from '@client/components/shared/toggle-theme/toggle-theme';
 
 export const Header = observer(() => {
-  const { gameState, gameStateActions } = useGameService();
-
-  const toggleTheme = (checked: boolean) =>
-    gameStateActions.toggleTheme(checked ? ColorTheme.DARK : ColorTheme.LIGHT);
+  const { gameState } = useGameService();
 
   return (
     <StyledHeader>
@@ -34,11 +31,7 @@ export const Header = observer(() => {
             trigger={['click']}>
             <Button>Demo pages</Button>
           </Dropdown>
-          <Toggle
-            unCheckedChildren={ColorTheme.LIGHT}
-            checkedChildren={ColorTheme.DARK}
-            onChange={toggleTheme}
-          />
+          <ThemeToggle />
           {gameState.page !== GamePage.ENTRY ? <ChatToggleButton /> : null}
         </StyledControlsWrapper>
       </HeaderLayoutContainer>

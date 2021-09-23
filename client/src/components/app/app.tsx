@@ -14,9 +14,9 @@ import {
 import { DemoPagesRouter } from '@client/components/pages/demo/demo-router';
 
 export const App: React.FC = observer(() => {
-  const { gameState } = useGameService();
+  const { themeState } = useGameService();
   return (
-    <ThemeProvider theme={gameState.theme}>
+    <ThemeProvider theme={themeState.theme}>
       <BrowserRouter>
         <Layout data-testid="app">
           <Header />

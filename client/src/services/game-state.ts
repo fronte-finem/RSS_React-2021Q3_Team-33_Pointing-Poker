@@ -4,19 +4,12 @@ import {
 } from '@shared/api-types/game-settings';
 import { User, UserToJoin } from '@shared/api-types/user';
 import { GameResults, IssuesList } from '@shared/api-types/issue';
-import { DefaultTheme } from 'styled-components';
-import { lightTheme } from '@client/themes/themes';
 
 export const enum GamePage {
   ENTRY = 'entry',
   LOBBY = 'lobby',
   GAME = 'game',
   RESULTS = 'results',
-}
-
-export const enum ColorTheme {
-  DARK = 'dark',
-  LIGHT = 'light',
 }
 
 export interface AllowUserToJoin {
@@ -31,7 +24,6 @@ export interface UserFE extends User {
 
 export interface GameState {
   page: GamePage;
-  theme: DefaultTheme;
   id: string;
   title: string;
   selfUserId: string;
@@ -50,7 +42,6 @@ export interface GameState {
 
 export const getDefaultGameState = (): GameState => ({
   page: GamePage.ENTRY,
-  theme: lightTheme,
   id: '',
   title: '',
   selfUserId: '',

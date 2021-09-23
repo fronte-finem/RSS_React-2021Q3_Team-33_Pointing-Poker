@@ -1,6 +1,5 @@
 import { computed, runInAction } from 'mobx';
 import { Role, User, UsersList, UserToJoin } from '@shared/api-types/user';
-import { darkTheme, lightTheme } from '@client/themes/themes';
 import { KickResult } from '@shared/api-types/chat';
 import { InitDealer, InitUser } from '@shared/api-types/init';
 import {
@@ -11,7 +10,6 @@ import {
 } from '@shared/api-types/issue';
 import { GameSettings } from '@shared/api-types/game-settings';
 import {
-  ColorTheme,
   GamePage,
   GameState,
   getDefaultGameState,
@@ -68,21 +66,6 @@ export class GameStateActions {
     if (!user) return unknown;
     const { firstName, lastName } = user;
     return `${firstName} ${lastName || ''}`;
-  }
-
-  public toggleTheme(colorTheme: ColorTheme) {
-    runInAction(() => {
-      switch (colorTheme) {
-        case ColorTheme.DARK:
-          this.gameState.theme = darkTheme;
-          break;
-        case ColorTheme.LIGHT:
-          this.gameState.theme = lightTheme;
-          break;
-        default:
-          break;
-      }
-    });
   }
 
   public reset() {

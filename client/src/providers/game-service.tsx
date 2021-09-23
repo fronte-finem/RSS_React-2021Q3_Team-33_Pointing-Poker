@@ -8,6 +8,7 @@ import {
 import { GameStateActions } from '@client/services/game-state-actions';
 import { GameSocketActions } from '@client/services/game-socket-actions';
 import { ModalState } from '@client/services/modal-state';
+import { ThemeState } from '@client/services/theme-state';
 
 interface IGameServiceContext {
   gameState: GameState;
@@ -15,6 +16,7 @@ interface IGameServiceContext {
   gameStateActions: GameStateActions;
   gameSocketActions: GameSocketActions;
   modalState: ModalState;
+  themeState: ThemeState;
 }
 
 const GameServiceContext = createContext<IGameServiceContext | undefined>(
@@ -23,6 +25,7 @@ const GameServiceContext = createContext<IGameServiceContext | undefined>(
 
 export const GameServiceProvider: React.FC = ({ children }) => {
   const modalState = new ModalState();
+  const themeState = new ThemeState();
   const gameState = observable<GameState>(getDefaultGameState());
   const socketState = observable<SocketState>(getDefaultSocketState());
   const gameStateActions = new GameStateActions(gameState);
@@ -40,6 +43,7 @@ export const GameServiceProvider: React.FC = ({ children }) => {
         gameStateActions,
         gameSocketActions,
         modalState,
+        themeState,
       }}>
       {children}
     </GameServiceContext.Provider>
