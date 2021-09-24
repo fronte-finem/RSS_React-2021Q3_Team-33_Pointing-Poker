@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import { Button, ButtonInput } from '@client/components/shared/button/button';
+import { Button } from '@client/components/shared/button/button';
 import { Input } from '@client/components/shared/input/input';
 import { FormItem } from '@client/components/shared/form-item/form-item';
+import { fontMainPage, fontText } from '@client/themes/typography';
 
 export const StyledControlsWrapper = styled.div`
   max-width: 516px;
@@ -10,10 +11,8 @@ export const StyledControlsWrapper = styled.div`
 `;
 
 export const StyledTitle = styled.div`
-  font-style: normal;
-  font-weight: bold;
-  font-size: 48px;
-  line-height: 56px;
+  ${fontMainPage}
+
   color: ${({ theme }) => theme.pages.main.title};
   margin: 30px 0;
   text-align: center;
@@ -45,13 +44,16 @@ export const StyledButton = styled(Button)`
   flex: 0 0 240px;
 `;
 
-export const StyledButtonInput = styled(ButtonInput)``;
+export const StyledButtonInput = styled(Button)`
+  border-radius: 0px 10px 10px 0px;
+`;
 
 export const StyledLabel = styled.div`
+  margin-bottom: 10px;
   flex: 1;
-  font-family: var(--font-roboto);
-  font-style: normal;
-  font-weight: 300;
+  ${fontText}
+
+  font-weight: 500;
   font-size: 24px;
   line-height: 28px;
   color: ${({ theme }) => theme.pages.main.subtitle};

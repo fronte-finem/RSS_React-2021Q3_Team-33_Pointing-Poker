@@ -18,6 +18,7 @@ import {
 import {
   darkAvatarTheme,
   darkChatMessageTheme,
+  darkFormTheme,
   darkGameCardTheme,
   darkInputTheme,
   darkLinkTheme,
@@ -27,6 +28,7 @@ import {
   darkUserCardTheme,
   lightAvatarTheme,
   lightChatMessageTheme,
+  lightFormTheme,
   lightGameCardTheme,
   lightInputTheme,
   lightLinkTheme,
@@ -62,6 +64,7 @@ export const lightTheme: DefaultTheme = {
   footer: lightFooterTheme,
   content: lightContentTheme,
   pages: { main: LightMainPageTheme },
+  form: lightFormTheme,
 };
 
 export const darkTheme: DefaultTheme = {
@@ -81,4 +84,5 @@ export const darkTheme: DefaultTheme = {
   footer: darkFooterTheme,
   content: darkContentTheme,
   pages: { main: DarkMainPageTheme },
+  form: darkFormTheme,
 };

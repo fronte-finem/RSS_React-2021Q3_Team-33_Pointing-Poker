@@ -1,6 +1,7 @@
 import {
   AvatarTheme,
   ChatMessageTheme,
+  FormTheme,
   GameCardTheme,
   InputTheme,
   InteractiveColors,
@@ -14,38 +15,34 @@ import {
   darkDefaultTheme,
   lightDefaultTheme,
 } from '@client/themes/default-color-themes';
-import { Shadows } from './shadows';
 
 export const lightLinkTheme: InteractiveColors = {
-  normal: LightThemeColor.PRIMARY_MID,
+  normal: LightThemeColor.PRIMARY,
   hover: LightThemeColor.PRIMARY_DARK,
-  active: LightThemeColor.WHITE,
+  active: LightThemeColor.PRIMARY_LIGHT,
 };
 export const darkLinkTheme: InteractiveColors = {
-  normal: DarkThemeColor.PRIMARY_MID,
-  hover: DarkThemeColor.PRIMARY_LIGHT,
-  active: DarkThemeColor.BLACK,
+  normal: DarkThemeColor.ACCENT,
+  hover: DarkThemeColor.ACCENT_LIGHT,
+  active: DarkThemeColor.ACCENT_DARK,
 };
 
 export const lightToggleTheme: ToggleTheme = {
-  checked: LightThemeColor.ACCENT_DARK,
-  unchecked: LightThemeColor.PRIMARY_MID,
+  checked: LightThemeColor.ACCENT,
+  unchecked: LightThemeColor.PRIMARY_LIGHT,
 };
 export const darkToggleTheme: ToggleTheme = {
-  checked: DarkThemeColor.ACCENT_DARK,
-  unchecked: DarkThemeColor.PRIMARY_MID,
+  checked: DarkThemeColor.ACCENT,
+  unchecked: DarkThemeColor.PRIMARY_DARK,
 };
 
 export const lightInputTheme: InputTheme = {
-  fg: LightThemeColor.PRIMARY,
+  fg: LightThemeColor.FONT_SUBTITLE,
   bg: LightThemeColor.WHITE,
-  shadow: Shadows.MAIN,
 };
-
 export const darkInputTheme: InputTheme = {
-  fg: DarkThemeColor.WHITE,
+  fg: DarkThemeColor.FONT_TEXT,
   bg: DarkThemeColor.PRIMARY,
-  shadow: Shadows.MAIN,
 };
 
 export const lightGameCardTheme: GameCardTheme = lightDefaultTheme;
@@ -54,52 +51,69 @@ export const darkGameCardTheme: GameCardTheme = darkDefaultTheme;
 export const lightTimerTheme: TimerTheme = lightDefaultTheme;
 export const darkTimerTheme: TimerTheme = darkDefaultTheme;
 
-export const lightModalTheme: ModalTheme = lightDefaultTheme;
-export const darkModalTheme: ModalTheme = darkDefaultTheme;
+export const lightModalTheme: ModalTheme = {
+  fg: LightThemeColor.FONT_TITLE,
+  bg: LightThemeColor.WHITE,
+};
+export const darkModalTheme: ModalTheme = {
+  fg: DarkThemeColor.FONT_TITLE,
+  bg: DarkThemeColor.PRIMARY,
+};
 
 export const lightAvatarTheme: AvatarTheme = {
-  fg: LightThemeColor.PRIMARY_LIGHT,
-  bg: LightThemeColor.PRIMARY_MID,
+  fg: LightThemeColor.WHITE,
+  bg: LightThemeColor.ACCENT,
 };
 export const darkAvatarTheme: AvatarTheme = {
-  fg: DarkThemeColor.PRIMARY_DARK,
-  bg: DarkThemeColor.PRIMARY_MID,
+  fg: DarkThemeColor.WHITE,
+  bg: DarkThemeColor.ACCENT,
 };
 
 export const lightUserCardTheme: UserCardTheme = {
-  ...lightDefaultTheme,
-  owner: LightThemeColor.ACCENT_DARK,
-  jobPosition: LightThemeColor.PRIMARY_MID,
+  fg: LightThemeColor.FONT_SUBTITLE,
+  bg: LightThemeColor.WHITE,
+  owner: LightThemeColor.BLACK,
+  jobPosition: LightThemeColor.FONT_TEXT,
   dealer: {
-    bg: LightThemeColor.PRIMARY_LIGHT,
-    fg: LightThemeColor.BLACK,
+    fg: LightThemeColor.ACCENT_DARK,
+    bg: LightThemeColor.WHITE,
   },
   deleteBtn: {
-    normal: LightThemeColor.PRIMARY_LIGHT,
-    hover: LightThemeColor.ACCENT_LIGHT,
-    active: LightThemeColor.ACCENT_LIGHT,
+    normal: LightThemeColor.GREY,
+    hover: LightThemeColor.PRIMARY,
+    active: LightThemeColor.PRIMARY_DARK,
   },
 };
 export const darkUserCardTheme: UserCardTheme = {
-  ...darkDefaultTheme,
-  owner: DarkThemeColor.ACCENT_DARK,
-  jobPosition: DarkThemeColor.PRIMARY_MID,
+  fg: DarkThemeColor.FONT_SUBTITLE,
+  bg: DarkThemeColor.PRIMARY_LIGHT,
+  owner: DarkThemeColor.WHITE,
+  jobPosition: DarkThemeColor.FONT_TEXT,
   dealer: {
-    bg: DarkThemeColor.BLACK,
-    fg: DarkThemeColor.PRIMARY_LIGHT,
+    fg: DarkThemeColor.ACCENT_LIGHT,
+    bg: DarkThemeColor.PRIMARY_LIGHT,
   },
   deleteBtn: {
-    normal: DarkThemeColor.PRIMARY_LIGHT,
-    hover: DarkThemeColor.ACCENT_LIGHT,
-    active: DarkThemeColor.ACCENT_LIGHT,
+    normal: DarkThemeColor.GREY,
+    hover: DarkThemeColor.ACCENT,
+    active: DarkThemeColor.ACCENT_DARK,
   },
 };
 
 export const lightChatMessageTheme: ChatMessageTheme = {
   ...lightDefaultTheme,
-  dateTime: LightThemeColor.PRIMARY_MID,
+  dateTime: LightThemeColor.BLACK,
 };
 export const darkChatMessageTheme: ChatMessageTheme = {
   ...darkDefaultTheme,
-  dateTime: DarkThemeColor.PRIMARY_MID,
+  dateTime: DarkThemeColor.WHITE,
+};
+
+export const lightFormTheme: FormTheme = {
+  fg: LightThemeColor.FONT_SUBTITLE,
+  bg: LightThemeColor.WHITE,
+};
+export const darkFormTheme: FormTheme = {
+  fg: DarkThemeColor.FONT_SUBTITLE,
+  bg: DarkThemeColor.PRIMARY,
 };

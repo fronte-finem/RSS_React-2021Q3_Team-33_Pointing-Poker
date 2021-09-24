@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Avatar as AntAvatar } from 'antd';
+import { fontAvatar } from '@client/themes/typography';
 
 export const StyleAvatar = styled(AntAvatar)`
   display: flex;
@@ -11,11 +12,8 @@ export const StyleAvatar = styled(AntAvatar)`
   cursor: default;
 
   .ant-avatar-string {
-    font-family: Roboto, sans-serif;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 48px;
-    line-height: 56px;
+    ${fontAvatar}
+
     text-align: center;
     color: ${({ theme }) => theme.avatar.fg};
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);

@@ -1,6 +1,5 @@
 import { HeaderTheme } from 'types/styled';
 import { DarkThemeColor, LightThemeColor } from '@client/themes/colors';
-import { Shadows } from './shadows';
 
 export const lightHeaderTheme: HeaderTheme = {
   fg: LightThemeColor.FONT_TEXT,
@@ -10,7 +9,6 @@ export const lightHeaderTheme: HeaderTheme = {
     letter2: LightThemeColor.WHITE,
     rhombus: LightThemeColor.ACCENT,
   },
-  shadow: Shadows.MEDIUM,
 };
 
 export const darkHeaderTheme: HeaderTheme = {
@@ -21,5 +19,4 @@ export const darkHeaderTheme: HeaderTheme = {
     letter2: DarkThemeColor.WHITE,
     rhombus: DarkThemeColor.ACCENT,
   },
-  shadow: Shadows.MEDIUM,
 };

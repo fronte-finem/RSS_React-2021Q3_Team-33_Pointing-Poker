@@ -5,5 +5,5 @@ export const StyledMainPage = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 100px 26px;
-  box-shadow: ${(props) => props.theme.content.wrapper.shadow};
+  box-shadow: ${({ theme }) => theme.content.shadow};
 `;
