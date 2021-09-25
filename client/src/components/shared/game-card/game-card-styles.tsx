@@ -26,21 +26,3 @@ export const StyledGameCard = styled.div`
 export const StyledCardScore = styled.div`
   font-size: 50px;
 `;
-
-export const StyledCardScoreType = styled.div`
-  --offcet-h: 15px;
-  --offcet-v: 5px;
-  position: absolute;
-  font-size: 16px;
-`;
-
-export const StyledTopScore = styled(StyledCardScoreType)`
-  top: var(--offcet-v);
-  left: var(--offcet-h);
-`;
-
-export const StyledBottomScore = styled(StyledCardScoreType)`
-  bottom: var(--offcet-v);
-  right: var(--offcet-h);
-  transform: rotate(180deg);
-`;
