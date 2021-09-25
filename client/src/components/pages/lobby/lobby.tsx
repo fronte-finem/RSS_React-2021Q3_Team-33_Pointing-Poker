@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStateService } from '@client/providers/state-service';
+import { ModalCardsCustomize } from '@client/components/pages/lobby/lobby-cards/modal-cards-customize';
 import { LobbyCardsSection } from './lobby-cards/lobby-cards';
 import { LobbyInfoSection } from './lobby-info/lobby-info';
 import { LobbyIssueSection } from './lobby-issue/lobby-issue';
@@ -24,6 +25,7 @@ export const PageLobby: React.FC = observer(() => {
       <LobbyInfoSection />
       <LobbyUsersSection />
       {gameState.isDealer ? getDealerSection() : null}
+      <ModalCardsCustomize />
     </StyleLobbyPage>
   );
 });
