@@ -1,18 +1,16 @@
-import { action, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import {
   GameSettings,
+  GameStartPayload,
   getDefaultGameSettings,
 } from '@shared/api-types/game-settings';
 import { Role, User, UserToJoin } from '@shared/api-types/user';
 import { GameResults, Issue, IssueScore } from '@shared/api-types/issue';
 import { KickResult } from '@shared/api-types/chat';
 import { InitDealer, InitUser } from '@shared/api-types/init';
-import {
-  CardsSetType,
-  getScoreSequence,
-} from '@client/utils/get-score-sequence';
+import { ExtraScoreKind } from '@shared/api-types/game-card-settings';
 
-export const enum GamePage {
+export const enum AppMode {
   ENTRY = 'entry',
   LOBBY = 'lobby',
   GAME = 'game',
@@ -30,7 +28,7 @@ export interface UserFE extends User {
 }
 
 export class GameState {
-  @observable public page!: GamePage;
+  @observable public appMode!: AppMode;
   @observable public id!: string;
   @observable public title!: string;
   @observable public selfUserId!: string;
@@ -39,13 +37,12 @@ export class GameState {
   @observable public issues!: Issue[];
   @observable public settings!: GameSettings;
   @observable public results!: GameResults;
-  @observable public gameRun!: boolean;
   @observable public roundRun!: boolean;
   @observable public roundIssueId!: null | string;
   @observable public roundProgress!: string[];
 
   private init() {
-    this.page = GamePage.ENTRY;
+    this.appMode = AppMode.ENTRY;
     this.id = '';
     this.title = '';
     this.selfUserId = '';
@@ -54,7 +51,6 @@ export class GameState {
     this.issues = [];
     this.settings = getDefaultGameSettings();
     this.results = [];
-    this.gameRun = false;
     this.roundRun = false;
     this.roundIssueId = null;
     this.roundProgress = [];
@@ -63,6 +59,35 @@ export class GameState {
   constructor() {
     this.init();
     makeObservable(this);
+  }
+
+  @computed public get isModeEntry() {
+    return this.appMode === AppMode.ENTRY;
+  }
+
+  @computed public get isModeLobby() {
+    return this.appMode === AppMode.LOBBY;
+  }
+
+  @computed public get isModeLobbyDealer() {
+    return this.isModeLobby && this.isDealer;
+  }
+
+  @computed public get isModeGame() {
+    return this.appMode === AppMode.GAME;
+  }
+
+  @computed public get isModeGameDealer() {
+    return this.isModeGame && this.isDealer;
+  }
+
+  @computed public get isModeResults() {
+    return this.appMode === AppMode.RESULTS;
+  }
+
+  @computed public get gameStartPayload(): GameStartPayload {
+    const { issues, settings } = this;
+    return { issues, settings };
   }
 
   @action public reset() {
@@ -126,21 +151,21 @@ export class GameState {
   }
 
   @action public initDealer(initDealer: InitDealer, selfUserId: string) {
-    this.page = GamePage.LOBBY;
+    this.appMode = AppMode.LOBBY;
+    this.isDealer = true;
     this.id = initDealer.gameId;
     this.title = initDealer.gameTitle;
     this.selfUserId = selfUserId;
-    this.isDealer = true;
     this.settings = initDealer.gameSettings;
     this.users = initDealer.users;
   }
 
   @action public initUser(initUser: InitUser, selfUserId: string) {
-    this.page = GamePage.LOBBY;
+    this.appMode = AppMode.LOBBY;
+    this.isDealer = false;
     this.id = initUser.gameId;
     this.title = initUser.gameTitle;
     this.selfUserId = selfUserId;
-    this.isDealer = false;
     this.users = initUser.users;
     this.issues = initUser.issues || [];
     this.results = initUser.gameResult || [];
@@ -187,15 +212,14 @@ export class GameState {
     }
   }
 
-  @action public startGame(settings: GameSettings) {
-    this.page = GamePage.GAME;
-    this.gameRun = true;
+  @action public startGame({ issues, settings }: GameStartPayload) {
+    this.appMode = AppMode.GAME;
+    this.issues = issues;
     this.settings = settings;
   }
 
   @action public endGame(results: GameResults) {
-    this.page = GamePage.RESULTS;
-    this.gameRun = false;
+    this.appMode = AppMode.RESULTS;
     this.results = results;
   }
 
@@ -214,12 +238,16 @@ export class GameState {
     this.roundProgress.push(userId);
   }
 
-  @action public setCardSet(cardsSetType: CardsSetType) {
-    this.settings.cardsSet = getScoreSequence(cardsSetType);
+  @action public setCardsDeck(cardsSet: number[]) {
+    this.settings.cardsDeck = cardsSet;
+  }
+
+  @action public setCardsDeckExtras(cardsSet: ExtraScoreKind[]) {
+    this.settings.cardsDeckExtras = cardsSet;
   }
 
   @action public setScoreType(scoreType: string) {
-    this.settings.scoreType = scoreType;
+    this.settings.cardsScoreType = scoreType;
   }
 
   @action public setAutoJoinToGame(autoJoinToGame: boolean) {

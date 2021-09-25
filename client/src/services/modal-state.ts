@@ -22,6 +22,7 @@ export class ModalState {
   @observable public kickUser?: null | string = null;
   @observable public kickVote?: null | KickVoteInit = null;
   @observable public allowUserToJoin?: null | AllowUserToJoin = null;
+  @observable public customizeCards: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -140,5 +141,13 @@ export class ModalState {
 
   @action public resetAllowUserToJoin() {
     this.allowUserToJoin = null;
+  }
+
+  @action public openCardsCustomize() {
+    this.customizeCards = true;
+  }
+
+  @action public closeCardsCustomize() {
+    this.customizeCards = false;
   }
 }

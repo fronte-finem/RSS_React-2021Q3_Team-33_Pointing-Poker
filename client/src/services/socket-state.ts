@@ -17,7 +17,7 @@ import {
   SocketListenerSetterProps,
 } from '@client/services/socket-listeners';
 import { Issue, IssueBase } from '@shared/api-types/issue';
-import { CardScore } from '@shared/api-types/game-settings';
+import { CardScore } from '@shared/api-types/game-card-settings';
 
 export class SocketState {
   private socket?: PointingPokerClientSocket;
@@ -215,7 +215,7 @@ export class SocketState {
     this.beforeAsync();
     const response = await emitWithPayloadAndCallback(
       ApiClientEvents.START_GAME,
-      this.gameState.settings,
+      this.gameState.gameStartPayload,
       this.socket
     );
     this.afterAsync(response);

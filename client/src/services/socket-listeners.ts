@@ -70,8 +70,8 @@ export const setSharedListeners: SocketListenerSetter = ({
   socket?.on(ApiServerEvents.ISSUE_EDITED, (issue) =>
     gameState.modifyIssue(issue)
   );
-  socket?.on(ApiServerEvents.GAME_STARTED, (settings) =>
-    gameState.startGame(settings)
+  socket?.on(ApiServerEvents.GAME_STARTED, (payload) =>
+    gameState.startGame(payload)
   );
   socket?.on(ApiServerEvents.GAME_ENDED, (results) =>
     gameState.endGame(results)
