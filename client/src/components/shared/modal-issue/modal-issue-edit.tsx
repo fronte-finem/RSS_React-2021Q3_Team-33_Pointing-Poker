@@ -6,7 +6,7 @@ import { FormInstance } from 'antd';
 import { ModalIssue } from '@client/components/shared/modal-issue/modal-issue';
 
 export const ModalIssueEdit = observer(() => {
-  const { modalState, socketState } = useStateService();
+  const { gameState, modalState, socketState } = useStateService();
 
   const initFieldsHook = (form: FormInstance) => {
     useEffect(() => {
@@ -20,6 +20,11 @@ export const ModalIssueEdit = observer(() => {
 
   const onSubmit = async (issue: IssueBase) => {
     if (!modalState.editIssue) return;
+    if (gameState.isModeLobbyDealer) {
+      gameState.modifyIssue({ ...modalState.editIssue, ...issue });
+      modalState.resetEditIssue();
+      return;
+    }
     await socketState.editIssue({ ...modalState.editIssue, ...issue });
   };
 

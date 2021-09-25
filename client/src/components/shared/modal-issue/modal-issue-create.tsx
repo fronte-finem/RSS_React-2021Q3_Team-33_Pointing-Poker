@@ -1,12 +1,19 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { IssueBase, Priority } from '@shared/api-types/issue';
+import { Issue, IssueBase, Priority } from '@shared/api-types/issue';
 import { useStateService } from '@client/providers/state-service';
 import { FormInstance } from 'antd';
 import { ModalIssue } from '@client/components/shared/modal-issue/modal-issue';
+import { getLast } from '@shared/utils/array';
+
+const addId = (issue: IssueBase, issues: Issue[]) => {
+  const maybeId = getLast(issues)?.id;
+  const id = `${maybeId ? 1 + Number(maybeId) : 1}`;
+  return { ...issue, id };
+};
 
 export const ModalIssueCreate = observer(() => {
-  const { modalState, socketState } = useStateService();
+  const { gameState, modalState, socketState } = useStateService();
 
   const initFieldsHook = (form: FormInstance) => {
     useEffect(() => {
@@ -19,7 +26,12 @@ export const ModalIssueCreate = observer(() => {
   };
 
   const onSubmit = async (issue: IssueBase) => {
-    await socketState.addIssue(issue);
+    if (gameState.isModeLobbyDealer) {
+      gameState.addIssue(addId(issue, gameState.issues));
+      modalState.resetCreateIssue();
+      return;
+    }
+    if (gameState.isModeGame) await socketState.addIssue(issue);
   };
 
   return (

@@ -5,7 +5,7 @@ import { Modal } from '@client/components/shared/modal/modal';
 import { useStateService } from '@client/providers/state-service';
 
 export const ModalIssueDelete: React.FC = observer(() => {
-  const { modalState, socketState } = useStateService();
+  const { gameState, modalState, socketState } = useStateService();
 
   const onCancel = () => {
     modalState.resetDeleteIssue();
@@ -13,6 +13,11 @@ export const ModalIssueDelete: React.FC = observer(() => {
 
   const onOk = async () => {
     if (!modalState.deleteIssue) return;
+    if (gameState.isModeLobbyDealer) {
+      gameState.deleteIssue(modalState.deleteIssue.id);
+      modalState.resetDeleteIssue();
+      return;
+    }
     await socketState.deleteIssue(modalState.deleteIssue.id);
     if (socketState.isFail) {
       message.error(socketState.failMessage);
