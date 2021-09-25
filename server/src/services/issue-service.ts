@@ -22,6 +22,11 @@ export class IssueService {
     return this._store.some((item) => item.isEqual(issueData));
   }
 
+  public init(issues: IssueBase[]): Issue[] {
+    this._store = issues.map((data) => new IssueItem(data));
+    return this._store.map((item) => item.getDTO());
+  }
+
   public add(issueData: IssueBase): Issue {
     if (this.isInStore(issueData))
       throw new Error(ApiFailMessage.SAME_TITLE_ISSUE_ALREADY_EXIST);

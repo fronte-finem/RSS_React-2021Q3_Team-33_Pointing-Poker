@@ -4,7 +4,7 @@ import { ApiServerEvents } from '@shared/api-types/api-events';
 import { PointingPokerServerSocket } from 'types/server-socket';
 import { AckCallback, setFail, setOk } from '@shared/api-types/api-events-maps';
 import { Issue, IssueBase, Priority } from '@shared/api-types/issue';
-import { CardScore } from '@shared/api-types/game-settings';
+import { CardScore } from '@shared/api-types/game-card-settings';
 import { ISSUE_TITLE_MAX_LENGTH } from '@shared/api-validation/api-constants';
 
 const getPriorities = () => Object.values(Priority).join(', ');
