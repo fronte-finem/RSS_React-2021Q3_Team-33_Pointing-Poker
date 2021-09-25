@@ -39,14 +39,14 @@ export const PageIssueDemo: React.FC = observer(() => {
     i = i >= issues.length - 1 ? 0 : i + 1;
   };
 
-  const toggleGameState = (checked: boolean) => {
-    if (checked) gameState.startGame(settings);
-    else gameState.endGame([]);
-  };
-
   const toggleDealer = (checked: boolean) => {
     if (checked) gameState.initDealer(init, '42');
     else gameState.initUser(init, '123');
+  };
+
+  const toggleGameState = (checked: boolean) => {
+    if (checked) gameState.startGame({ issues, settings });
+    else toggleDealer(gameState.isDealer);
   };
 
   return (
@@ -69,9 +69,9 @@ export const PageIssueDemo: React.FC = observer(() => {
           unCheckedChildren="lobby"
           checkedChildren="game"
           onChange={toggleGameState}
-          checked={gameState.gameRun}
+          checked={gameState.isModeGame}
         />
-        <Button onClick={selectNext} disabled={!gameState.gameRun}>
+        <Button onClick={selectNext} disabled={!gameState.isModeGame}>
           Select next issue
         </Button>
       </div>

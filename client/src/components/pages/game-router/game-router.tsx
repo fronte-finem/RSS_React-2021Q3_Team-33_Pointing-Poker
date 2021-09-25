@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Alert, message } from 'antd';
 import { observer } from 'mobx-react-lite';
 import { useStateService } from '@client/providers/state-service';
-import { GamePage } from '@client/services/game-state';
 import { MainPage } from '@client/components/pages/main-page/main-page';
 import { PageLobby } from '@client/components/pages/lobby/lobby';
 import { useHistory, useParams } from 'react-router-dom';
@@ -31,10 +30,10 @@ export const PageGameRouter: React.FC = observer(() => {
 
   return (
     <div>
-      {gameState.page === GamePage.ENTRY && <MainPage />}
-      {gameState.page === GamePage.LOBBY && <PageLobby />}
-      {gameState.page === GamePage.GAME && <PageGame />}
-      {gameState.page === GamePage.RESULTS && <div>Page Game Results</div>}
+      {gameState.isModeEntry ? <MainPage /> : null}
+      {gameState.isModeLobby ? <PageLobby /> : null}
+      {gameState.isModeGame ? <PageGame /> : null}
+      {gameState.isModeResults ? <div>Page Game Results</div> : null}
 
       <Alert.ErrorBoundary>
         <ModalKickInit />

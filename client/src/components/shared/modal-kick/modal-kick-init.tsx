@@ -1,9 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { message } from 'antd';
 import { Modal } from '@client/components/shared/modal/modal';
 import { useStateService } from '@client/providers/state-service';
-import { GamePage } from '@client/services/game-state';
 import { Highlight } from './modal-kick.styles';
 
 export const ModalKickInit: React.FC = observer(() => {
@@ -16,23 +14,19 @@ export const ModalKickInit: React.FC = observer(() => {
   const onOk = async () => {
     if (!modalState.kickUser) return;
     await socketState.kick(modalState.kickUser);
-    if (socketState.isFail) {
-      message.error(socketState.failMessage);
-    } else {
+    if (!socketState.isFail) {
       onCancel();
     }
   };
 
   if (!modalState.kickUser) return null;
-  const visible =
-    gameState.page !== GamePage.ENTRY && modalState.isKickUserActive;
 
   return (
     <Modal
+      visible={!gameState.isModeEntry && modalState.isKickUserActive}
       title="Start kick?"
       okText="Yes"
       cancelText="No"
-      visible={visible}
       onOk={onOk}
       onCancel={onCancel}
       confirmLoading={socketState.isLoading}>

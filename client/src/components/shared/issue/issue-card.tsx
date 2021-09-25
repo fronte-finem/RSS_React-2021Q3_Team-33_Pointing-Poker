@@ -24,8 +24,7 @@ export interface IssueProps {
 export const IssueCard: React.FC<IssueProps> = observer(({ issue }) => {
   const { gameState, modalState } = useStateService();
 
-  const isGame = gameState.gameRun;
-  const isCurrent = isGame && gameState.roundIssueId === issue.id;
+  const isCurrent = gameState.isModeGame && gameState.roundIssueId === issue.id;
 
   const editIssue = () => {
     modalState.initEditIssue(issue);
@@ -40,9 +39,10 @@ export const IssueCard: React.FC<IssueProps> = observer(({ issue }) => {
   const cancelIcon = <StyledCancelIcon rotate={45} />;
 
   const mark = isCurrent ? <StyledMark>Current</StyledMark> : null;
-  const editBtn = isGame ? null : (
+
+  const editBtn = gameState.isModeLobbyDealer ? (
     <StyledDefaultButton type="link" icon={editIcon} onClick={editIssue} />
-  );
+  ) : null;
 
   return (
     <StyleIssueCard isCurrent={isCurrent}>
@@ -58,7 +58,7 @@ export const IssueCard: React.FC<IssueProps> = observer(({ issue }) => {
           {editBtn}
           <StyledDangerButton
             type="link"
-            icon={isGame ? cancelIcon : deleteIcon}
+            icon={gameState.isModeGame ? cancelIcon : deleteIcon}
             onClick={deleteIssue}
           />
         </StyledIssueCardControls>

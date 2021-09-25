@@ -10,7 +10,6 @@ import {
   StyledHeader,
 } from '@client/components/app/header/header.styles';
 import { Logo } from '@client/components/app/header/logo';
-import { GamePage } from '@client/services/game-state';
 import { useStateService } from '@client/providers/state-service';
 import { ChatToggleButton } from '@client/components/shared/chat/chat-toggle-button';
 import { ThemeToggle } from '@client/components/shared/toggle-theme/toggle-theme';
@@ -32,7 +31,7 @@ export const Header = observer(() => {
             <Button>Demo pages</Button>
           </Dropdown>
           <ThemeToggle />
-          {gameState.page !== GamePage.ENTRY ? <ChatToggleButton /> : null}
+          {gameState.isModeEntry ? null : <ChatToggleButton />}
         </StyledControlsWrapper>
       </HeaderLayoutContainer>
     </StyledHeader>
