@@ -1,71 +1,46 @@
-/**
- * Стандартный тип набора карт: числа Фибоначчи, степени двойки
- */
-export const enum CardsSetDefault {
-  /**
-   * числа Фибоначчи
-   */
-  FIBONACCI = 'fibonacci',
-  /**
-   * степени двойки
-   */
-  POW_2 = 'pow 2',
-}
+import { Issue } from '@shared/api-types/issue';
+import {
+  ExtraScoreKind,
+  PRESET_CLASSIC,
+  PRESET_CLASSIC_EXTRAS,
+  ScoreType,
+} from '@shared/api-types/game-card-settings';
 
 /**
- * Значение игровой карты (число или название особенной карты).
- */
-export type CardScore = number | string;
-/**
- * Массив набора карт собственной последовательности.
- */
-export type CardsSetCustom = Array<CardScore>;
-
-/**
- * Тип набора карт: числа Фибоначчи, степени двойки или массив собственной последовательности.
- */
-export type CardsSet = CardsSetDefault | CardsSetCustom;
-
-/**
- * Набор настроек игры.
+ * Набор настроек игры:
+ * ---------------------------
+ * - **dealerGamer**         - Будет ли дилер принимать участие в игре.
+ * - **autoJoinToGame**      - Если игра уже началась: впускать автоматически всех новых участников или впускать через механизм admit/reject.
+ * - **autoOpenCards**       - Будут ли карты переворачиваться автоматически, как только все проголосуют.
+ * - **changeAfterRoundEnd** - Можно ли менять свой выбор после того, как все карты уже перевернуты.
+ * - **timeout**             - Конфигурация времени таймера если он ненужен.
+ * - **cardsSet**            - Набор значений карт для игры.
+ * - **cardsSetExtras**      - Набор значений особых карт для игры.
+ * - **scoreType**           - Название единиц измерения для значений карт
  */
 export interface GameSettings {
-  /**
-   * Будет ли дилер принимать участие в игре.
-   */
   dealerGamer: boolean;
-  /**
-   * Какой набор карточек будет использоваться.
-   */
-  cardsSet: CardsSet;
-  /**
-   * Название единиц измерения для значений карт
-   */
-  scoreType?: string;
-  /**
-   * Если игра уже началась: впускать автоматически всех новых участников или впускать через механизм admit/reject.
-   */
   autoJoinToGame: boolean;
-  /**
-   * Будут ли карты переворачиваться автоматически, как только все проголосуют.
-   */
   autoOpenCards: boolean;
-  /**
-   * Можно ли менять свой выбор после того, как все карты уже перевернуты.
-   */
   changeAfterRoundEnd: boolean;
-  /**
-   * Конфигурация времени таймера если он ненужен.
-   */
   timeout?: number;
+  cardsDeck: number[];
+  cardsDeckExtras: ExtraScoreKind[];
+  cardsScoreType?: string;
 }
 
 export const getDefaultGameSettings = (): GameSettings => ({
   dealerGamer: false,
-  cardsSet: CardsSetDefault.FIBONACCI,
-  scoreType: 'SP',
   autoJoinToGame: true,
   autoOpenCards: true,
   changeAfterRoundEnd: false,
   timeout: undefined,
+  cardsDeck: [...PRESET_CLASSIC],
+  cardsDeckExtras: [...PRESET_CLASSIC_EXTRAS],
+  cardsScoreType: ScoreType.STORY_POINT,
 });
+
+export interface GameStartPayload {
+  settings: GameSettings;
+  issues: Issue[];
+}

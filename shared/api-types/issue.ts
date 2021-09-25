@@ -1,4 +1,4 @@
-import { CardScore } from './game-settings';
+import { CardScore } from '@shared/api-types/game-card-settings';
 
 /**
  * Приоритет задачи
