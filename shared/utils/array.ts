@@ -94,3 +94,25 @@ export function toggleItem<T>(item: T) {
     return nextArray;
   };
 }
+
+export function countItems<T, X>(
+  array: T[],
+  getValue: (item: T) => X
+): Map<X, number> {
+  return array.reduce((acc, item) => {
+    const value = getValue ? getValue(item) : item;
+    const count = acc.get(value) || 0;
+    acc.set(value, count + 1);
+    return acc;
+  }, new Map());
+}
+
+// p1 - 0..4
+// p2 - 5..9
+export function getPage<T>(array: T[], page: number, pageSize = 5): T[] {
+  if (page < 0) return [];
+  if (page === 0) return array.slice();
+  const b = page * pageSize;
+  const a = b - pageSize;
+  return array.slice(a, b);
+}
