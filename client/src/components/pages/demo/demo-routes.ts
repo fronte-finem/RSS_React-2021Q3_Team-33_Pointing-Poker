@@ -12,6 +12,7 @@ import { ModalIssueCreateDemo } from '@client/components/pages/demo/modal-issue-
 import { PageComponentsDemo } from '@client/components/pages/demo/components';
 import { PageLobbyDemo } from '@client/components/pages/demo/page-lobby';
 import { ModalIssueDeleteDemo } from '@client/components/pages/demo/modal-issue-delete';
+import { PageGameDemo } from '@client/components/pages/demo/page-game.';
 
 export const demoRoutes: RouteConf[] = [
   {
@@ -53,6 +54,11 @@ export const demoRoutes: RouteConf[] = [
     path: '/lobby',
     name: 'Lobby demo (🚧 mutate game-state 🚧)',
     component: PageLobbyDemo,
+  },
+  {
+    path: '/game',
+    name: 'Game demo (🚧 mutate game-state 🚧)',
+    component: PageGameDemo,
   },
   {
     path: '/kick-player',

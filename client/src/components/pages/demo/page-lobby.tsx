@@ -93,7 +93,7 @@ export const PageLobbyDemo: React.FC = observer(() => {
 
   useEffect(() => {
     gameState.initDealer(init, '4');
-    gameState.setIssues(issues);
+    gameState.initIssues(issues);
   }, []);
 
   const toggleDealer = (checked: boolean) => {
