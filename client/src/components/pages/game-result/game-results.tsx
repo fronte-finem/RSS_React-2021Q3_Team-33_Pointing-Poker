@@ -1,51 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useGameService } from '@client/providers/game-service';
 import { IssueCard } from '@client/components/shared/issue/issue-card';
 import { GameCard } from '@client/components/shared/game-card/game-card';
-import { CSVLink } from 'react-csv';
 import {
   StyleGameResults,
-  StyleGameResultTitle,
+  StyleGameResultText,
   StyleGameResultsWrapper,
   StyleGameResultIssue,
+  StyleGameResultCard,
 } from './game-result-styles';
+import { setScores } from './shared/utils/utils';
+import { GameResultsRender, CardResults } from './shared/types/types';
+import { DownloadButton } from './game-result-download';
 
 export const GameResultsPage = observer(() => {
   const { gameState } = useGameService();
+  const [gameResultsRender, setGameResultsRender] = useState<
+    GameResultsRender[]
+  >([]);
 
-  const headers = [
-    { label: 'issueId', key: 'issueId' },
-    { label: 'score', key: 'score' },
-  ];
-
-  const data = gameState.results.map((item) => ({
-    issueId: item.issueId,
-    score: item.scores.map((role) => role.score),
-  }));
+  useEffect(() => {
+    setGameResultsRender(
+      gameState.results.map((result) => ({
+        issue: gameState.issues.find((issue) => issue.id === result.issueId),
+        scores: setScores(result.scores),
+      })) as GameResultsRender[]
+    );
+  }, [gameState.results]);
   return (
     <StyleGameResults>
-      <StyleGameResultTitle>{gameState.title}</StyleGameResultTitle>
+      <StyleGameResultText>{gameState.title}</StyleGameResultText>
+      <DownloadButton gameResults={gameResultsRender} />
       <StyleGameResultsWrapper>
-        {gameState.results.map((result) => (
+        {gameResultsRender.map((result: GameResultsRender) => (
           <div>
-            {gameState.issues
-              .filter((issue) => issue.id === result.issueId)
-              .map((filterIssue) => (
-                <IssueCard issue={filterIssue} />
-              ))}
+            <IssueCard issue={result.issue} />
             <StyleGameResultIssue>
-              {result.scores.map((score: any) => (
-                <GameCard score={score.score} scoreType="sp" />
+              {result.scores.map((score: CardResults) => (
+                <StyleGameResultCard>
+                  <GameCard
+                    score={score.score as number}
+                    scoreType={gameState.settings.scoreType || 'SP'}
+                  />
+                  <StyleGameResultText>{score.percent} %</StyleGameResultText>
+                </StyleGameResultCard>
               ))}
             </StyleGameResultIssue>
           </div>
         ))}
       </StyleGameResultsWrapper>
-
-      <CSVLink data={data} headers={headers} separator=";">
-        Export to CSV
-      </CSVLink>
     </StyleGameResults>
   );
 });
