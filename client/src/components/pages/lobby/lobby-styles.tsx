@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Typography } from 'antd';
 
 export const StyleLobbyPage = styled.div`
   width: 100%;
@@ -24,17 +23,4 @@ export const StyledLobbyGrid = styled.div`
   justify-content: center;
   justify-items: center;
   gap: 20px;
-`;
-
-export const StyleLobbyTitle = styled(Typography.Title)`
-  margin: 0 !important;
-  font-family: var(--font-ruda);
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 30px;
-  text-align: center;
-
-  && {
-    color: ${({ theme }) => theme.fg};
-  }
 `;

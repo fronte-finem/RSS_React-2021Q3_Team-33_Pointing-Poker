@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { SettingsTimer } from '@client/components/pages/lobby/lobby-settings/settings-timer';
 import { SettingsCards } from '@client/components/pages/lobby/lobby-settings/settings-cards';
 import { SettingsGame } from '@client/components/pages/lobby/lobby-settings/settings-game';
-import { StyleLobbyTitle } from '../lobby-styles';
+import { StyledTitle } from '@client/components/styles/text';
 import {
   StyleLobbySettings,
   StyleLobbySettingsWrapper,
@@ -12,13 +12,13 @@ import {
 export const LobbySettingsSection = observer(() => {
   return (
     <StyleLobbySettings>
-      <StyleLobbyTitle level={2}>Game settings:</StyleLobbyTitle>
+      <StyledTitle level={2}>Game settings:</StyledTitle>
       <StyleLobbySettingsWrapper>
         <SettingsGame />
         <SettingsTimer />
       </StyleLobbySettingsWrapper>
 
-      <StyleLobbyTitle level={2}>Cards settings:</StyleLobbyTitle>
+      <StyledTitle level={2}>Cards settings:</StyledTitle>
       <StyleLobbySettingsWrapper>
         <SettingsCards />
       </StyleLobbySettingsWrapper>

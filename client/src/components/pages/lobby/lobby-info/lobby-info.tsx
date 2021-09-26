@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { UserCard } from '@client/components/shared/user-card/user-card';
 import { observer } from 'mobx-react-lite';
 import { useStateService } from '@client/providers/state-service';
-import { StyleLobbyTitle } from '../lobby-styles';
+import { StyledTitle, StyledSubtitle } from '@client/components/styles/text';
 import {
   InfoMaster,
   InfoTitle,
   StyleLobbyInfo,
   StyleLobbyMaster,
-  StyleLobbyMasterText,
 } from './lobby-info-styles';
 import { EditTitleButton } from '../lobby-buttons';
 import { LobbyEditTitleModal } from '../lobby-modal';
@@ -23,28 +22,32 @@ export const LobbyInfoSection = observer(() => {
     <>
       <InfoTitle>
         <StyleLobbyInfo span={24}>
-          <StyleLobbyTitle level={2}>{gameState.title}</StyleLobbyTitle>
+          <StyledTitle level={2}>{gameState.title}</StyledTitle>
           {gameState.isDealer ? (
             <EditTitleButton setEditModal={setIsEditModal} />
           ) : null}
-          <LobbyEditTitleModal
-            isVisible={isEditModal}
-            setIsVisible={setIsEditModal}
-          />
         </StyleLobbyInfo>
       </InfoTitle>
+
       <InfoMaster>
         <StyleLobbyMaster>
-          <StyleLobbyMasterText>Scram master:</StyleLobbyMasterText>
+          <StyledSubtitle>Scram master:</StyledSubtitle>
           <UserCard user={gameState.getDealer()} />
         </StyleLobbyMaster>
       </InfoMaster>
+
       {gameState.isDealer ? (
         <LobbyCopyLink
           lobbyLink={`${window.location.origin}/join/${gameState.id}`}
         />
       ) : null}
+
       <LobbyInfoControl />
+
+      <LobbyEditTitleModal
+        isVisible={isEditModal}
+        setIsVisible={setIsEditModal}
+      />
     </>
   );
 });

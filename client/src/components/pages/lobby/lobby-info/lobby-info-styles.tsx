@@ -32,20 +32,12 @@ export const InfoMaster = styled(Row)`
   margin-bottom: 20px;
 `;
 
-export const StyleLobbyMaster = styled(Col)`
+export const StyleLobbyMaster = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-`;
-
-export const StyleLobbyMasterText = styled(Paragraph)`
-  margin-bottom: 10px !important;
-  font-family: var(--font-ruda);
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 15px;
-  color: ${(props) => props.theme.fg};
+  gap: 10px;
 `;
 
 export const InfoCopy = styled(Row)`
