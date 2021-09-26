@@ -1,5 +1,10 @@
 import styled, { DefaultTheme } from 'styled-components';
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  CheckCircleOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 import { Button as AntButton } from 'antd';
 import {
   issueCardControlsStyle,
@@ -7,7 +12,12 @@ import {
   issueCardStyle,
 } from '@client/components/shared/issue/issue-styles';
 
-type Props = { isCurrent: boolean };
+type Props = {
+  isCurrent?: boolean;
+  isSelected?: boolean;
+  isHaveStats?: boolean;
+  isGameMode?: boolean;
+};
 type Opts = Props & { theme: DefaultTheme };
 
 const selector = ({ theme, isCurrent }: Opts) =>
@@ -17,6 +27,9 @@ export const StyleIssueCard = styled.div<Props>`
   ${issueCardStyle};
   --fg: ${(props) => selector(props).fg};
   --bg: ${(props) => selector(props).bg};
+
+  cursor: ${({ isGameMode }) => (isGameMode ? 'pointer' : 'default')};
+  outline: ${({ isSelected }) => (isSelected ? '3px solid #f80' : 'unset')};
 `;
 
 export const StyledIssueCardInfo = styled.div`
@@ -100,4 +113,9 @@ export const StyledEditIcon = styled(EditOutlined)`
 
 export const StyledDeleteIcon = styled(DeleteOutlined)`
   font-size: 23px;
+`;
+
+export const StyledCheckIcon = styled(CheckCircleOutlined)`
+  font-size: 24px;
+  margin-right: 10px;
 `;

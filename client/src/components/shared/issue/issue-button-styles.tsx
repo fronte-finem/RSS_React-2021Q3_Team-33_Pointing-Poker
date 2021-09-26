@@ -17,6 +17,9 @@ export const StyledIssueButtonCard = styled.button`
   --icon-active: ${(props) => selector(props).active};
   --icon: var(--icon-normal);
 
+  --title-font-size: 24px;
+  --icon-font-size: 33px;
+
   padding: 0;
   color: var(--icon);
   transition: all 300ms;
@@ -45,11 +48,11 @@ export const StyledIssueButtonCardControls = styled.div`
 export const StyleIssueTitle = styled.div`
   font-family: var(--font-roboto);
   font-weight: 200;
-  font-size: 24px;
+  font-size: var(--title-font-size);
 `;
 
 export const StyleAddIcon = styled(PlusOutlined)`
-  font-size: 33px;
-  transition: all 300ms;
   color: var(--icon);
+  font-size: var(--icon-font-size);
+  transition: all 300ms;
 `;

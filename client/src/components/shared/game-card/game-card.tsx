@@ -10,11 +10,12 @@ import { ScoreName } from './score-name';
 
 export interface Props {
   score: CardScore;
+  className?: string;
 }
 
-export const GameCard = observer(({ score }: Props) => {
+export const GameCard = observer(({ score, className }: Props) => {
   return (
-    <StyledGameCard>
+    <StyledGameCard className={className}>
       <StyledCardScore>
         {score === ExtraScoreKind.COFFEE ? <CoffeeOutlined /> : score}
       </StyledCardScore>

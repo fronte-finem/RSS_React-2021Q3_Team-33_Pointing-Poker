@@ -15,16 +15,24 @@ import {
   StyledIssueCardControls,
   StyledIssueCardInfo,
   StyleIssueCard,
+  StyledCheckIcon,
 } from './issue-card-styles';
 
 export interface IssueProps {
-  issue: Issue;
+  issue?: Issue;
+  className?: string;
 }
 
-export const IssueCard: React.FC<IssueProps> = observer(({ issue }) => {
+export const IssueCard: React.FC<IssueProps> = observer(function IssueCard({
+  issue,
+  className,
+}) {
   const { gameState, modalState } = useStateService();
 
+  if (!issue) return null;
+
   const isCurrent = gameState.isModeGame && gameState.roundIssueId === issue.id;
+  const isHaveStats = gameState.isHaveStats(issue.id);
 
   const editIssue = () => {
     modalState.initEditIssue(issue);
@@ -34,9 +42,16 @@ export const IssueCard: React.FC<IssueProps> = observer(({ issue }) => {
     modalState.initDeleteIssue(issue);
   };
 
+  const selectIssue = () => {
+    if (!gameState.isModeGame) return;
+    modalState.initSelectIssue(issue.id);
+  };
+
   const editIcon = <StyledEditIcon />;
   const deleteIcon = <StyledDeleteIcon />;
   const cancelIcon = <StyledCancelIcon rotate={45} />;
+
+  const okIcon = isHaveStats ? <StyledCheckIcon /> : null;
 
   const mark = isCurrent ? <StyledMark>Current</StyledMark> : null;
 
@@ -45,11 +60,22 @@ export const IssueCard: React.FC<IssueProps> = observer(({ issue }) => {
   ) : null;
 
   return (
-    <StyleIssueCard isCurrent={isCurrent}>
-      <Tooltip placement="bottom" title={issue.link}>
+    <StyleIssueCard
+      isCurrent={isCurrent}
+      isSelected={modalState.selectIssue === issue.id}
+      isHaveStats={isHaveStats}
+      isGameMode={gameState.isModeGame}
+      className={className}
+      onClick={selectIssue}>
+      <Tooltip
+        placement={gameState.isModeGame ? 'right' : 'bottom'}
+        title={issue.link}>
         <StyledIssueCardInfo>
           {mark}
-          <StyledIssueTitle>{issue.title}</StyledIssueTitle>
+          <StyledIssueTitle>
+            {okIcon}
+            {issue.title}
+          </StyledIssueTitle>
           <StyledIssuePriority>{issue.priority}</StyledIssuePriority>
         </StyledIssueCardInfo>
       </Tooltip>

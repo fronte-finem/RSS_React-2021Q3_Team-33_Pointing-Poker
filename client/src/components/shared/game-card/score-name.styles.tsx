@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const StyledScoreName = styled.div<{ top: boolean }>`
-  --offset-h: 15px;
-  --offset-v: 5px;
+  --offset-h: var(--game-card-score-name-offset-h, 15px);
+  --offset-v: var(--game-card-score-name-offset-v, 5px);
 
   width: 75%;
   position: absolute;
@@ -14,7 +14,7 @@ export const StyledScoreName = styled.div<{ top: boolean }>`
 
   transform: ${({ top }) => (top ? 'unset' : 'rotate(180deg)')};
 
-  font-size: 16px;
+  font-size: var(--game-card-score-name-font-size, 16px);
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: uppercase;

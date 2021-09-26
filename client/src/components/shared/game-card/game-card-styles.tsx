@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const StyledGameCard = styled.div`
-  width: 100px;
-  height: 161px;
+  width: var(--game-card-width, 100px);
+  height: var(--game-card-height, 161px);
   color: ${({ theme }) => theme.gameCard.fg};
   background-color: ${({ theme }) => theme.gameCard.bg};
   border-radius: 20px;
@@ -24,5 +24,5 @@ export const StyledGameCard = styled.div`
 `;
 
 export const StyledCardScore = styled.div`
-  font-size: 50px;
+  font-size: var(--game-card-score-font-size, 50px);
 `;

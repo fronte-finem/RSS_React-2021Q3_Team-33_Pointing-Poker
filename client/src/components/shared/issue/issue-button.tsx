@@ -9,7 +9,11 @@ import {
   StyleIssueTitle,
 } from './issue-button-styles';
 
-export const IssueButton = observer(() => {
+interface Props {
+  className?: string;
+}
+
+export const IssueButton: React.FC<Props> = observer(({ className }) => {
   const { modalState } = useStateService();
 
   const onClick = () => {
@@ -17,7 +21,7 @@ export const IssueButton = observer(() => {
   };
 
   return (
-    <StyledIssueButtonCard onClick={onClick}>
+    <StyledIssueButtonCard onClick={onClick} className={className}>
       <StyledIssueButtonCardInfo>
         <StyleIssueTitle>Create new Issue</StyleIssueTitle>
       </StyledIssueButtonCardInfo>
