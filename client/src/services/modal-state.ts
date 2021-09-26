@@ -19,6 +19,7 @@ export class ModalState {
   @observable public createIssue: boolean = false;
   @observable public editIssue?: null | Issue = null;
   @observable public deleteIssue?: null | Issue = null;
+  @observable public selectIssue?: string;
   @observable public kickUser?: null | string = null;
   @observable public kickVote?: null | KickVoteInit = null;
   @observable public allowUserToJoin?: null | AllowUserToJoin = null;
@@ -105,6 +106,18 @@ export class ModalState {
 
   @action public resetDeleteIssue() {
     this.deleteIssue = null;
+  }
+
+  @computed public get isSelectIssueActive(): boolean {
+    return Boolean(this.selectIssue);
+  }
+
+  @action public initSelectIssue(issueId: string) {
+    this.selectIssue = issueId;
+  }
+
+  @action public resetSelectIssue() {
+    this.selectIssue = undefined;
   }
 
   @computed public get isKickUserActive(): boolean {

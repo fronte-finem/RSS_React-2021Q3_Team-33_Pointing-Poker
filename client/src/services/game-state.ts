@@ -5,7 +5,19 @@ import {
   getDefaultGameSettings,
 } from '@shared/api-types/game-settings';
 import { Role, User, UserToJoin } from '@shared/api-types/user';
-import { GameResults, Issue, IssueScore } from '@shared/api-types/issue';
+import {
+  GameResults,
+  Issue,
+  IssueScore,
+  RoundResults,
+} from '@shared/api-types/issue';
+import {
+  calcStats,
+  CardStats,
+  countScores,
+  IssueStats,
+  IssueStatsMap,
+} from '@client/utils/issue-stats';
 import { KickResult } from '@shared/api-types/chat';
 import { InitDealer, InitUser } from '@shared/api-types/init';
 import { ExtraScoreKind } from '@shared/api-types/game-card-settings';
@@ -176,6 +188,10 @@ export class GameState {
     this.users.push(user);
   }
 
+  @action public initIssues(issues: Issue[]) {
+    this.issues = issues;
+  }
+
   @action public addIssue(issue: Issue) {
     this.issues.push(issue);
   }
@@ -191,6 +207,24 @@ export class GameState {
     } else {
       this.issues[index] = issue;
     }
+  }
+
+  public getIssues(withCurrent = false): Issue[] {
+    if (withCurrent) return this.issues;
+    return this.issues.filter(({ id }) => id !== this.roundIssueId);
+  }
+
+  public getIssue(issueId: string): Issue | undefined {
+    return this.issues.find(({ id }) => id === issueId);
+  }
+
+  public get currentIssue(): Issue | undefined {
+    if (!this.roundIssueId) return undefined;
+    return this.getIssue(this.roundIssueId);
+  }
+
+  @action public initResults(results: IssueScore[]) {
+    this.results = results;
   }
 
   @action public addResult(result: IssueScore) {
@@ -210,6 +244,16 @@ export class GameState {
     } else {
       this.results[index] = issueScore;
     }
+  }
+
+  public isHaveStats(issueId: string): boolean {
+    return this.results.some((results) => results.issueId === issueId);
+  }
+
+  public getIssueScores(issueId: string): RoundResults {
+    return (
+      this.results.find((results) => results.issueId === issueId)?.scores || []
+    );
   }
 
   @action public startGame({ issues, settings }: GameStartPayload) {
@@ -270,7 +314,23 @@ export class GameState {
     this.settings.timeout = timeout;
   }
 
-  @action public setIssues(issues: Issue[]) {
-    this.issues = issues;
+  private get statisticsMap(): IssueStatsMap[] {
+    return this.results.map(({ issueId, scores }) => ({
+      issueId,
+      stats: countScores(scores),
+    }));
+  }
+
+  public get statistics(): IssueStats[] {
+    return this.statisticsMap.map(({ issueId, stats }) => ({
+      issueId,
+      stats: calcStats(stats),
+    }));
+  }
+
+  public getIssueStats(issueId: string): CardStats[] {
+    const scores = this.getIssueScores(issueId);
+    const statsMap = countScores(scores);
+    return calcStats(statsMap);
   }
 }
