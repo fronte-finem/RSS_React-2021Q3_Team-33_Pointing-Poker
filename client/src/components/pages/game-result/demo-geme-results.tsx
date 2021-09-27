@@ -4,7 +4,7 @@ import { Alert } from 'antd';
 import { useGameService } from '@client/providers/game-service';
 import { GameResults, IssuesList, Priority } from '@shared/api-types/issue';
 import { Role, UsersList } from '@shared/api-types/user';
-import { GameResultsPage } from './game-results';
+import { GameResultsPage } from './game-results-page';
 
 const users: UsersList = [
   {

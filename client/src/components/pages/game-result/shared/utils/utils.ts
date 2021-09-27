@@ -1,6 +1,6 @@
 import { CardScore } from '@shared/api-types/game-settings';
 import { RoundResults, UserScore } from '@shared/api-types/issue';
-import { CardResults } from '../types/types';
+import { CardResults, GameResultsRender, GameResultXLS } from '../types/types';
 
 export const setScores = (scores: RoundResults) => {
   const replayScores = scores.reduce<Record<CardScore, number>>(
@@ -26,3 +26,18 @@ export const setScores = (scores: RoundResults) => {
   });
   return scoresResult;
 };
+
+export function getGameResultXLS(
+  gameResults: GameResultsRender[]
+): GameResultXLS[] {
+  return gameResults.map(helper).flat();
+}
+
+function helper({ issue, scores }: GameResultsRender): GameResultXLS[] {
+  return scores.map(({ score, percent }) => ({
+    issue: issue.title,
+    priority: issue.priority,
+    score,
+    percent,
+  }));
+}
