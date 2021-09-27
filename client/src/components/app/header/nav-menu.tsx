@@ -1,13 +1,18 @@
 import React from 'react';
 import { Menu } from 'antd';
 import { NavLink } from 'react-router-dom';
-import { routes } from '@client/components/app/routes';
+import { demoRoutes } from '@client/components/pages/demo/demo-routes';
 
-export const NavMenu: React.FC = () => (
+export const NavMenu = () => (
   <Menu theme="dark">
-    {routes.map(({ path, name }) => (
+    <Menu.Item key="home">
+      <NavLink to="/" exact>
+        Home
+      </NavLink>
+    </Menu.Item>
+    {demoRoutes.map(({ path, name }) => (
       <Menu.Item key={name}>
-        <NavLink to={path} exact>
+        <NavLink to={`/demo${path}`} exact>
           {name}
         </NavLink>
       </Menu.Item>

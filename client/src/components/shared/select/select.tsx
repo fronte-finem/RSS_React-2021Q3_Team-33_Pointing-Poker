@@ -1,5 +1,5 @@
 import React from 'react';
-import { SelectProps, SelectValue } from 'antd/lib/select';
+import { RefSelectProps, SelectProps, SelectValue } from 'antd/lib/select';
 import {
   StyledSelect,
   StyledOption,
@@ -12,14 +12,16 @@ export interface IOption {
 
 type Props = { options: IOption[] } & SelectProps<SelectValue>;
 
-export const Select: React.FC<Props> = ({ options, ...props }) => {
-  return (
-    <StyledSelect defaultValue={options[0].value} {...props}>
-      {options.map((option: IOption) => (
-        <StyledOption value={option.value} key={option.value}>
-          {option.label}
-        </StyledOption>
-      ))}
-    </StyledSelect>
-  );
-};
+export const Select: React.FC<Props> = React.forwardRef<RefSelectProps, Props>(
+  ({ options, ...props }, ref) => {
+    return (
+      <StyledSelect defaultValue={options[0].value} {...props} ref={ref}>
+        {options.map((option: IOption) => (
+          <StyledOption value={option.value} key={option.value}>
+            {option.label}
+          </StyledOption>
+        ))}
+      </StyledSelect>
+    );
+  }
+);

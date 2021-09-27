@@ -46,3 +46,11 @@ export const getFibonacciSequence = (size: number): number[] => {
   }
   return fibArray;
 };
+
+export function repeatCurry<A>(num: number): (arrayA: A[]) => A[] {
+  return (arrayA: A[]) => Array(num).fill(arrayA).flat();
+}
+
+export function repeat<A>(arrayA: A[], num: number): A[] {
+  return Array(num).fill(arrayA).flat();
+}

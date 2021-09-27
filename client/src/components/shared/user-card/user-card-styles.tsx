@@ -4,15 +4,24 @@ import { Role } from '@shared/api-types/user';
 import { Button as AntButton } from 'antd';
 import { fontTextSmall, fontTitle } from '@client/themes/typography';
 
-type Props = { userRole: Role };
+type Props = { userRole: Role; userKicked: boolean; userDisconnected: boolean };
 type Opts = Props & { theme: DefaultTheme };
 
 const selector = ({ theme, userRole }: Opts) =>
   userRole === Role.DEALER ? theme.userCard.dealer : theme.userCard;
 
+const getOpacity = ({ userDisconnected, userKicked }: Props): number => {
+  if (userKicked) return 0.25;
+  if (userDisconnected) return 0.5;
+  return 1;
+};
+
 export const StyleCard = styled.div<Props>`
   --bg: ${(props) => selector(props).bg};
   --fg: ${(props) => selector(props).fg};
+
+  --kicked-opacity: ${getOpacity};
+  --kicked-mark: ${({ userKicked }) => (userKicked ? 'line-through' : 'unset')};
 
   width: var(--user-card-width);
 
@@ -22,6 +31,8 @@ export const StyleCard = styled.div<Props>`
   border-radius: 4px;
   background: var(--bg);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+
+  opacity: var(--kicked-opacity);
 `;
 
 export const StyledAvatarContainer = styled.div`
@@ -56,6 +67,7 @@ export const StyleCardOwner = styled.div`
 export const StyledUsername = styled.div`
   ${fontTitle}
   color: var(--fg);
+  text-decoration: var(--kicked-mark);
 `;
 
 export const StyledJobPosition = styled.div`

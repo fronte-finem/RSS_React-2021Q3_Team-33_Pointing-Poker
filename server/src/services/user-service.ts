@@ -1,5 +1,5 @@
 import { Role, User, UserBase, UsersList } from '@shared/api-types/user';
-import { ApiFailMessage } from '@server/api-fail-message';
+import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { PointingPokerServerSocket } from 'types/server-socket';
 import { KickResult, KickVoteInit } from '@shared/api-types/chat';
 
@@ -26,7 +26,7 @@ const notThatUser =
   ({ socket }: UserX) =>
     socket.id !== userId;
 
-const MINIMAL_USERS_NUM_FOR_KICK_VOTE = 3;
+const MINIMAL_USERS_NUM_FOR_KICK_VOTE = 2;
 
 interface KickVote {
   userId: string;
@@ -37,6 +37,7 @@ export class UsersService {
   private _users: UserX[] = [];
   private _kickVotes: KickVote[] = [];
   private _kickVoteStarted: boolean = false;
+  private _kickBadUserId: null | string = null;
 
   public isUserInStore(userData: UserBase): boolean {
     return this._users.some((user) => userEquality(userData, user));
@@ -95,6 +96,7 @@ export class UsersService {
   public startKickVote(badUserId: string, initiatorId: string): KickVoteInit {
     this._kickVotes = [];
     this._kickVoteStarted = true;
+    this._kickBadUserId = badUserId;
     return {
       badUserId,
       initiatorId,
@@ -104,11 +106,11 @@ export class UsersService {
   private stopKickVote(): void {
     this._kickVotes = [];
     this._kickVoteStarted = false;
+    this._kickBadUserId = null;
   }
 
   public kick(badUserId: string, dealer?: boolean): KickResult {
     this.stopKickVote();
-    this.deleteUser(badUserId);
     return {
       kicked: true,
       badUserId,
@@ -135,13 +137,17 @@ export class UsersService {
 
   public addKickVote(userId: string, vote: boolean): null | KickResult {
     if (!this._kickVoteStarted) return null;
+
     this._kickVotes.push({ userId, vote });
     const halfVotersNum = Math.floor(this.kickVotersNum / 2);
+
+    if (!this._kickBadUserId) return null;
+
     if (this.kickVotesYes > halfVotersNum) {
-      return this.kick(userId);
+      return this.kick(this._kickBadUserId);
     }
     if (this.kickVotesNo > halfVotersNum) {
-      return this.notKick(userId);
+      return this.notKick(this._kickBadUserId);
     }
     return null;
   }

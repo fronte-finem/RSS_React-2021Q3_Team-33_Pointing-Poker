@@ -11,6 +11,7 @@ import {
   Content,
   ContentLayoutContainer,
 } from '@client/components/app/layout/layout.style';
+import { DemoPagesRouter } from '@client/components/pages/demo/demo-router';
 
 export const App: React.FC = observer(() => {
   const { gameState } = useGameService();
@@ -25,6 +26,9 @@ export const App: React.FC = observer(() => {
                 {routes.map(({ path, name, component }) => (
                   <Route exact key={name} path={path} component={component} />
                 ))}
+                <Route path="/demo">
+                  <DemoPagesRouter />
+                </Route>
               </Switch>
             </ContentLayoutContainer>
           </Content>

@@ -1,7 +1,7 @@
 import { GameService } from '@server/services/game-service';
-import { ApiFailMessage } from '@server/api-fail-message';
+import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { DealerToJoin } from '@shared/api-types/user';
-import { validateDealerToJoin } from '@shared/api-validators/user';
+import { validateDealerToJoin } from '@shared/api-validation/user';
 import { GAME_ROOMS } from '@server/store/game-rooms';
 import { setDealerListeners } from '@server/controllers/dealer-controller';
 import {

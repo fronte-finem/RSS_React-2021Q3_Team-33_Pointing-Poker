@@ -41,3 +41,9 @@ export const StyledLogoSvg = styled.svg`
     fill: ${({ theme }) => theme.header.logo.rhombus};
   }
 `;
+
+export const StyledControlsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;

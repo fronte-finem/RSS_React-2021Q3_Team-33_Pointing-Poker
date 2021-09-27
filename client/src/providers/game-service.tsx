@@ -1,21 +1,20 @@
 import React, { createContext, useContext } from 'react';
 import { observable } from 'mobx';
+import { GameState, getDefaultGameState } from '@client/services/game-state';
 import {
-  GameState,
-  GameStateActions,
-  getDefaultGameState,
-} from '@client/services/game-state';
-import {
-  GameSocketActions,
   getDefaultSocketState,
   SocketState,
 } from '@client/services/game-socket';
+import { GameStateActions } from '@client/services/game-state-actions';
+import { GameSocketActions } from '@client/services/game-socket-actions';
+import { ModalState } from '@client/services/modal-state';
 
 interface IGameServiceContext {
   gameState: GameState;
   socketState: SocketState;
   gameStateActions: GameStateActions;
   gameSocketActions: GameSocketActions;
+  modalState: ModalState;
 }
 
 const GameServiceContext = createContext<IGameServiceContext | undefined>(
@@ -23,16 +22,25 @@ const GameServiceContext = createContext<IGameServiceContext | undefined>(
 );
 
 export const GameServiceProvider: React.FC = ({ children }) => {
+  const modalState = new ModalState();
   const gameState = observable<GameState>(getDefaultGameState());
   const socketState = observable<SocketState>(getDefaultSocketState());
   const gameStateActions = new GameStateActions(gameState);
   const gameSocketActions = new GameSocketActions(
     socketState,
+    modalState,
     gameStateActions
   );
+
   return (
     <GameServiceContext.Provider
-      value={{ gameState, socketState, gameStateActions, gameSocketActions }}>
+      value={{
+        gameState,
+        socketState,
+        gameStateActions,
+        gameSocketActions,
+        modalState,
+      }}>
       {children}
     </GameServiceContext.Provider>
   );

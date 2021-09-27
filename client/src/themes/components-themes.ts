@@ -2,6 +2,7 @@ import {
   AvatarTheme,
   ChatMessageTheme,
   FormTheme,
+  ChatTheme,
   GameCardTheme,
   InputTheme,
   InteractiveColors,
@@ -141,4 +142,27 @@ export const lightFormTheme: FormTheme = {
 export const darkFormTheme: FormTheme = {
   fg: DarkThemeColor.FONT_SUBTITLE,
   bg: DarkThemeColor.PRIMARY,
+};
+
+export const lightChatTheme: ChatTheme = {
+  modal: {
+    fg: LightThemeColor.BLACK,
+    bg: LightThemeColor.WHITE,
+    failMessage: LightThemeColor.ACCENT_DARK,
+  },
+  message: {
+    ...lightDefaultTheme,
+    dateTime: LightThemeColor.BLACK,
+  },
+};
+export const darkChatTheme: ChatTheme = {
+  modal: {
+    fg: DarkThemeColor.WHITE,
+    bg: DarkThemeColor.PRIMARY,
+    failMessage: DarkThemeColor.ACCENT_DARK,
+  },
+  message: {
+    ...darkDefaultTheme,
+    dateTime: DarkThemeColor.WHITE,
+  },
 };
