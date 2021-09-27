@@ -22,64 +22,78 @@ export const StyleCard = styled.div<Props>`
   --kicked-opacity: ${getOpacity};
   --kicked-mark: ${({ userKicked }) => (userKicked ? 'line-through' : 'unset')};
 
+  position: relative;
+
   width: var(--user-card-width);
+  height: var(--user-card-height, initial);
 
   display: grid;
   grid-template-columns: auto 1fr auto;
+  grid-template-areas: 'avatar body controls';
 
   border-radius: 4px;
   background: var(--bg);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 
   opacity: var(--kicked-opacity);
+
+  font-family: var(--font-roboto);
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 1em;
 `;
 
 export const StyledAvatarContainer = styled.div`
+  grid-area: avatar;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
 `;
 export const StyledBodyContainer = styled.div`
+  grid-area: body;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
   gap: 5px;
   padding: 10px;
   overflow: hidden;
   mask: linear-gradient(to left, #0000, #fff 10px);
 `;
 export const StyledControlContainer = styled.div`
+  position: var(--user-card-controls-position, initial);
+  top: 0;
+  right: 0;
+  grid-area: controls;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: var(--user-card-controls-padding, 10px);
 `;
 
 export const StyleCardOwner = styled.div`
-  font-family: var(--font-roboto);
   font-weight: bold;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: var(--user-card-font-size-badge, 0.7em);
+  line-height: var(--user-card-font-size-badge, 0.7em);
   text-transform: uppercase;
   color: ${({ theme }) => theme.userCard.owner};
 `;
 
 export const StyledUsername = styled.div`
-  font-family: var(--font-roboto);
-  font-weight: 300;
-  font-size: 28px;
-  line-height: 30px;
+  font-size: var(--user-card-font-size-name, 1.4em);
+  line-height: var(--user-card-font-size-name, 1.4em);
   color: var(--fg);
   text-decoration: var(--kicked-mark);
+
+  overflow: hidden;
+  white-space: var(--user-card-name-wrap, nowrap);
+  text-overflow: ellipsis;
+  mask: linear-gradient(to left, #fff0, #fff 20%);
 `;
 
 export const StyledJobPosition = styled.div`
-  font-family: var(--font-roboto);
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 12px;
+  font-size: var(--user-card-font-size-badge, 0.7em);
+  line-height: var(--user-card-font-size-badge, 0.7em);
   color: ${({ theme }) => theme.userCard.jobPosition};
 `;
 
@@ -93,7 +107,8 @@ export const StyledButton = styled(AntButton)`
   height: var(--size);
   width: var(--size);
 
-  & {
+  &,
+  &:focus {
     color: ${({ theme }) => theme.userCard.deleteBtn.normal};
   }
   &:hover {

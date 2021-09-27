@@ -1,7 +1,7 @@
 import React from 'react';
 import { CustomIconComponentProps } from '@ant-design/icons/lib/components/Icon';
 import Icon from '@ant-design/icons';
-import { StyledLogoSvg } from '@client/components/app/header/header.styles';
+import { StyledLogoSvg } from './header.styles';
 
 const SHADOW: React.SVGProps<SVGFEBlendElement> = {
   mode: 'normal',
