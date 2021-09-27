@@ -1,16 +1,18 @@
 import styled, { DefaultTheme } from 'styled-components';
+import { Button as AntButton } from 'antd';
 import {
-  CheckCircleOutlined,
   DeleteOutlined,
   EditOutlined,
+  PlayCircleOutlined,
   PlusOutlined,
+  PoweroffOutlined,
+  ReloadOutlined,
 } from '@ant-design/icons';
-import { Button as AntButton } from 'antd';
 import {
   issueCardControlsStyle,
   issueCardInfoStyle,
   issueCardStyle,
-} from '@client/components/shared/issue/issue-styles';
+} from './issue-styles';
 
 type Props = {
   isCurrent?: boolean;
@@ -118,7 +120,14 @@ export const StyledDeleteIcon = styled(DeleteOutlined)`
   font-size: 23px;
 `;
 
-export const StyledCheckIcon = styled(CheckCircleOutlined)`
-  font-size: 24px;
-  margin-right: 10px;
+export const StyledRunIcon = styled(PlayCircleOutlined)`
+  font-size: 33px;
+`;
+
+export const StyledRestartIcon = styled(ReloadOutlined)`
+  font-size: 32px;
+`;
+
+export const StyledStopIcon = styled(PoweroffOutlined)`
+  font-size: 33px;
 `;

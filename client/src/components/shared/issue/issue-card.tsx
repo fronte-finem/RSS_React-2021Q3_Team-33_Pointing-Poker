@@ -4,34 +4,21 @@ import { Tooltip } from 'antd';
 import { useStateService } from '@client/providers/state-service';
 import { Issue } from '@shared/api-types/issue';
 import {
-  PlayCircleOutlined,
-  PoweroffOutlined,
-  ReloadOutlined,
-} from '@ant-design/icons';
-import styled from 'styled-components';
-import {
   StyledCancelIcon,
-  StyledMark,
   StyledDangerButton,
   StyledDefaultButton,
   StyledDeleteIcon,
   StyledEditIcon,
-  StyledIssuePriority,
-  StyledIssueTitle,
   StyledIssueCardControls,
   StyledIssueCardInfo,
+  StyledIssuePriority,
+  StyledIssueTitle,
+  StyledMark,
+  StyledRestartIcon,
+  StyledRunIcon,
+  StyledStopIcon,
   StyleIssueCard,
 } from './issue-card-styles';
-
-export const StyledRunIcon = styled(PlayCircleOutlined)`
-  font-size: 33px;
-`;
-export const StyledRestartIcon = styled(ReloadOutlined)`
-  font-size: 32px;
-`;
-export const StyledStopIcon = styled(PoweroffOutlined)`
-  font-size: 33px;
-`;
 
 export interface IssueProps {
   issue?: Issue;
