@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { Button } from '@client/components/shared/button/button';
 
 export const StyleGameResultText = styled.div`
-  margin: 0;
-  padding: 0;
   font-family: var(--font-ruda);
   font-weight: bold;
   font-size: 24px;
