@@ -1,6 +1,5 @@
 import {
   AvatarTheme,
-  ChatMessageTheme,
   FormTheme,
   ChatTheme,
   GameCardTheme,
@@ -10,6 +9,7 @@ import {
   TimerTheme,
   ToggleTheme,
   UserCardTheme,
+  SelectTheme,
 } from 'types/styled';
 import { DarkThemeColor, LightThemeColor } from '@client/themes/colors';
 import {
@@ -46,6 +46,15 @@ export const darkInputTheme: InputTheme = {
   bg: DarkThemeColor.PRIMARY,
 };
 
+export const lightSelectTheme: SelectTheme = {
+  fg: LightThemeColor.FONT_SUBTITLE,
+  bg: LightThemeColor.WHITE,
+};
+export const darkSelectTheme: SelectTheme = {
+  fg: DarkThemeColor.BLACK,
+  bg: DarkThemeColor.PRIMARY,
+};
+
 export const lightGameCardTheme: GameCardTheme = {
   ...lightDefaultTheme,
   fg: LightThemeColor.FONT_TITLE,
@@ -79,11 +88,13 @@ export const lightModalTheme: ModalTheme = {
   fg: LightThemeColor.FONT_TITLE,
   bg: LightThemeColor.WHITE,
   title: LightThemeColor.FONT_TITLE,
+  kick: LightThemeColor.PRIMARY,
 };
 export const darkModalTheme: ModalTheme = {
   fg: DarkThemeColor.FONT_TITLE,
   bg: DarkThemeColor.PRIMARY,
   title: DarkThemeColor.FONT_TITLE,
+  kick: DarkThemeColor.ACCENT,
 };
 
 export const lightAvatarTheme: AvatarTheme = {
@@ -124,15 +135,6 @@ export const darkUserCardTheme: UserCardTheme = {
     hover: DarkThemeColor.ACCENT,
     active: DarkThemeColor.ACCENT_DARK,
   },
-};
-
-export const lightChatMessageTheme: ChatMessageTheme = {
-  ...lightDefaultTheme,
-  dateTime: LightThemeColor.BLACK,
-};
-export const darkChatMessageTheme: ChatMessageTheme = {
-  ...darkDefaultTheme,
-  dateTime: DarkThemeColor.WHITE,
 };
 
 export const lightFormTheme: FormTheme = {

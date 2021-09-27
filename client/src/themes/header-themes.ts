@@ -11,9 +11,9 @@ export const lightHeaderTheme: HeaderTheme = {
   },
   btn: {
     chat: {
-      normal: LightThemeColor.PRIMARY_DARK,
-      hover: LightThemeColor.PRIMARY_MID,
-      active: LightThemeColor.WHITE,
+      normal: LightThemeColor.WHITE,
+      hover: LightThemeColor.ACCENT,
+      active: LightThemeColor.ACCENT_DARK,
     },
   },
 };
@@ -28,9 +28,9 @@ export const darkHeaderTheme: HeaderTheme = {
   },
   btn: {
     chat: {
-      normal: LightThemeColor.PRIMARY_MID,
-      hover: LightThemeColor.PRIMARY_LIGHT,
-      active: LightThemeColor.WHITE,
+      normal: LightThemeColor.ACCENT,
+      hover: LightThemeColor.ACCENT_LIGHT,
+      active: LightThemeColor.ACCENT_DARK,
     },
   },
 };

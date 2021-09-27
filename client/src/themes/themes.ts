@@ -17,7 +17,6 @@ import {
 } from '@client/themes/footer-themes';
 import {
   darkAvatarTheme,
-  darkChatMessageTheme,
   darkFormTheme,
   darkChatTheme,
   darkGameCardTheme,
@@ -28,7 +27,6 @@ import {
   darkToggleTheme,
   darkUserCardTheme,
   lightAvatarTheme,
-  lightChatMessageTheme,
   lightFormTheme,
   lightChatTheme,
   lightGameCardTheme,
@@ -38,6 +36,8 @@ import {
   lightTimerTheme,
   lightToggleTheme,
   lightUserCardTheme,
+  lightSelectTheme,
+  darkSelectTheme,
 } from '@client/themes/components-themes';
 import {
   darkIssueCardTheme,
@@ -60,6 +60,7 @@ export const lightTheme: DefaultTheme = {
   toggle: lightToggleTheme,
   button: lightButtonTheme,
   input: lightInputTheme,
+  select: lightSelectTheme,
   timer: lightTimerTheme,
   modal: lightModalTheme,
   avatar: lightAvatarTheme,
@@ -83,6 +84,7 @@ export const darkTheme: DefaultTheme = {
   toggle: darkToggleTheme,
   button: darkButtonTheme,
   input: darkInputTheme,
+  select: darkSelectTheme,
   timer: darkTimerTheme,
   modal: darkModalTheme,
   avatar: darkAvatarTheme,

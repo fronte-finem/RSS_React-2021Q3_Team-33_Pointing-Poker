@@ -27,6 +27,7 @@ export interface ForeGroundBackGround {
 }
 
 export interface InputTheme extends ForeGroundBackGround {}
+export interface SelectTheme extends ForeGroundBackGround {}
 export interface GameCardTheme extends ForeGroundBackGround {
   hover: string;
   active: ForeGroundBackGround;
@@ -37,6 +38,7 @@ export interface TimerTheme extends ForeGroundBackGround {
 
 export interface ModalTheme extends ForeGroundBackGround {
   title: string;
+  kick: string;
 }
 export interface AvatarTheme extends ForeGroundBackGround {}
 
@@ -114,6 +116,7 @@ declare module 'styled-components' {
     button: ButtonTheme;
     toggle: ToggleTheme;
     input: InputTheme;
+    select: SelectTheme;
     timer: TimerTheme;
     modal: ModalTheme;
     avatar: AvatarTheme;
