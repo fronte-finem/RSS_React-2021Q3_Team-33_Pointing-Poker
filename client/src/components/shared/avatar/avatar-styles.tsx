@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Avatar as AntAvatar } from 'antd';
 import { fontAvatar } from '@client/themes/typography';
+import { shadowText } from '@client/themes/shadows';
 
 export const StyleAvatar = styled(AntAvatar)`
   display: flex;
@@ -16,6 +17,6 @@ export const StyleAvatar = styled(AntAvatar)`
 
     text-align: center;
     color: ${({ theme }) => theme.avatar.fg};
-    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    ${shadowText};
   }
 `;

@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { Modal as AntModal } from 'antd';
+import { shadowMain } from '@client/themes/shadows';
+import { fontText, fontTitle } from '@client/themes/typography';
 
 export const StyledModal = styled(AntModal)`
   &.ant-modal {
@@ -8,7 +10,7 @@ export const StyledModal = styled(AntModal)`
 
   .ant-modal-content {
     background-color: ${({ theme }) => theme.modal.bg};
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    ${shadowMain};
     min-height: 500px;
     display: flex;
     flex-direction: column;
@@ -25,13 +27,15 @@ export const StyledModal = styled(AntModal)`
   }
 
   .ant-modal-title {
+    ${fontTitle};
     font-size: 64px;
     line-height: 75px;
-    color: ${({ theme }) => theme.modal.fg};
+    color: ${({ theme }) => theme.modal.title};
   }
 
   .ant-modal-body {
     padding: 20px 0;
+    ${fontText};
     font-size: 24px;
     line-height: 30px;
     color: ${({ theme }) => theme.modal.fg};

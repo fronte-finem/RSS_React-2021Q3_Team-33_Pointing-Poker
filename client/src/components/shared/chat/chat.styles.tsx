@@ -1,5 +1,6 @@
 import styled, { DefaultTheme } from 'styled-components';
 import { Role } from '@shared/api-types/user';
+import { shadowMain } from '@client/themes/shadows';
 
 type Props = { userRole: Role };
 type Opts = Props & { theme: DefaultTheme };
@@ -26,7 +27,7 @@ export const StyledMessageWrapper = styled.div<Props>`
 
   color: var(--fg);
   background: var(--bg);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  ${shadowMain};
   border-radius: 20px 0 0 20px;
 
   font-family: var(--font-roboto);

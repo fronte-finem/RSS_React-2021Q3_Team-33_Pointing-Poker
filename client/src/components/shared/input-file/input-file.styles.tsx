@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Upload as AntUpload } from 'antd';
 import { Input } from '@client/components/shared/input/input';
+import { shadowMain } from '@client/themes/shadows';
 
 export const StyledUpload = styled(AntUpload)`
   .ant-upload {
@@ -21,6 +22,6 @@ export const StyledInput = styled(Input)`
   &:hover,
   &:active {
     border-color: ${({ theme }) => theme.input.bg};
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    ${shadowMain};
   }
 `;

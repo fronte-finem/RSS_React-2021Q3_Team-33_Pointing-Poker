@@ -1,3 +1,4 @@
+import { fontText } from '@client/themes/typography';
 import styled from 'styled-components';
 import { Input } from '../input/input';
 import { Select } from '../select/select';
@@ -24,8 +25,7 @@ export const StyledSelect = styled(Select)`
 `;
 
 export const StyledText = styled.div`
-  font-family: var(--font-roboto);
-  font-style: normal;
+  ${fontText};
   font-weight: bold;
   font-size: 24px;
   line-height: 28px;

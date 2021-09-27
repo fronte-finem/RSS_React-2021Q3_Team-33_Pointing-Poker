@@ -1,5 +1,6 @@
 import { CoffeeOutlined } from '@ant-design/icons';
 import { GameCard } from '@client/components/shared/game-card/game-card';
+import { fontTitle } from '@client/themes/typography';
 import { Row } from 'antd';
 import styled from 'styled-components';
 
@@ -15,11 +16,8 @@ export const StyleLobbyCards = styled.div`
 export const StyleLobbyCardsText = styled.p`
   margin: 0;
   padding: 0;
-  font-family: var(--font-ruda);
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 30px;
-  color: ${(props) => props.theme.fg};
+  ${fontTitle};
+  color: ${({ theme }) => theme.pages.lobby.title};
 `;
 
 export const StyleLobbyCardsWrapper = styled(Row)`

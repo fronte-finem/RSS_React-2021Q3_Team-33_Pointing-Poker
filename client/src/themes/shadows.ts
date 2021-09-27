@@ -7,6 +7,7 @@ enum Shadows {
   LARGE = '0px 15px 10px rgba(0, 0, 0, 0.15)',
   WRAPPER = '0px 4px 8px rgba(0, 0, 0, 0.15)',
   HOVER = '4px 6px 8px rgba(0, 0, 0, 0.2)',
+  TEXT = '0 4px 4px rgba(0, 0, 0, 0.25)',
 }
 
 export const shadowNone = css`
@@ -31,4 +32,8 @@ export const shadowWrapper = css`
 
 export const shadowHover = css`
   box-shadow: ${Shadows.HOVER};
+`;
+
+export const shadowText = css`
+  text-shadow: ${Shadows.TEXT};
 `;

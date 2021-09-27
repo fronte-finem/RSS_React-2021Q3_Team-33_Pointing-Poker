@@ -7,7 +7,7 @@ export const lightFooterTheme: FooterTheme = {
   logo: {
     normal: LightThemeColor.WHITE,
     hover: LightThemeColor.ACCENT,
-    active: LightThemeColor.GREY,
+    active: LightThemeColor.ACCENT_DARK,
   },
   team: {
     mentor: {
@@ -26,12 +26,12 @@ export const lightFooterTheme: FooterTheme = {
       fg: {
         normal: LightThemeColor.FONT_TITLE,
         hover: LightThemeColor.WHITE,
-        active: LightThemeColor.FONT_TITLE,
+        active: LightThemeColor.WHITE,
       },
       bg: {
         normal: LightThemeColor.WHITE,
         hover: LightThemeColor.ACCENT,
-        active: LightThemeColor.GREY,
+        active: LightThemeColor.ACCENT_DARK,
       },
     },
   },
@@ -43,7 +43,7 @@ export const darkFooterTheme: FooterTheme = {
   logo: {
     normal: DarkThemeColor.WHITE,
     hover: DarkThemeColor.ACCENT,
-    active: DarkThemeColor.GREY,
+    active: DarkThemeColor.ACCENT_DARK,
   },
   team: {
     mentor: {
@@ -67,7 +67,7 @@ export const darkFooterTheme: FooterTheme = {
       bg: {
         normal: DarkThemeColor.WHITE,
         hover: DarkThemeColor.ACCENT,
-        active: DarkThemeColor.GREY,
+        active: DarkThemeColor.ACCENT_DARK,
       },
     },
   },

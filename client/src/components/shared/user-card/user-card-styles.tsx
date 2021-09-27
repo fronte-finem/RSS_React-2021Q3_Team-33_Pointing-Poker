@@ -2,6 +2,7 @@ import styled, { DefaultTheme } from 'styled-components';
 import { StopOutlined } from '@ant-design/icons';
 import { Role } from '@shared/api-types/user';
 import { Button as AntButton } from 'antd';
+import { fontTextSmall, fontTitle } from '@client/themes/typography';
 
 type Props = { userRole: Role };
 type Opts = Props & { theme: DefaultTheme };
@@ -47,27 +48,18 @@ export const StyledControlContainer = styled.div`
 `;
 
 export const StyleCardOwner = styled.div`
-  font-family: var(--font-roboto);
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 16px;
+  ${fontTextSmall};
   text-transform: uppercase;
   color: ${({ theme }) => theme.userCard.owner};
 `;
 
 export const StyledUsername = styled.div`
-  font-family: var(--font-roboto);
-  font-weight: 300;
-  font-size: 28px;
-  line-height: 30px;
+  ${fontTitle}
   color: var(--fg);
 `;
 
 export const StyledJobPosition = styled.div`
-  font-family: var(--font-roboto);
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 12px;
+  ${fontTextSmall}
   color: ${({ theme }) => theme.userCard.jobPosition};
 `;
 

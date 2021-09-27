@@ -29,6 +29,13 @@ export const fontText = css`
   line-height: 24px;
 `;
 
+export const fontTextSmall = css`
+  ${secondaryFont};
+  font-weight: 100;
+  font-size: 12px;
+  line-height: 15px;
+`;
+
 export const fontButton = css`
   ${mainFont};
   font-weight: 700;

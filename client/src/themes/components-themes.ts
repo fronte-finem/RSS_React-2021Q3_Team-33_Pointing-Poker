@@ -45,19 +45,44 @@ export const darkInputTheme: InputTheme = {
   bg: DarkThemeColor.PRIMARY,
 };
 
-export const lightGameCardTheme: GameCardTheme = lightDefaultTheme;
-export const darkGameCardTheme: GameCardTheme = darkDefaultTheme;
+export const lightGameCardTheme: GameCardTheme = {
+  ...lightDefaultTheme,
+  fg: LightThemeColor.FONT_TITLE,
+  hover: LightThemeColor.WHITE,
+  active: {
+    fg: LightThemeColor.WHITE,
+    bg: LightThemeColor.PRIMARY,
+  },
+};
+export const darkGameCardTheme: GameCardTheme = {
+  ...darkDefaultTheme,
+  hover: DarkThemeColor.PRIMARY_LIGHT,
+  active: {
+    fg: DarkThemeColor.WHITE,
+    bg: DarkThemeColor.ACCENT,
+  },
+};
 
-export const lightTimerTheme: TimerTheme = lightDefaultTheme;
-export const darkTimerTheme: TimerTheme = darkDefaultTheme;
+export const lightTimerTheme: TimerTheme = {
+  ...lightDefaultTheme,
+  fg: LightThemeColor.FONT_TITLE,
+  desc: LightThemeColor.FONT_TEXT,
+};
+export const darkTimerTheme: TimerTheme = {
+  ...darkDefaultTheme,
+  fg: DarkThemeColor.FONT_TITLE,
+  desc: DarkThemeColor.FONT_TEXT,
+};
 
 export const lightModalTheme: ModalTheme = {
   fg: LightThemeColor.FONT_TITLE,
   bg: LightThemeColor.WHITE,
+  title: LightThemeColor.FONT_TITLE,
 };
 export const darkModalTheme: ModalTheme = {
   fg: DarkThemeColor.FONT_TITLE,
   bg: DarkThemeColor.PRIMARY,
+  title: DarkThemeColor.FONT_TITLE,
 };
 
 export const lightAvatarTheme: AvatarTheme = {
