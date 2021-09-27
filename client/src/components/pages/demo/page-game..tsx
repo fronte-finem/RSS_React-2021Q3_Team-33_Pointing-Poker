@@ -14,11 +14,18 @@ export const PageGameDemo = observer(function PageGameDemo() {
     else gameState.initUser(initUserState, initUserState.users[3].id);
     gameState.startGame(initGameState);
     gameState.initResults(initUserState.gameResult);
-    gameState.startRound(initGameState.issues[5].id);
-    gameState.progressRound(initUserState.users[1].id);
-    gameState.progressRound(initUserState.users[5].id);
-    gameState.progressRound(initUserState.users[8].id);
-    gameState.progressRound(initUserState.users[9].id);
+  };
+
+  const toggleRound = (checked: boolean) => {
+    if (checked) {
+      gameState.startRound(initGameState.issues[5].id);
+      gameState.progressRound(initUserState.users[1].id);
+      gameState.progressRound(initUserState.users[5].id);
+      gameState.progressRound(initUserState.users[8].id);
+      gameState.progressRound(initUserState.users[9].id);
+    } else {
+      gameState.endRound({ issueId: initGameState.issues[5].id, scores: [] });
+    }
   };
 
   useEffect(() => {
@@ -33,6 +40,12 @@ export const PageGameDemo = observer(function PageGameDemo() {
           checkedChildren="dealer"
           onChange={toggleDealer}
           checked={gameState.isDealer}
+        />
+        <Toggle
+          unCheckedChildren="stop"
+          checkedChildren="start"
+          onChange={toggleRound}
+          checked={gameState.roundRun}
         />
       </div>
       <div>

@@ -1,53 +1,35 @@
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStateService } from '@client/providers/state-service';
-import { IssueCard } from '@client/components/shared/issue/issue-card';
-import React, { useState } from 'react';
 import { StyledTitle } from '@client/components/styles/text';
-import { Pagination } from 'antd';
-import { getPage } from '@shared/utils/array';
+import { Statistics } from '@client/components/pages/game/statistics/statistics';
+import { PanelHeader } from '@client/components/pages/game/issues/panel-header';
 import {
-  FirstItem,
-  Item,
-  List,
-  PaginationWrapper,
+  StyledCollapse,
   StyledIssueButton,
   StyledIssues,
+  StyledPanel,
 } from './issues.styles';
 
-const PAGE_SIZE = 4;
-
 export const Issues = observer(function Issues() {
-  const { gameState } = useStateService();
-  const [page, setPage] = useState(1);
-
-  const paginator = (
-    <PaginationWrapper>
-      <Pagination
-        size="small"
-        current={page}
-        onChange={setPage}
-        pageSize={PAGE_SIZE}
-        total={gameState.issues.length}
-      />
-    </PaginationWrapper>
-  );
+  const { gameState, modalState } = useStateService();
 
   return (
     <StyledIssues>
       <StyledTitle level={2}>Issues:</StyledTitle>
-      <List>
-        <FirstItem>
-          <IssueCard issue={gameState.currentIssue} />
-        </FirstItem>
-        <Item>{paginator}</Item>
-        {getPage(gameState.getIssues(), page, PAGE_SIZE).map((issue) => (
-          <Item key={issue.id}>
-            <IssueCard issue={issue} />
-          </Item>
+      <StyledCollapse defaultActiveKey={modalState.selectIssue}>
+        {gameState.getIssues(true).map((issue) => (
+          <StyledPanel
+            key={issue.id}
+            header={<PanelHeader issue={issue} />}
+            collapsible={
+              gameState.isHaveStats(issue.id) ? undefined : 'disabled'
+            }>
+            <Statistics issueId={issue.id} />
+          </StyledPanel>
         ))}
-        <Item>{paginator}</Item>
-        {gameState.isDealer ? <StyledIssueButton /> : null}
-      </List>
+      </StyledCollapse>
+      {gameState.isDealer ? <StyledIssueButton /> : null}
     </StyledIssues>
   );
 });

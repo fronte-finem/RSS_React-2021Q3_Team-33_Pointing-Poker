@@ -7,7 +7,7 @@ export const Page = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 100px;
 `;
 
 export const Header = styled.div`
