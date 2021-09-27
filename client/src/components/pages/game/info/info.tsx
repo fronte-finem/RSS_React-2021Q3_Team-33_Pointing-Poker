@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { useStateService } from '@client/providers/state-service';
 import { UserCard } from '@client/components/shared/user-card/user-card';
-import { Timer } from '@client/components/shared/timer/timer';
 import { Button } from '@client/components/shared/button/button';
 import React from 'react';
 import { StyledTitle, StyledSubtitle } from '@client/components/styles/text';
@@ -30,12 +29,6 @@ export const Info = observer(function Info() {
           <StyledSubtitle>Scram master:</StyledSubtitle>
           <UserCard user={gameState.getDealer()} />
         </DealerWrapper>
-
-        {gameState.isDealer ? null : (
-          <ControlWrapper>
-            <Timer time={0} />
-          </ControlWrapper>
-        )}
 
         <ControlWrapper>
           <Button
