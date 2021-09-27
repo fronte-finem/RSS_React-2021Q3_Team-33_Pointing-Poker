@@ -1,8 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { Tooltip } from 'antd';
 import { useStateService } from '@client/providers/state-service';
 import { Issue } from '@shared/api-types/issue';
-import { Tooltip } from 'antd';
+import {
+  PlayCircleOutlined,
+  PoweroffOutlined,
+  ReloadOutlined,
+} from '@ant-design/icons';
+import styled from 'styled-components';
 import {
   StyledCancelIcon,
   StyledMark,
@@ -15,8 +21,17 @@ import {
   StyledIssueCardControls,
   StyledIssueCardInfo,
   StyleIssueCard,
-  StyledCheckIcon,
 } from './issue-card-styles';
+
+export const StyledRunIcon = styled(PlayCircleOutlined)`
+  font-size: 33px;
+`;
+export const StyledRestartIcon = styled(ReloadOutlined)`
+  font-size: 32px;
+`;
+export const StyledStopIcon = styled(PoweroffOutlined)`
+  font-size: 33px;
+`;
 
 export interface IssueProps {
   issue?: Issue;
@@ -27,12 +42,18 @@ export const IssueCard: React.FC<IssueProps> = observer(function IssueCard({
   issue,
   className,
 }) {
-  const { gameState, modalState } = useStateService();
+  const { gameState, modalState, socketState } = useStateService();
 
   if (!issue) return null;
 
   const isCurrent = gameState.isModeGame && gameState.roundIssueId === issue.id;
   const isHaveStats = gameState.isHaveStats(issue.id);
+  const isGameRoundRunning = gameState.isModeGameDealer && gameState.roundRun;
+  const isGameRoundStopped = gameState.isModeGameDealer && !gameState.roundRun;
+
+  const isStop = isGameRoundRunning && isCurrent;
+  const isRun = isGameRoundStopped && !isHaveStats;
+  const isRestart = isGameRoundStopped && isHaveStats;
 
   const editIssue = () => {
     modalState.initEditIssue(issue);
@@ -42,51 +63,76 @@ export const IssueCard: React.FC<IssueProps> = observer(function IssueCard({
     modalState.initDeleteIssue(issue);
   };
 
-  const selectIssue = () => {
-    if (!gameState.isModeGame) return;
-    modalState.initSelectIssue(issue.id);
+  const processRound = () => {
+    if (isRun || isRestart) {
+      socketState.startRound(issue.id).then(null);
+    } else if (isStop) {
+      socketState.endRound().then(null);
+    }
   };
 
   const editIcon = <StyledEditIcon />;
   const deleteIcon = <StyledDeleteIcon />;
   const cancelIcon = <StyledCancelIcon rotate={45} />;
 
-  const okIcon = isHaveStats ? <StyledCheckIcon /> : null;
+  const runIcon = <StyledRunIcon />;
+  const restartIcon = <StyledRestartIcon />;
+  const stopIcon = <StyledStopIcon />;
+
+  let processIcon = isRun ? runIcon : null;
+  processIcon = isRestart ? restartIcon : processIcon;
+  processIcon = isStop ? stopIcon : processIcon;
+
+  let processTitle = isRun ? 'Run round' : undefined;
+  processTitle = isRestart ? 'Restart round' : processTitle;
+  processTitle = isStop ? 'Stop round' : processTitle;
 
   const mark = isCurrent ? <StyledMark>Current</StyledMark> : null;
 
   const editBtn = gameState.isModeLobbyDealer ? (
-    <StyledDefaultButton type="link" icon={editIcon} onClick={editIssue} />
+    <Tooltip placement="top" title="Edit">
+      <StyledDefaultButton type="link" icon={editIcon} onClick={editIssue} />
+    </Tooltip>
+  ) : null;
+
+  const deleteBtn = isStop ? null : (
+    <Tooltip placement="top" title="Delete">
+      <StyledDangerButton
+        type="link"
+        icon={gameState.isModeGame ? cancelIcon : deleteIcon}
+        onClick={deleteIssue}
+      />
+    </Tooltip>
+  );
+
+  const processBtn = gameState.isModeGameDealer ? (
+    <Tooltip placement="top" title={processTitle}>
+      <StyledDefaultButton
+        type="link"
+        icon={processIcon}
+        onClick={processRound}
+      />
+    </Tooltip>
   ) : null;
 
   return (
     <StyleIssueCard
       isCurrent={isCurrent}
-      isSelected={modalState.selectIssue === issue.id}
       isHaveStats={isHaveStats}
       isGameMode={gameState.isModeGame}
-      className={className}
-      onClick={selectIssue}>
-      <Tooltip
-        placement={gameState.isModeGame ? 'right' : 'bottom'}
-        title={issue.link}>
-        <StyledIssueCardInfo>
-          {mark}
-          <StyledIssueTitle>
-            {okIcon}
-            {issue.title}
-          </StyledIssueTitle>
-          <StyledIssuePriority>{issue.priority}</StyledIssuePriority>
-        </StyledIssueCardInfo>
-      </Tooltip>
+      className={className}>
+      <StyledIssueCardInfo>
+        {mark}
+        <Tooltip placement="top" title={issue.title}>
+          <StyledIssueTitle>{issue.title}</StyledIssueTitle>
+        </Tooltip>
+        <StyledIssuePriority>{issue.priority}</StyledIssuePriority>
+      </StyledIssueCardInfo>
       {gameState.isDealer ? (
         <StyledIssueCardControls>
+          {processBtn}
           {editBtn}
-          <StyledDangerButton
-            type="link"
-            icon={gameState.isModeGame ? cancelIcon : deleteIcon}
-            onClick={deleteIssue}
-          />
+          {deleteBtn}
         </StyledIssueCardControls>
       ) : null}
     </StyleIssueCard>

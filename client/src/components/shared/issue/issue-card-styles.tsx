@@ -29,7 +29,7 @@ export const StyleIssueCard = styled.div<Props>`
   --bg: ${(props) => selector(props).bg};
 
   cursor: ${({ isGameMode }) => (isGameMode ? 'pointer' : 'default')};
-  outline: ${({ isSelected }) => (isSelected ? '3px solid #f80' : 'unset')};
+  outline: ${({ isHaveStats }) => (isHaveStats ? '3px solid #f80' : 'unset')};
 `;
 
 export const StyledIssueCardInfo = styled.div`
@@ -41,12 +41,15 @@ export const StyledIssueCardControls = styled.div`
 `;
 
 export const StyledIssueTitle = styled.div`
-  margin: 0;
-  padding: 0;
   font-weight: 200;
   font-size: 28px;
   line-height: 30px;
   color: var(--fg);
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  mask: linear-gradient(to left, #fff0, #fff 20%);
 `;
 
 export const StyledMark = styled.div`

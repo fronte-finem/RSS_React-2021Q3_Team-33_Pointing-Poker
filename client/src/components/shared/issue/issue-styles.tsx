@@ -27,7 +27,6 @@ export const issueCardInfoStyle = css`
 
 export const issueCardControlsStyle = css`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 5px;
