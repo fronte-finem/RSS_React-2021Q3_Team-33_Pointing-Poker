@@ -1,6 +1,5 @@
 import React from 'react';
 import { PageGameRouter } from '@client/components/pages/game-router/game-router';
-import { DemoGameResultPage } from '../pages/game-result/demo-geme-results';
 
 export interface RouteConf {
   path: string;
