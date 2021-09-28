@@ -11,7 +11,6 @@ export const CardContainer = styled.div`
 
 export const StyledCard = styled.div`
   --ease-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  --flip: 0deg;
 
   position: relative;
   width: 100%;
@@ -24,12 +23,13 @@ export const StyledCard = styled.div`
   cursor: pointer;
   pointer-events: var(--pointer-events);
 
-  transform: rotate3d(0, 1, 0, var(--flip));
+  transform: rotate3d(0, 1, 0, var(--game-card-flip, 0deg));
   transition: box-shadow 200ms, all 300ms, transform 500ms;
   transition-timing-function: linear, linear, ease;
 
+  animation: var(--game-card-animation, unset);
+
   &:hover {
-    --flip: 180deg;
     box-shadow: 8px 8px 8px rgba(47, 16, 185, 0.25);
 
     & svg {
@@ -47,6 +47,8 @@ export const StyledCardSide = styled.div`
   border-radius: inherit;
   overflow: hidden;
   backface-visibility: hidden;
+
+  font-size: var(--game-card-score-font-size, 50px);
 `;
 
 export const StyledFrontSide = styled(StyledCardSide)`
@@ -71,6 +73,4 @@ export const StyledBackSide = styled(StyledCardSide)`
 
   color: ${({ theme }) => theme.gameCard.bg};
   background-color: ${({ theme }) => theme.gameCard.fg};
-
-  font-size: var(--game-card-score-font-size, 50px);
 `;

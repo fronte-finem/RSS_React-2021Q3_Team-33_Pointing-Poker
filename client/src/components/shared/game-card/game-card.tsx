@@ -1,43 +1,45 @@
 import React from 'react';
-import { CoffeeOutlined } from '@ant-design/icons';
-import {
-  CardScore,
-  ExtraScoreKind,
-} from '@shared/api-types/game-card-settings';
 import { observer } from 'mobx-react-lite';
+import { CardScore } from '@shared/api-types/game-card-settings';
 import { LogoSvg } from '@client/components/app/header/logo';
-import styled from 'styled-components';
+import { GameCardFront } from './game-card-front';
 import {
   CardContainer,
   StyledBackSide,
   StyledCard,
-  StyledCardScore,
   StyledFrontSide,
 } from './game-card-styles';
-import { ScoreName } from './score-name';
 
-export interface Props {
+export interface GameCardBaseProps {
+  front?: JSX.Element | null;
+  back?: JSX.Element | null;
+  className?: string;
+}
+
+export const GameCardBase = observer(
+  ({ front, back, className }: GameCardBaseProps) => {
+    return (
+      <CardContainer className={className}>
+        <StyledCard>
+          <StyledFrontSide>{front}</StyledFrontSide>
+          <StyledBackSide>{back}</StyledBackSide>
+        </StyledCard>
+      </CardContainer>
+    );
+  }
+);
+
+export interface GameCardProps {
   score: CardScore;
   className?: string;
 }
 
-const BackLogo = styled(LogoSvg)``;
-
-export const GameCard = observer(({ score, className }: Props) => {
+export const GameCard = observer(({ score, className }: GameCardProps) => {
   return (
-    <CardContainer className={className}>
-      <StyledCard>
-        <StyledFrontSide>
-          <StyledCardScore>
-            {score === ExtraScoreKind.COFFEE ? <CoffeeOutlined /> : score}
-          </StyledCardScore>
-          <ScoreName score={score} top />
-          <ScoreName score={score} />
-        </StyledFrontSide>
-        <StyledBackSide>
-          <BackLogo />
-        </StyledBackSide>
-      </StyledCard>
-    </CardContainer>
+    <GameCardBase
+      className={className}
+      front={<GameCardFront score={score} />}
+      back={<LogoSvg />}
+    />
   );
 });

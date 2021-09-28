@@ -9,5 +9,5 @@ export const StyledUsers = styled.div`
   justify-content: center;
   justify-items: center;
   align-items: center;
-  grid-gap: 20px;
+  grid-gap: 30px;
 `;
