@@ -1,6 +1,11 @@
 import React from 'react';
 import { Role, UsersList } from '@shared/api-types/user';
-import { GameResults, IssuesList, Priority } from '@shared/api-types/issue';
+import {
+  GameResults,
+  IssuesList,
+  Priority,
+  RoundResults,
+} from '@shared/api-types/issue';
 import { ExtraScoreKind } from '@shared/api-types/game-card-settings';
 import { getDefaultGameSettings } from '@shared/api-types/game-settings';
 
@@ -180,6 +185,17 @@ export const gameResult: GameResults = [
       { userId: users[9].id, score: 5 },
     ],
   },
+];
+
+export const roundResults: RoundResults = [
+  { userId: users[1].id, score: 8 },
+  { userId: users[2].id, score: 42 },
+  // { userId: users[3].id, score: undefined },
+  { userId: users[5].id, score: 42 },
+  { userId: users[6].id, score: 42 },
+  { userId: users[7].id, score: ExtraScoreKind.COFFEE },
+  { userId: users[8].id, score: 42 },
+  { userId: users[9].id, score: 8 },
 ];
 
 const settings = getDefaultGameSettings();

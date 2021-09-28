@@ -4,7 +4,12 @@ import { Alert } from 'antd';
 import { useStateService } from '@client/providers/state-service';
 import { PageGame } from '@client/components/pages/game/game';
 import { Toggle } from '@client/components/shared/toggle/toggle';
-import { initGameState, initUserState, wrapperStyle } from './page-game-config';
+import {
+  initGameState,
+  initUserState,
+  roundResults,
+  wrapperStyle,
+} from './page-game-config';
 
 export const PageGameDemo = observer(function PageGameDemo() {
   const { gameState } = useStateService();
@@ -18,13 +23,17 @@ export const PageGameDemo = observer(function PageGameDemo() {
 
   const toggleRound = (checked: boolean) => {
     if (checked) {
+      gameState.endRound({ issueId: initGameState.issues[5].id, scores: [] });
       gameState.startRound(initGameState.issues[5].id);
       gameState.progressRound(initUserState.users[1].id);
       gameState.progressRound(initUserState.users[5].id);
       gameState.progressRound(initUserState.users[8].id);
       gameState.progressRound(initUserState.users[9].id);
     } else {
-      gameState.endRound({ issueId: initGameState.issues[5].id, scores: [] });
+      gameState.endRound({
+        issueId: initGameState.issues[5].id,
+        scores: roundResults,
+      });
     }
   };
 

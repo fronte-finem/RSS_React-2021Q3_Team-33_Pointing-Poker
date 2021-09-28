@@ -1,4 +1,4 @@
-import styled, { DefaultTheme } from 'styled-components';
+import styled, { css, DefaultTheme } from 'styled-components';
 import { StopOutlined } from '@ant-design/icons';
 import { Role } from '@shared/api-types/user';
 import { Button as AntButton } from 'antd';
@@ -28,7 +28,7 @@ export const StyleCard = styled.div<Props>`
   height: var(--user-card-height, initial);
 
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 70px 1fr auto;
   grid-template-areas: 'avatar body controls';
 
   border-radius: 4px;
@@ -46,9 +46,8 @@ export const StyleCard = styled.div<Props>`
 export const StyledAvatarContainer = styled.div`
   grid-area: avatar;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
+  justify-content: var(--user-card-avatar-align-h, center);
+  align-items: var(--user-card-avatar-align-v, center);
 `;
 export const StyledBodyContainer = styled.div`
   grid-area: body;
@@ -79,22 +78,28 @@ export const StyleCardOwner = styled.div`
   color: ${({ theme }) => theme.userCard.owner};
 `;
 
+const textOverflow = css`
+  overflow: hidden;
+  white-space: var(--user-card-name-wrap, nowrap);
+  text-overflow: ellipsis;
+  mask: linear-gradient(to left, #fff0, #fff 10%);
+`;
+
 export const StyledUsername = styled.div`
   font-size: var(--user-card-font-size-name, 1.4em);
   line-height: var(--user-card-font-size-name, 1.4em);
   color: var(--fg);
   text-decoration: var(--kicked-mark);
 
-  overflow: hidden;
-  white-space: var(--user-card-name-wrap, nowrap);
-  text-overflow: ellipsis;
-  mask: linear-gradient(to left, #fff0, #fff 20%);
+  ${textOverflow};
 `;
 
 export const StyledJobPosition = styled.div`
   font-size: var(--user-card-font-size-badge, 0.7em);
   line-height: var(--user-card-font-size-badge, 0.7em);
   color: ${({ theme }) => theme.userCard.jobPosition};
+
+  ${textOverflow};
 `;
 
 export const StyledButton = styled(AntButton)`
