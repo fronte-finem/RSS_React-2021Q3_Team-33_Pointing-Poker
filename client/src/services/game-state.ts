@@ -20,7 +20,10 @@ import {
 } from '@client/utils/issue-stats';
 import { KickResult } from '@shared/api-types/chat';
 import { InitDealer, InitUser } from '@shared/api-types/init';
-import { ExtraScoreKind } from '@shared/api-types/game-card-settings';
+import {
+  CardScore,
+  ExtraScoreKind,
+} from '@shared/api-types/game-card-settings';
 
 export const enum AppMode {
   ENTRY = 'entry',
@@ -332,5 +335,16 @@ export class GameState {
     const scores = this.getIssueScores(issueId);
     const statsMap = countScores(scores);
     return calcStats(statsMap);
+  }
+
+  public isInProgress(userId: string): boolean {
+    return this.roundProgress.some((id) => id === userId);
+  }
+
+  public getScore(userId: string): CardScore {
+    if (!this.currentIssue) return undefined;
+    return this.getIssueScores(this.currentIssue.id).find(
+      (userScore) => userScore.userId === userId
+    )?.score;
   }
 }
