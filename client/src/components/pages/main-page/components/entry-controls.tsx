@@ -13,6 +13,7 @@ import {
   Highlight,
   StyledFormItem,
   StyledCustomRow,
+  StyledButtonInput,
 } from './entry-controls.styles';
 
 export const EntryControls = observer(() => {
@@ -74,9 +75,9 @@ export const EntryControls = observer(() => {
           <StyledFormItem name="gameId" rules={[{ required: true }]}>
             <StyledInput />
           </StyledFormItem>
-          <StyledButton htmlType="submit" loading={socketState.isLoading}>
+          <StyledButtonInput htmlType="submit" loading={socketState.isLoading}>
             Connect
-          </StyledButton>
+          </StyledButtonInput>
         </StyledCustomRow>
       </Form>
 

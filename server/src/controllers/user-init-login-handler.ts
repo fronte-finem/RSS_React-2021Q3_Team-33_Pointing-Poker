@@ -1,7 +1,7 @@
 import { GameService } from '@server/services/game-service';
 import { UserToJoin } from '@shared/api-types/user';
-import { validateUserToJoin } from '@shared/api-validators/user';
-import { ApiFailMessage } from '@server/api-fail-message';
+import { validateUserToJoin } from '@shared/api-validation/user';
+import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { ApiServerEvents } from '@shared/api-types/api-events';
 import { setUserListeners } from '@server/controllers/user-controller';
 import { PointingPokerServerSocket } from 'types/server-socket';

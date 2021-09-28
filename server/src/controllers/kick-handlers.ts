@@ -1,6 +1,6 @@
 import { PointingPokerServerSocket } from 'types/server-socket';
 import { GameService } from '@server/services/game-service';
-import { ApiFailMessage } from '@server/api-fail-message';
+import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { ApiServerEvents } from '@shared/api-types/api-events';
 import { AckCallback, setFail, setOk } from '@shared/api-types/api-events-maps';
 
@@ -16,11 +16,12 @@ const validate = (
 };
 
 const dealerKick = (userId: string, game: GameService) => {
-  const badUserSocket = game.userService.getUserSocket(userId)!;
+  const badUserSocket = game.userService.getUserSocket(userId);
   const kickResult = game.userService.kick(userId, true);
-  badUserSocket.emit(ApiServerEvents.KICKED, kickResult.reason);
-  badUserSocket.disconnect();
   game.server.to(game.room).emit(ApiServerEvents.USER_KICK_RESULT, kickResult);
+  badUserSocket?.emit(ApiServerEvents.KICKED, kickResult.reason);
+  badUserSocket?.disconnect();
+  game.userService.deleteUser(userId);
 };
 
 export const getKickHandler =
@@ -31,9 +32,9 @@ export const getKickHandler =
       ackCallback(setFail(failMessage));
       return;
     }
-    ackCallback(setOk(userId));
 
     if (socket.id === game.dealerSocket.id) {
+      ackCallback(setOk(userId));
       dealerKick(userId, game);
       return;
     }
@@ -47,9 +48,17 @@ export const getKickHandler =
       return;
     }
 
+    const badSocket = game.server.sockets.sockets.get(userId);
+
+    if (!badSocket) {
+      ackCallback(setFail(ApiFailMessage.SOCKET_OF_USER_FOR_KICK_NOT_FOUND));
+      return;
+    }
+
+    ackCallback(setOk(userId));
     const initKickVote = game.userService.startKickVote(userId, socket.id);
 
-    game.dealerSocket
+    badSocket
       .to(game.room)
       .emit(ApiServerEvents.KICK_VOTE_STARTED, initKickVote);
   };
@@ -67,4 +76,10 @@ export const getKickVoteHandler =
     if (!result) return;
 
     game.server.to(game.room).emit(ApiServerEvents.USER_KICK_RESULT, result);
+    if (result.kicked) {
+      const badUserSocket = game.userService.getUserSocket(result.badUserId);
+      badUserSocket?.emit(ApiServerEvents.KICKED, result.reason);
+      badUserSocket?.disconnect();
+      game.userService.deleteUser(result.badUserId);
+    }
   };

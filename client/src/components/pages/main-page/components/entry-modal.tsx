@@ -51,6 +51,7 @@ export const EntryModal: React.FC<Props> = observer(
         name="role"
         label="Connect as Observer"
         initialValue={Role.GAMER}
+        valuePropName="toggle"
         normalize={(value) => (value ? Role.SPECTATOR : Role.GAMER)}>
         <Toggle />
       </StyledObserverItem>
@@ -101,6 +102,7 @@ export const EntryModal: React.FC<Props> = observer(
               <StyledFormItem
                 name="avatar"
                 label="Avatar image:"
+                valuePropName="avatar"
                 normalize={() => avatar}>
                 <InputAvatarImage onLoad={handleLoad} />
               </StyledFormItem>

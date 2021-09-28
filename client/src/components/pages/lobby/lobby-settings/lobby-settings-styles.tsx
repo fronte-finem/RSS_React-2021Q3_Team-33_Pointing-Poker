@@ -2,6 +2,11 @@ import styled from 'styled-components';
 import { InputNumber, Row } from 'antd';
 import { Input } from '@client/components/shared/input/input';
 import { TimerWrapper } from '@client/components/shared/timer/timer.styles';
+import {
+  fontSubtitle,
+  fontTextSmall,
+  fontTitle,
+} from '@client/themes/typography';
 
 export const StyleLobbySettings = styled.div`
   margin-top: 50px;
@@ -27,11 +32,8 @@ export const StyleLobbySettingsItem = styled(Row)`
 `;
 
 export const StyleLobbySettingsDesc = styled.div`
-  font-family: var(--font-ruda);
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 30px;
-  color: ${(props) => props.theme.fg};
+  ${fontSubtitle};
+  color: ${({ theme }) => theme.pages.lobby.subtitle};
 `;
 
 export const StyleLobbySettingsControl = styled.div`
@@ -57,16 +59,15 @@ export const StyleLobbySettingsTimer = styled(TimerWrapper)`
 
 const TimerSection = styled(InputNumber)`
   width: 70px;
-  font-family: var(--font-ruda);
-  font-weight: bold;
+  ${fontTitle};
   font-size: 32px;
   line-height: 40px;
   border: none;
   box-shadow: inset 0 4px 4px rgba(0, 0, 0, 0.18);
   border-radius: 6px;
 
-  color: ${(props) => props.theme.fg};
-  background-color: ${(props) => props.theme.bg};
+  color: ${({ theme }) => theme.timer.fg};
+  background-color: ${({ theme }) => theme.timer.bg};
 
   .ant-input-number-input {
     padding-right: 25px;
@@ -82,11 +83,8 @@ const TimerSection = styled(InputNumber)`
     position: absolute;
     top: -13px;
     left: 7px;
-    font-family: var(--font-ruda);
-    font-weight: lighter;
-    font-size: 12px;
-    line-height: 15px;
-    color: ${(props) => props.theme.fg};
+    ${fontTextSmall};
+    color: ${({ theme }) => theme.timer.desc};
     opacity: 0.5;
   }
 `;

@@ -1,30 +1,17 @@
 import React from 'react';
-import { UserCard } from '@client/components/shared/user-card/user-card';
 import { useGameService } from '@client/providers/game-service';
 import { observer } from 'mobx-react-lite';
-import {
-  StyledMessage,
-  StyledChat,
-  StyledDateTime,
-  StyledMessageWrapper,
-} from './chat.styles';
+import { Post, SystemPost } from '@client/components/shared/chat/post';
+import { StyledChat } from './chat.styles';
 
-export const Chat: React.FC = observer(() => {
-  const { gameState } = useGameService();
+export const Chat = observer(() => {
+  const { modalState } = useGameService();
   return (
     <StyledChat>
-      {gameState.messages.map(({ message, userId, date }) => {
-        const maybeUser = gameState.users.find((user) => user.id === userId);
-        if (!maybeUser) return null;
-        return (
-          <>
-            <StyledMessageWrapper userRole={maybeUser.role}>
-              <StyledMessage>{message}</StyledMessage>
-              <StyledDateTime>{new Date(date).toLocaleString()}</StyledDateTime>
-            </StyledMessageWrapper>
-            <UserCard user={maybeUser} />
-          </>
-        );
+      {modalState.messages.map((post) => {
+        const PostComponent = post.system ? SystemPost : Post;
+        const key = post.userId + post.date;
+        return <PostComponent key={key} post={post} />;
       })}
     </StyledChat>
   );

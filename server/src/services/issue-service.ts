@@ -1,4 +1,4 @@
-import { ApiFailMessage } from '@server/api-fail-message';
+import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import {
   GameResults,
   Issue,

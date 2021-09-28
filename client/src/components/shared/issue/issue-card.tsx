@@ -22,13 +22,18 @@ export interface IssueProps {
 }
 
 export const IssueCard: React.FC<IssueProps> = observer(({ issue }) => {
-  const { gameState } = useGameService();
+  const { gameState, modalState } = useGameService();
 
   const isGame = gameState.gameRun;
   const isCurrent = isGame && gameState.roundIssueId === issue.id;
 
-  const editIssue = () => {}; // TODO: add edit issue
-  const deleteIssue = () => {}; // TODO: add delete issue
+  const editIssue = () => {
+    modalState.initEditIssue(issue);
+  };
+
+  const deleteIssue = () => {
+    modalState.initDeleteIssue(issue);
+  };
 
   const editIcon = <StyledEditIcon />;
   const deleteIcon = <StyledDeleteIcon />;

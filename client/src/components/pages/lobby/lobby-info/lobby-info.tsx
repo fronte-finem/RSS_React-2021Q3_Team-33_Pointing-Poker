@@ -46,11 +46,7 @@ export const LobbyInfoSection: React.FC<Props> = observer(
             <UserCard user={gameStateActions.getDealer()} />
           </StyleLobbyMaster>
         </InfoMaster>
-        {gameState.isDealer ? (
-          <LobbyCopyLink
-            lobbyLink={`${window.location.origin}/join/${gameState.id}`}
-          />
-        ) : null}
+        {gameState.isDealer ? <LobbyCopyLink lobbyLink={gameState.id} /> : null}
         <LobbyInfoControl gameSettings={gameSettings} />
       </>
     );

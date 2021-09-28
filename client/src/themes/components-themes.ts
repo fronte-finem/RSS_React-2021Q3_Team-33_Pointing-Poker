@@ -1,6 +1,7 @@
 import {
   AvatarTheme,
-  ChatMessageTheme,
+  FormTheme,
+  ChatTheme,
   GameCardTheme,
   InputTheme,
   InteractiveColors,
@@ -8,6 +9,7 @@ import {
   TimerTheme,
   ToggleTheme,
   UserCardTheme,
+  SelectTheme,
 } from 'types/styled';
 import { DarkThemeColor, LightThemeColor } from '@client/themes/colors';
 import {
@@ -16,80 +18,153 @@ import {
 } from '@client/themes/default-color-themes';
 
 export const lightLinkTheme: InteractiveColors = {
-  normal: LightThemeColor.PRIMARY_MID,
+  normal: LightThemeColor.PRIMARY,
   hover: LightThemeColor.PRIMARY_DARK,
-  active: LightThemeColor.WHITE,
+  active: LightThemeColor.PRIMARY_LIGHT,
 };
 export const darkLinkTheme: InteractiveColors = {
-  normal: DarkThemeColor.PRIMARY_MID,
-  hover: DarkThemeColor.PRIMARY_LIGHT,
-  active: DarkThemeColor.BLACK,
+  normal: DarkThemeColor.ACCENT,
+  hover: DarkThemeColor.ACCENT_LIGHT,
+  active: DarkThemeColor.ACCENT_DARK,
 };
 
 export const lightToggleTheme: ToggleTheme = {
-  checked: LightThemeColor.ACCENT_DARK,
-  unchecked: LightThemeColor.PRIMARY_MID,
+  checked: LightThemeColor.ACCENT,
+  unchecked: LightThemeColor.PRIMARY_LIGHT,
 };
 export const darkToggleTheme: ToggleTheme = {
-  checked: DarkThemeColor.ACCENT_DARK,
-  unchecked: DarkThemeColor.PRIMARY_MID,
+  checked: DarkThemeColor.ACCENT,
+  unchecked: DarkThemeColor.PRIMARY_DARK,
 };
 
-export const lightInputTheme: InputTheme = lightDefaultTheme;
-export const darkInputTheme: InputTheme = darkDefaultTheme;
+export const lightInputTheme: InputTheme = {
+  fg: LightThemeColor.FONT_SUBTITLE,
+  bg: LightThemeColor.WHITE,
+};
+export const darkInputTheme: InputTheme = {
+  fg: DarkThemeColor.FONT_TEXT,
+  bg: DarkThemeColor.PRIMARY,
+};
 
-export const lightGameCardTheme: GameCardTheme = lightDefaultTheme;
-export const darkGameCardTheme: GameCardTheme = darkDefaultTheme;
+export const lightSelectTheme: SelectTheme = {
+  fg: LightThemeColor.FONT_SUBTITLE,
+  bg: LightThemeColor.WHITE,
+};
+export const darkSelectTheme: SelectTheme = {
+  fg: DarkThemeColor.BLACK,
+  bg: DarkThemeColor.PRIMARY,
+};
 
-export const lightTimerTheme: TimerTheme = lightDefaultTheme;
-export const darkTimerTheme: TimerTheme = darkDefaultTheme;
+export const lightGameCardTheme: GameCardTheme = {
+  ...lightDefaultTheme,
+  fg: LightThemeColor.FONT_TITLE,
+  hover: LightThemeColor.WHITE,
+  active: {
+    fg: LightThemeColor.WHITE,
+    bg: LightThemeColor.PRIMARY,
+  },
+};
+export const darkGameCardTheme: GameCardTheme = {
+  ...darkDefaultTheme,
+  hover: DarkThemeColor.PRIMARY_LIGHT,
+  active: {
+    fg: DarkThemeColor.WHITE,
+    bg: DarkThemeColor.ACCENT,
+  },
+};
 
-export const lightModalTheme: ModalTheme = lightDefaultTheme;
-export const darkModalTheme: ModalTheme = darkDefaultTheme;
+export const lightTimerTheme: TimerTheme = {
+  ...lightDefaultTheme,
+  fg: LightThemeColor.FONT_TITLE,
+  desc: LightThemeColor.FONT_TEXT,
+};
+export const darkTimerTheme: TimerTheme = {
+  ...darkDefaultTheme,
+  fg: DarkThemeColor.FONT_TITLE,
+  desc: DarkThemeColor.FONT_TEXT,
+};
+
+export const lightModalTheme: ModalTheme = {
+  fg: LightThemeColor.FONT_TITLE,
+  bg: LightThemeColor.WHITE,
+  title: LightThemeColor.FONT_TITLE,
+  kick: LightThemeColor.PRIMARY,
+};
+export const darkModalTheme: ModalTheme = {
+  fg: DarkThemeColor.FONT_TITLE,
+  bg: DarkThemeColor.PRIMARY,
+  title: DarkThemeColor.FONT_TITLE,
+  kick: DarkThemeColor.ACCENT,
+};
 
 export const lightAvatarTheme: AvatarTheme = {
-  fg: LightThemeColor.PRIMARY_LIGHT,
-  bg: LightThemeColor.PRIMARY_MID,
+  fg: LightThemeColor.WHITE,
+  bg: LightThemeColor.ACCENT,
 };
 export const darkAvatarTheme: AvatarTheme = {
-  fg: DarkThemeColor.PRIMARY_DARK,
-  bg: DarkThemeColor.PRIMARY_MID,
+  fg: DarkThemeColor.WHITE,
+  bg: DarkThemeColor.ACCENT,
 };
 
 export const lightUserCardTheme: UserCardTheme = {
-  ...lightDefaultTheme,
-  owner: LightThemeColor.ACCENT_DARK,
-  jobPosition: LightThemeColor.PRIMARY_MID,
+  fg: LightThemeColor.FONT_SUBTITLE,
+  bg: LightThemeColor.WHITE,
+  owner: LightThemeColor.BLACK,
+  jobPosition: LightThemeColor.FONT_TEXT,
   dealer: {
-    bg: LightThemeColor.PRIMARY_LIGHT,
-    fg: LightThemeColor.BLACK,
+    fg: LightThemeColor.ACCENT_DARK,
+    bg: LightThemeColor.WHITE,
   },
   deleteBtn: {
-    normal: LightThemeColor.PRIMARY_LIGHT,
-    hover: LightThemeColor.ACCENT_LIGHT,
-    active: LightThemeColor.ACCENT_LIGHT,
+    normal: LightThemeColor.GREY,
+    hover: LightThemeColor.PRIMARY,
+    active: LightThemeColor.PRIMARY_DARK,
   },
 };
 export const darkUserCardTheme: UserCardTheme = {
-  ...darkDefaultTheme,
-  owner: DarkThemeColor.ACCENT_DARK,
-  jobPosition: DarkThemeColor.PRIMARY_MID,
+  fg: DarkThemeColor.FONT_SUBTITLE,
+  bg: DarkThemeColor.PRIMARY_LIGHT,
+  owner: DarkThemeColor.WHITE,
+  jobPosition: DarkThemeColor.FONT_TEXT,
   dealer: {
-    bg: DarkThemeColor.BLACK,
-    fg: DarkThemeColor.PRIMARY_LIGHT,
+    fg: DarkThemeColor.ACCENT_LIGHT,
+    bg: DarkThemeColor.PRIMARY_LIGHT,
   },
   deleteBtn: {
-    normal: DarkThemeColor.PRIMARY_LIGHT,
-    hover: DarkThemeColor.ACCENT_LIGHT,
-    active: DarkThemeColor.ACCENT_LIGHT,
+    normal: DarkThemeColor.GREY,
+    hover: DarkThemeColor.ACCENT,
+    active: DarkThemeColor.ACCENT_DARK,
   },
 };
 
-export const lightChatMessageTheme: ChatMessageTheme = {
-  ...lightDefaultTheme,
-  dateTime: LightThemeColor.PRIMARY_MID,
+export const lightFormTheme: FormTheme = {
+  fg: LightThemeColor.FONT_SUBTITLE,
+  bg: LightThemeColor.WHITE,
 };
-export const darkChatMessageTheme: ChatMessageTheme = {
-  ...darkDefaultTheme,
-  dateTime: DarkThemeColor.PRIMARY_MID,
+export const darkFormTheme: FormTheme = {
+  fg: DarkThemeColor.FONT_SUBTITLE,
+  bg: DarkThemeColor.PRIMARY,
+};
+
+export const lightChatTheme: ChatTheme = {
+  modal: {
+    fg: LightThemeColor.BLACK,
+    bg: LightThemeColor.WHITE,
+    failMessage: LightThemeColor.ACCENT_DARK,
+  },
+  message: {
+    ...lightDefaultTheme,
+    dateTime: LightThemeColor.BLACK,
+  },
+};
+export const darkChatTheme: ChatTheme = {
+  modal: {
+    fg: DarkThemeColor.WHITE,
+    bg: DarkThemeColor.PRIMARY,
+    failMessage: DarkThemeColor.ACCENT_DARK,
+  },
+  message: {
+    ...darkDefaultTheme,
+    dateTime: DarkThemeColor.WHITE,
+  },
 };

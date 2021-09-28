@@ -2,7 +2,7 @@ import { createServer, Server } from 'http';
 import { connectClient, emit, onEvent } from '@server/test-helpers';
 import { initSocketServer } from '@server/init-socket-server';
 import { ApiClientEvents, ApiServerEvents } from '@shared/api-types/api-events';
-import { ApiFailMessage } from '@server/api-fail-message';
+import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { InitDealer } from '@shared/api-types/init';
 import { DealerToJoin, Role, UserToJoin } from '@shared/api-types/user';
 import { PointingPokerServer } from 'types/server-socket';

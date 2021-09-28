@@ -6,13 +6,19 @@ import { StyleLobbyTitle, StyledLobbySection } from '../lobby-styles';
 import { StyleLobbyUsersGrid } from './lobby-users-styles';
 
 export const LobbyUsersSection: React.FC = observer(() => {
-  const { gameState } = useGameService();
+  const { gameStateActions } = useGameService();
 
   return (
     <StyledLobbySection>
-      <StyleLobbyTitle level={2}>Members:</StyleLobbyTitle>
+      <StyleLobbyTitle level={2}>Gamers:</StyleLobbyTitle>
       <StyleLobbyUsersGrid>
-        {gameState.users.map((user) => (
+        {gameStateActions.getGamers(false).map((user) => (
+          <UserCard key={user.id} user={user} />
+        ))}
+      </StyleLobbyUsersGrid>
+      <StyleLobbyTitle level={2}>Spectators:</StyleLobbyTitle>
+      <StyleLobbyUsersGrid>
+        {gameStateActions.getSpectators(false).map((user) => (
           <UserCard key={user.id} user={user} />
         ))}
       </StyleLobbyUsersGrid>
