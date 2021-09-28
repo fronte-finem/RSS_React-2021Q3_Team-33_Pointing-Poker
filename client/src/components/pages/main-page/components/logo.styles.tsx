@@ -6,6 +6,9 @@ export const StyledLogoSvg = styled.svg`
   .cards {
     fill: #0008;
   }
+  .card {
+    fill: #faad14;
+  }
   .mark {
     fill: #fff;
   }
