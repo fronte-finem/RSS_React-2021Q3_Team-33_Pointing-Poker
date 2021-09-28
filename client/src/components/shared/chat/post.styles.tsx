@@ -1,5 +1,7 @@
 import styled, { DefaultTheme } from 'styled-components';
 import { Role } from '@shared/api-types/user';
+import { shadowMain } from '@client/themes/shadows';
+import { fontText, fontTextSmall } from '@client/themes/typography';
 
 type Props = { userRole: Role; userKicked?: boolean };
 type Opts = Props & { theme: DefaultTheme };
@@ -28,10 +30,9 @@ export const StyledMessageWrapper = styled.div<Props>`
 
   color: var(--fg);
   background: var(--bg);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  ${shadowMain};
   border-radius: 0 20px 0 20px;
-
-  font-family: var(--font-roboto);
+  ${fontText};
 
   opacity: var(--kicked-opacity);
 `;
@@ -49,9 +50,7 @@ export const StyledSystemMessageWrapper = styled(StyledMessageWrapper)`
 export const StyledMessage = styled.div`
   padding: 10px 20px;
 
-  font-weight: 300;
-  font-size: 28px;
-  line-height: 30px;
+  ${fontText};
   text-align: left;
 
   word-break: break-all;
@@ -63,7 +62,7 @@ export const StyledDateTime = styled.time`
 
   color: ${({ theme }) => theme.chat.message.dateTime};
 
-  font-size: 14px;
+  ${fontTextSmall};
   font-style: italic;
   text-align: right;
 `;

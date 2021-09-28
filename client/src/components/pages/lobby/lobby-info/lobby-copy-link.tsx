@@ -1,7 +1,7 @@
-import { Button } from '@client/components/shared/button/button';
 import { Input } from '@client/components/shared/input/input';
 import { useGameService } from '@client/providers/game-service';
 import React from 'react';
+import { StyledButtonInput } from '../../main-page/components/entry-controls.styles';
 import {
   InfoCopy,
   StyleLobbyCopy,
@@ -24,9 +24,9 @@ export const LobbyCopyLink: React.FC<{ lobbyLink: string }> = (props) => {
         <StyleLobbyCopyLabel>Link to lobby:</StyleLobbyCopyLabel>
         <StyleLobbyCopyWrapper>
           <Input type="text" readOnly value={lobbyId} />
-          <Button type="primary" onClick={copyToClipboard}>
+          <StyledButtonInput type="primary" onClick={copyToClipboard}>
             Copy
-          </Button>
+          </StyledButtonInput>
         </StyleLobbyCopyWrapper>
       </StyleLobbyCopy>
     </InfoCopy>

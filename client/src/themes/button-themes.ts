@@ -1,48 +1,56 @@
-import { ButtonTheme, InteractiveColors } from 'types/styled';
+import { ButtonTheme } from 'types/styled';
 import { DarkThemeColor, LightThemeColor } from '@client/themes/colors';
-
-const lightA: InteractiveColors = {
-  normal: LightThemeColor.PRIMARY_DARK,
-  hover: LightThemeColor.PRIMARY_MID,
-  active: LightThemeColor.BLACK,
-};
-
-const lightB: InteractiveColors = {
-  normal: LightThemeColor.PRIMARY_LIGHT,
-  hover: LightThemeColor.PRIMARY_LIGHT,
-  active: LightThemeColor.PRIMARY_LIGHT,
-};
 
 export const lightButtonTheme: ButtonTheme = {
   default: {
-    bg: lightB,
-    fg: lightA,
+    fg: {
+      normal: LightThemeColor.PRIMARY,
+      hover: LightThemeColor.WHITE,
+      active: LightThemeColor.WHITE,
+    },
+    bg: {
+      normal: 'transparent',
+      hover: LightThemeColor.PRIMARY_LIGHT,
+      active: LightThemeColor.PRIMARY_DARK,
+    },
   },
   primary: {
-    bg: lightA,
-    fg: lightB,
+    fg: {
+      normal: LightThemeColor.WHITE,
+      hover: LightThemeColor.WHITE,
+      active: LightThemeColor.WHITE,
+    },
+    bg: {
+      normal: LightThemeColor.PRIMARY,
+      hover: LightThemeColor.PRIMARY_LIGHT,
+      active: LightThemeColor.PRIMARY_DARK,
+    },
   },
-};
-
-const darkA: InteractiveColors = {
-  normal: DarkThemeColor.PRIMARY_LIGHT,
-  hover: DarkThemeColor.WHITE,
-  active: DarkThemeColor.BLACK,
-};
-
-const darkB: InteractiveColors = {
-  normal: DarkThemeColor.PRIMARY_DARK,
-  hover: DarkThemeColor.PRIMARY_DARK,
-  active: DarkThemeColor.PRIMARY_DARK,
 };
 
 export const darkButtonTheme: ButtonTheme = {
   default: {
-    bg: darkB,
-    fg: darkA,
+    fg: {
+      normal: DarkThemeColor.ACCENT,
+      hover: DarkThemeColor.WHITE,
+      active: DarkThemeColor.WHITE,
+    },
+    bg: {
+      normal: 'transparent',
+      hover: DarkThemeColor.ACCENT_LIGHT,
+      active: DarkThemeColor.ACCENT_DARK,
+    },
   },
   primary: {
-    bg: darkA,
-    fg: darkB,
+    fg: {
+      normal: DarkThemeColor.WHITE,
+      hover: DarkThemeColor.WHITE,
+      active: DarkThemeColor.WHITE,
+    },
+    bg: {
+      normal: DarkThemeColor.ACCENT,
+      hover: DarkThemeColor.ACCENT_LIGHT,
+      active: DarkThemeColor.ACCENT_DARK,
+    },
   },
 };

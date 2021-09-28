@@ -1,3 +1,4 @@
+import { shadowHover, shadowMain } from '@client/themes/shadows';
 import styled from 'styled-components';
 
 export const StyledGameCard = styled.div`
@@ -12,10 +13,11 @@ export const StyledGameCard = styled.div`
   align-items: center;
   transition: all 0.3s;
   cursor: pointer;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  ${shadowMain};
 
   &:hover {
-    box-shadow: 8px 8px 8px rgba(47, 16, 185, 0.25);
+    ${shadowHover};
+    background-color: ${({ theme }) => theme.gameCard.hover};
 
     & svg {
       fill-opacity: 1;

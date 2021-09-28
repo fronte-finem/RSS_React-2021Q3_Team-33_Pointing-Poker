@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Select } from '@client/components/shared/select/select';
 import { Input } from '@client/components/shared/input/input';
 import { Form } from 'antd';
+import { fontSubtitle } from '@client/themes/typography';
 
 export const StyledWrapper = styled.div`
   max-width: 700px;
@@ -16,10 +17,9 @@ export const StyledFormItem = styled(Form.Item)`
   align-items: center;
   margin: 0;
 
-  label {
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 28px;
+  && label {
+    ${fontSubtitle};
+    color: ${({ theme }) => theme.modal.title};
   }
 `;
 

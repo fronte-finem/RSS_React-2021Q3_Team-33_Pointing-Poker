@@ -6,7 +6,7 @@ import {
   StyledInput,
   StyledUpload,
 } from '@client/components/shared/input-file/input-file.styles';
-import { Button } from '@client/components/shared/button/button';
+import { StyledButtonInput } from '@client/components/pages/main-page/components/entry-controls.styles';
 
 type Props = UploadProps & { onLoad: (base64?: string | null) => void };
 
@@ -35,7 +35,7 @@ export const InputAvatarImage: React.FC<Props> = ({ onLoad, ...props }) => {
       showUploadList={false}
       {...props}>
       <StyledInput value={placeholder} />
-      <Button loading={isLoading}>select</Button>
+      <StyledButtonInput loading={isLoading}>select</StyledButtonInput>
     </StyledUpload>
   );
 };
