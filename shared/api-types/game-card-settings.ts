@@ -30,4 +30,11 @@ export const PRESET_CLASSIC_EXTRAS: ExtraScoreKind[] = [
   ExtraScoreKind.ONE_HALF,
 ];
 
-export type CardScore = number | ExtraScoreKind;
+export type NoneScore = '' | undefined | null;
+
+export type CardScore = number | ExtraScoreKind | NoneScore;
+
+export const isNoneScore = (score: CardScore): boolean =>
+  score === '' || score === undefined || score === null;
+
+export const isRealScore = (score: CardScore): boolean => !isNoneScore(score);

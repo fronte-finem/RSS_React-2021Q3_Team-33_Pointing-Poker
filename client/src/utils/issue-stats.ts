@@ -1,4 +1,8 @@
-import { CardScore } from '@shared/api-types/game-card-settings';
+import {
+  CardScore,
+  isNoneScore,
+  isRealScore,
+} from '@shared/api-types/game-card-settings';
 import { countItems } from '@shared/utils/array';
 import { UserScore } from '@shared/api-types/issue';
 
@@ -18,7 +22,10 @@ export interface IssueStats {
 }
 
 export function countScores(scores: UserScore[]): Map<CardScore, number> {
-  return countItems(scores, ({ score }) => score);
+  return countItems(
+    scores.filter(({ score }) => isRealScore(score)),
+    ({ score }) => score
+  );
 }
 
 export function calcStats(statsMap: Map<CardScore, number>): CardStats[] {
@@ -33,7 +40,9 @@ export function calcStats(statsMap: Map<CardScore, number>): CardStats[] {
 export const orderStats = (a: CardStats, b: CardStats) => {
   const percentOrder = b.percent - a.percent;
   if (percentOrder !== 0) return percentOrder;
+  if (isNoneScore(a.score)) return 1;
+  if (isNoneScore(b.score)) return -1;
   if (typeof a.score === 'string') return -1;
   if (typeof b.score === 'string') return 1;
-  return a.score - b.score;
+  return a.score! - b.score!;
 };
