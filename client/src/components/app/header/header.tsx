@@ -1,8 +1,5 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { NavMenu } from '@client/components/app/header/nav-menu';
-import { Dropdown } from 'antd';
-import { Button } from '@client/components/shared/button/button';
 import { Logo } from '@client/components/app/header/logo';
 import { useStateService } from '@client/providers/state-service';
 import { ChatToggleButton } from '@client/components/shared/chat/chat-toggle-button';
@@ -27,12 +24,6 @@ export const Header = observer(() => {
           </LogoPosition>
         </LogoWrapper>
         <StyledControlsWrapper>
-          <Dropdown
-            overlay={<NavMenu />}
-            placement="bottomCenter"
-            trigger={['click']}>
-            <Button>Demo pages</Button>
-          </Dropdown>
           <ThemeToggle />
           {gameState.isModeEntry ? null : <ChatToggleButton />}
         </StyledControlsWrapper>
