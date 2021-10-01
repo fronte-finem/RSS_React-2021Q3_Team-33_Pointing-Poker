@@ -132,9 +132,10 @@ export const getScoreAddHandler =
     game.server.to(game.room).emit(ApiServerEvents.SCORE_ADDED, userId);
 
     if (game.gameSettings.autoOpenCards) {
-      const usersNum = game.userService.getUsers().length;
+      const plusDealer = game.gameSettings.dealerGamer ? 1 : 0;
+      const gamersNum = game.userService.getGamers().length + plusDealer;
       const scoresNum = game.issueService.getRoundScore()!.scores.length;
-      if (scoresNum < usersNum) return;
+      if (scoresNum < gamersNum) return;
       const results = game.issueService.end();
       game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, results);
     }

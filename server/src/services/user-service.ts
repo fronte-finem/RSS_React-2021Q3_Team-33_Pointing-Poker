@@ -73,6 +73,10 @@ export class UsersService {
     return this._users.map(toUser);
   }
 
+  public getGamers(): UsersList {
+    return this._users.filter(({ role }) => role === Role.GAMER).map(toUser);
+  }
+
   public deleteUser(userId: string): void {
     this._users = this._users.filter(notThatUser(userId));
   }
