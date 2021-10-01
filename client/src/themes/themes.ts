@@ -17,6 +17,7 @@ import {
 } from '@client/themes/footer-themes';
 import {
   darkAvatarTheme,
+  darkFormTheme,
   darkChatTheme,
   darkGameCardTheme,
   darkInputTheme,
@@ -26,6 +27,7 @@ import {
   darkToggleTheme,
   darkUserCardTheme,
   lightAvatarTheme,
+  lightFormTheme,
   lightChatTheme,
   lightGameCardTheme,
   lightInputTheme,
@@ -34,6 +36,8 @@ import {
   lightTimerTheme,
   lightToggleTheme,
   lightUserCardTheme,
+  lightSelectTheme,
+  darkSelectTheme,
 } from '@client/themes/components-themes';
 import {
   darkIssueCardTheme,
@@ -43,6 +47,12 @@ import {
   darkContentTheme,
   lightContentTheme,
 } from '@client/themes/content-themes';
+import {
+  DarkLobbyPageTheme,
+  DarkMainPageTheme,
+  LightLobbyPageTheme,
+  LightMainPageTheme,
+} from './pages-theme';
 
 export const lightTheme: DefaultTheme = {
   ...lightDefaultTheme,
@@ -50,6 +60,7 @@ export const lightTheme: DefaultTheme = {
   toggle: lightToggleTheme,
   button: lightButtonTheme,
   input: lightInputTheme,
+  select: lightSelectTheme,
   timer: lightTimerTheme,
   modal: lightModalTheme,
   avatar: lightAvatarTheme,
@@ -60,6 +71,11 @@ export const lightTheme: DefaultTheme = {
   header: lightHeaderTheme,
   footer: lightFooterTheme,
   content: lightContentTheme,
+  pages: {
+    main: LightMainPageTheme,
+    lobby: LightLobbyPageTheme,
+  },
+  form: lightFormTheme,
 };
 
 export const darkTheme: DefaultTheme = {
@@ -68,6 +84,7 @@ export const darkTheme: DefaultTheme = {
   toggle: darkToggleTheme,
   button: darkButtonTheme,
   input: darkInputTheme,
+  select: darkSelectTheme,
   timer: darkTimerTheme,
   modal: darkModalTheme,
   avatar: darkAvatarTheme,
@@ -78,4 +95,9 @@ export const darkTheme: DefaultTheme = {
   header: darkHeaderTheme,
   footer: darkFooterTheme,
   content: darkContentTheme,
+  pages: {
+    main: DarkMainPageTheme,
+    lobby: DarkLobbyPageTheme,
+  },
+  form: darkFormTheme,
 };

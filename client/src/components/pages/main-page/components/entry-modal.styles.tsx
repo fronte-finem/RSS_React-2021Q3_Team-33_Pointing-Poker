@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { FormItem } from '@client/components/shared/form-item/form-item';
+import { fontTitle } from '@client/themes/typography';
 
 export const StyledWrapper = styled.div`
   width: 100%;
@@ -22,11 +23,11 @@ export const StyledHeader = styled.div`
 
 export const StyledTitle = styled.div`
   flex: 1;
-  font-family: var(--font-roboto);
-  font-style: normal;
-  font-weight: bold;
+  ${fontTitle}
+
   font-size: 64px;
   line-height: 75px;
+  color: ${({ theme }) => theme.modal.fg};
 `;
 
 export const StyledFormItem = styled(FormItem)`

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Layout as AntdLayout } from 'antd';
+import { shadowLarge } from '@client/themes/shadows';
 
 export const StyledLayout = styled(AntdLayout)`
   min-height: 100vh;
@@ -14,9 +15,12 @@ export const LayoutContainer = styled.div`
 
 export const Content = styled(AntdLayout.Content)`
   padding: 20px;
-  background: ${(props) => props.theme.content.bg};
+  background: ${({ theme }) => theme.content.bg};
+  z-index: 1;
+
+  ${shadowLarge}
 `;
 
 export const ContentLayoutContainer = styled(LayoutContainer)`
-  background: ${(props) => props.theme.content.fg};
+  background: ${({ theme }) => theme.content.bg};
 `;

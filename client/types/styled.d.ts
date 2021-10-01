@@ -27,9 +27,19 @@ export interface ForeGroundBackGround {
 }
 
 export interface InputTheme extends ForeGroundBackGround {}
-export interface GameCardTheme extends ForeGroundBackGround {}
-export interface TimerTheme extends ForeGroundBackGround {}
-export interface ModalTheme extends ForeGroundBackGround {}
+export interface SelectTheme extends ForeGroundBackGround {}
+export interface GameCardTheme extends ForeGroundBackGround {
+  hover: string;
+  active: ForeGroundBackGround;
+}
+export interface TimerTheme extends ForeGroundBackGround {
+  desc: string;
+}
+
+export interface ModalTheme extends ForeGroundBackGround {
+  title: string;
+  kick: string;
+}
 export interface AvatarTheme extends ForeGroundBackGround {}
 
 export interface UserCardTheme extends ForeGroundBackGround {
@@ -78,7 +88,27 @@ export interface FooterTheme extends ForeGroundBackGround {
   };
 }
 
-export interface ContentTheme extends ForeGroundBackGround {}
+export interface ContentTheme extends ForeGroundBackGround {
+  shadow: string;
+}
+
+export interface MainPageTheme {
+  title: string;
+  subtitle: string;
+}
+
+export interface LobbyPageTheme {
+  title: string;
+  subtitle: string;
+  text: string;
+}
+
+export interface PagesTheme {
+  main: MainPageTheme;
+  lobby: LobbyPageTheme;
+}
+
+export interface FormTheme extends ForeGroundBackGround {}
 
 declare module 'styled-components' {
   export interface DefaultTheme extends ForeGroundBackGround {
@@ -86,6 +116,7 @@ declare module 'styled-components' {
     button: ButtonTheme;
     toggle: ToggleTheme;
     input: InputTheme;
+    select: SelectTheme;
     timer: TimerTheme;
     modal: ModalTheme;
     avatar: AvatarTheme;
@@ -96,5 +127,7 @@ declare module 'styled-components' {
     header: HeaderTheme;
     footer: FooterTheme;
     content: ContentTheme;
+    pages: PagesTheme;
+    form: FormTheme;
   }
 }

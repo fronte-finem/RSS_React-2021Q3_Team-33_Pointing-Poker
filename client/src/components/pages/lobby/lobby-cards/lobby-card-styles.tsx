@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { fontTitle } from '@client/themes/typography';
 
 export const StyleLobbyCards = styled.div`
   margin-top: 30px;
@@ -10,11 +11,8 @@ export const StyleLobbyCards = styled.div`
 `;
 
 export const StyleLobbyCardsText = styled.div`
-  font-family: var(--font-ruda);
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 30px;
-  color: ${(props) => props.theme.fg};
+  ${fontTitle};
+  color: ${({ theme }) => theme.pages.lobby.title};
 `;
 
 export const StyleLobbyCardsWrapper = styled.div`

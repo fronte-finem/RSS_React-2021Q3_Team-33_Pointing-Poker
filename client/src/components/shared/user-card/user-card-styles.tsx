@@ -1,7 +1,8 @@
 import styled, { css, DefaultTheme } from 'styled-components';
+import { Button as AntButton } from 'antd';
 import { StopOutlined } from '@ant-design/icons';
 import { Role } from '@shared/api-types/user';
-import { Button as AntButton } from 'antd';
+import { fontTextSmall, fontTitle } from '@client/themes/typography';
 
 type Props = { userRole: Role; userKicked: boolean; userDisconnected: boolean };
 type Opts = Props & { theme: DefaultTheme };
@@ -71,6 +72,7 @@ export const StyledControlContainer = styled.div`
 `;
 
 export const StyleCardOwner = styled.div`
+  ${fontTextSmall};
   font-weight: bold;
   font-size: var(--user-card-font-size-badge, 0.7em);
   line-height: var(--user-card-font-size-badge, 0.7em);
@@ -86,6 +88,7 @@ const textOverflow = css`
 `;
 
 export const StyledUsername = styled.div`
+  ${fontTitle};
   font-size: var(--user-card-font-size-name, 1.4em);
   line-height: var(--user-card-font-size-name, 1.4em);
   color: var(--fg);
@@ -95,6 +98,7 @@ export const StyledUsername = styled.div`
 `;
 
 export const StyledJobPosition = styled.div`
+  ${fontTextSmall};
   font-size: var(--user-card-font-size-badge, 0.7em);
   line-height: var(--user-card-font-size-badge, 0.7em);
   color: ${({ theme }) => theme.userCard.jobPosition};

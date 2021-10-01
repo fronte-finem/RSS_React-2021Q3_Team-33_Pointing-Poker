@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 import { Layout } from 'antd';
 import { LayoutContainer } from '@client/components/app/layout/layout.style';
+import { shadowMedium } from '@client/themes/shadows';
 
 export const StyledHeader = styled(Layout.Header)`
   height: 80px;
   color: ${({ theme }) => theme.header.fg};
-  background-color: ${({ theme }) => theme.header.bg};
-  background-image: linear-gradient(to bottom, #0002, #0002);
-  background-size: 100% 60px;
-  background-repeat: no-repeat;
+  background: ${({ theme }) => theme.header.bg};
+  z-index: 2;
+
+  ${shadowMedium}
 `;
 
 export const HeaderLayoutContainer = styled(LayoutContainer)`

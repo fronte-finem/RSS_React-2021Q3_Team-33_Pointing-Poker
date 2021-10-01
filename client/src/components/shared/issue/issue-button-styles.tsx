@@ -5,6 +5,7 @@ import {
   issueCardInfoStyle,
   issueCardStyle,
 } from '@client/components/shared/issue/issue-styles';
+import { fontText } from '@client/themes/typography';
 
 const selector = ({ theme }: { theme: DefaultTheme }) =>
   theme.issueCard.button.default;
@@ -46,7 +47,7 @@ export const StyledIssueButtonCardControls = styled.div`
 `;
 
 export const StyleIssueTitle = styled.div`
-  font-family: var(--font-roboto);
+  ${fontText};
   font-weight: 200;
   font-size: var(--title-font-size);
 `;

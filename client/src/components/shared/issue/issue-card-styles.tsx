@@ -8,6 +8,7 @@ import {
   PoweroffOutlined,
   ReloadOutlined,
 } from '@ant-design/icons';
+import { fontSubtitle, fontTextSmall } from '@client/themes/typography';
 import {
   issueCardControlsStyle,
   issueCardInfoStyle,
@@ -43,9 +44,7 @@ export const StyledIssueCardControls = styled.div`
 `;
 
 export const StyledIssueTitle = styled.div`
-  font-weight: 200;
-  font-size: 28px;
-  line-height: 30px;
+  ${fontSubtitle};
   color: var(--fg);
 
   overflow: hidden;
@@ -58,10 +57,7 @@ export const StyledMark = styled.div`
   position: absolute;
   top: 5px;
   left: 20px;
-  font-family: var(--font-ruda);
-  font-weight: lighter;
-  font-size: 14px;
-  line-height: 16px;
+  ${fontTextSmall};
   text-transform: uppercase;
 `;
 
@@ -69,10 +65,7 @@ export const StyledIssuePriority = styled.div`
   position: absolute;
   bottom: 5px;
   left: 20px;
-  font-weight: 300;
-  font-size: 12px;
-  line-height: 12px;
-  text-transform: uppercase;
+  ${fontTextSmall};
 `;
 
 const StyledButton = styled(AntButton)`

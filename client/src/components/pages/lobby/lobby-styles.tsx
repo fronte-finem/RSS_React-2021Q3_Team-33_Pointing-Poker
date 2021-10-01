@@ -1,9 +1,11 @@
 import styled from 'styled-components';
+import { Typography } from 'antd';
+import { fontTitle } from '@client/themes/typography';
 
 export const StyleLobbyPage = styled.div`
   width: 100%;
   padding: 20px;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: ${({ theme }) => theme.content.shadow};
 `;
 
 export const StyledLobbySection = styled.section`
@@ -23,4 +25,13 @@ export const StyledLobbyGrid = styled.div`
   justify-content: center;
   justify-items: center;
   gap: 20px;
+`;
+
+export const StyleLobbyTitle = styled(Typography.Title)`
+  &&& {
+    margin: 0;
+    ${fontTitle};
+    text-align: center;
+    color: ${({ theme }) => theme.pages.lobby.title};
+  }
 `;

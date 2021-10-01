@@ -13,6 +13,7 @@ import { PageComponentsDemo } from '@client/components/pages/demo/components';
 import { PageLobbyDemo } from '@client/components/pages/demo/page-lobby';
 import { ModalIssueDeleteDemo } from '@client/components/pages/demo/modal-issue-delete';
 import { PageGameDemo } from '@client/components/pages/demo/page-game.';
+import { DemoGameResultPage } from '@client/components/pages/game-result/demo-geme-results';
 
 export const demoRoutes: RouteConf[] = [
   {
@@ -84,5 +85,10 @@ export const demoRoutes: RouteConf[] = [
     path: '/delete-issue',
     name: 'Modal - Delete Issue (🚧 mutate game-state 🚧)',
     component: ModalIssueDeleteDemo,
+  },
+  {
+    path: '/demo/game-result',
+    name: 'Game Result',
+    component: DemoGameResultPage,
   },
 ];

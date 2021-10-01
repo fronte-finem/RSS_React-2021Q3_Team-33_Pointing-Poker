@@ -1,3 +1,4 @@
+import { shadowMain } from '@client/themes/shadows';
 import { css } from 'styled-components';
 
 export const issueCardStyle = css`
@@ -12,11 +13,9 @@ export const issueCardStyle = css`
 
   background: var(--bg);
   color: var(--fg);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  ${shadowMain};
   border: none;
   border-radius: 4px;
-
-  font-family: var(--font-roboto);
 `;
 
 export const issueCardInfoStyle = css`

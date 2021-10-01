@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { shadowHover, shadowMain } from '@client/themes/shadows';
 
 const layer = css`
   position: absolute;
@@ -11,6 +12,10 @@ const layer = css`
 type Props = { interactive?: boolean; invisible?: boolean };
 
 export const CardContainer = styled.div<Props>`
+  ${shadowMain};
+  ${shadowHover};
+  --game-card-hover-bg: ${({ theme }) => theme.gameCard.hover};
+
   --game-card-normal-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   --game-card-hover-shadow: 8px 8px 8px rgba(47, 16, 185, 0.25);
   --game-card-shadow: var(--game-card-normal-shadow);

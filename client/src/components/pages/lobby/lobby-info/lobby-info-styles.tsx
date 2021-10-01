@@ -1,4 +1,5 @@
 import { EditOutlined } from '@ant-design/icons';
+import { fontSubtitle } from '@client/themes/typography';
 import { Button, Col, Row, Typography } from 'antd';
 import styled from 'styled-components';
 
@@ -24,8 +25,8 @@ export const StyleEditTitleButton = styled(Button)`
 `;
 
 export const StyleLobbyEditTitleIcon = styled(EditOutlined)`
-  font-size: 18px;
-  color: ${(props) => props.theme.fg};
+  font-size: 24px;
+  color: ${({ theme }) => theme.pages.lobby.title};
 `;
 
 export const InfoMaster = styled(Row)`
@@ -40,6 +41,14 @@ export const StyleLobbyMaster = styled.div`
   gap: 10px;
 `;
 
+export const StyleLobbyMasterText = styled(Paragraph)`
+  &&& {
+    margin-bottom: 10px;
+    ${fontSubtitle};
+    color: ${({ theme }) => theme.pages.lobby.subtitle};
+  }
+`;
+
 export const InfoCopy = styled(Row)`
   margin-bottom: 30px;
 `;
@@ -52,12 +61,11 @@ export const StyleLobbyCopy = styled(Col)`
 `;
 
 export const StyleLobbyCopyLabel = styled(Paragraph)`
-  margin-bottom: 10px !important;
-  font-family: var(--font-roboto);
-  font-weight: normal;
-  font-size: 24px;
-  line-height: 28px;
-  color: ${(props) => props.theme.fg};
+  &&& {
+    margin-bottom: 10px;
+    ${fontSubtitle}
+    color: ${({ theme }) => theme.pages.lobby.subtitle};
+  }
 `;
 
 export const StyleLobbyCopyWrapper = styled.div`
