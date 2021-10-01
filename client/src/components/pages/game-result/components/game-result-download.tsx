@@ -2,8 +2,8 @@ import XLSX from 'xlsx';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStateService } from '@client/providers/state-service';
+import { Button } from '@client/components/shared/button/button';
 import { getGameResultXLS } from '../shared/utils/utils';
-import { StyleDownloadButton } from '../game-result-styles';
 
 export const DownloadButton = observer(() => {
   const { gameState } = useStateService();
@@ -17,7 +17,5 @@ export const DownloadButton = observer(() => {
     XLSX.writeFile(wb, 'GameResult.xlsx');
   };
 
-  return (
-    <StyleDownloadButton onClick={downloadXLS}>Download</StyleDownloadButton>
-  );
+  return <Button onClick={downloadXLS}>Download</Button>;
 });
