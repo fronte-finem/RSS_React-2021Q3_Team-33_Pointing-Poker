@@ -16,9 +16,7 @@ export const Round = observer(function Round() {
         <IssueCard issue={gameState.currentIssue} />
         <Statistics issueId={gameState.currentIssue?.id} />
       </Center>
-      <Center>
-        <GameTimer />
-      </Center>
+      <Center>{gameState.settings.timeout ? <GameTimer /> : null}</Center>
       <Center>
         <Button onClick={() => modalState.showIssues()}>Show issues</Button>
       </Center>
