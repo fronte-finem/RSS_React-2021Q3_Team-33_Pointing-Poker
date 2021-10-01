@@ -94,14 +94,14 @@ export const SideWrapper = styled.div`
   ${layer};
 `;
 
-type OverlayProps = { loading?: boolean };
+type OverlayProps = { isLoading?: boolean };
 
 export const Overlay = styled.div<OverlayProps>`
   ${layer};
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ loading }) => (loading ? '#fffe' : '#0848')};
+  background-color: ${({ isLoading }) => (isLoading ? '#fffe' : '#0848')};
   color: #fff;
   font-size: 100px;
   backdrop-filter: blur(1px);

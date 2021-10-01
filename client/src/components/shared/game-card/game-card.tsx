@@ -83,7 +83,7 @@ export const ActiveGameCard = observer(
     };
 
     const loading = isLoading ? (
-      <Overlay loading>
+      <Overlay isLoading>
         <Spin indicator={<LoadingOutlined style={{ fontSize: 80 }} spin />} />
       </Overlay>
     ) : null;
