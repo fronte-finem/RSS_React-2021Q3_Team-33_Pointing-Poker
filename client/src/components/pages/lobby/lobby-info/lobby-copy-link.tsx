@@ -1,7 +1,8 @@
-import { Input } from '@client/components/shared/input/input';
-import { useStateService } from '@client/providers/state-service';
 import React from 'react';
-import { StyledButtonInput } from '../../main-page/components/entry-controls.styles';
+import { observer } from 'mobx-react-lite';
+import { useStateService } from '@client/providers/state-service';
+import { Input } from '@client/components/shared/input/input';
+import { StyledButtonInput } from '@client/components/pages/main-page/components/entry-controls.styles';
 import {
   InfoCopy,
   StyleLobbyCopy,
@@ -9,13 +10,13 @@ import {
   StyleLobbyCopyWrapper,
 } from './lobby-info-styles';
 
-export const LobbyCopyLink: React.FC<{ lobbyLink: string }> = (props) => {
+export const LobbyCopyLink = observer(() => {
   const { gameState } = useStateService();
-  const lobbyId = gameState.id;
-  const { lobbyLink } = props;
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(lobbyLink).then(null);
+    navigator.clipboard
+      .writeText(`${window.location.origin}/join/${gameState.id}`)
+      .then(null);
   };
 
   return (
@@ -23,7 +24,7 @@ export const LobbyCopyLink: React.FC<{ lobbyLink: string }> = (props) => {
       <StyleLobbyCopy>
         <StyleLobbyCopyLabel>Link to lobby:</StyleLobbyCopyLabel>
         <StyleLobbyCopyWrapper>
-          <Input type="text" readOnly value={lobbyId} />
+          <Input type="text" readOnly value={gameState.id} />
           <StyledButtonInput type="primary" onClick={copyToClipboard}>
             Copy
           </StyledButtonInput>
@@ -31,4 +32,4 @@ export const LobbyCopyLink: React.FC<{ lobbyLink: string }> = (props) => {
       </StyleLobbyCopy>
     </InfoCopy>
   );
-};
+});

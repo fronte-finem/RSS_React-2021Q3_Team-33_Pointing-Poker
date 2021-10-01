@@ -36,7 +36,7 @@ export const LobbyInfoSection = observer(() => {
         </StyleLobbyMaster>
       </InfoMaster>
 
-      {gameState.isDealer ? <LobbyCopyLink lobbyLink={gameState.id} /> : null}
+      {gameState.isDealer ? <LobbyCopyLink /> : null}
 
       <LobbyInfoControl />
 
