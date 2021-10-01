@@ -317,6 +317,10 @@ export class GameState {
     this.settings.timeout = timeout;
   }
 
+  @computed public get cardsDeck(): CardScore[] {
+    return [...this.settings.cardsDeckExtras, ...this.settings.cardsDeck];
+  }
+
   private get statisticsMap(): IssueStatsMap[] {
     return this.results.map(({ issueId, scores }) => ({
       issueId,

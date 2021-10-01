@@ -261,5 +261,8 @@ export class SocketState {
       this.socket
     );
     this.afterAsync(response);
+    if (isOk(response)) {
+      this.modalState.setActiveScore(score);
+    }
   }
 }

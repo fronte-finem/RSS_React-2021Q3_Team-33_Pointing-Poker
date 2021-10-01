@@ -6,6 +6,7 @@ import {
   KickVoteInit,
 } from '@shared/api-types/chat';
 import { AllowUserToJoin } from '@client/services/game-state';
+import { CardScore } from '@shared/api-types/game-card-settings';
 
 export interface ChatMessageFE extends ChatMessage {
   system?: boolean;
@@ -25,6 +26,9 @@ export class ModalState {
   @observable public allowUserToJoin?: null | AllowUserToJoin = null;
   @observable public customizeCards: boolean = false;
   @observable public issuesVisible: boolean = false;
+  @observable public activeScore?: CardScore;
+  @observable public usersCompact: boolean = false;
+  @observable public cardsCompact: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -171,5 +175,21 @@ export class ModalState {
 
   @action public hideIssues() {
     this.issuesVisible = false;
+  }
+
+  @action public setActiveScore(score: CardScore) {
+    this.activeScore = score;
+  }
+
+  @action public resetActiveScore() {
+    this.activeScore = undefined;
+  }
+
+  @action public setUsersCompact(compact: boolean) {
+    this.usersCompact = compact;
+  }
+
+  @action public setCardsCompact(compact: boolean) {
+    this.cardsCompact = compact;
   }
 }

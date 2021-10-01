@@ -63,7 +63,9 @@ export const setSharedListeners: SocketListenerSetter = ({
   socket?.on(ApiServerEvents.MESSAGE_POSTED, (message) => {
     modalState.addMessage(message);
   });
-  socket?.on(ApiServerEvents.ISSUE_ADDED, (issue) => gameState.addIssue(issue));
+  socket?.on(ApiServerEvents.ISSUE_ADDED, (issue) => {
+    gameState.addIssue(issue);
+  });
   socket?.on(ApiServerEvents.ISSUE_DELETED, (issueId) =>
     gameState.deleteIssue(issueId)
   );
@@ -76,9 +78,10 @@ export const setSharedListeners: SocketListenerSetter = ({
   socket?.on(ApiServerEvents.GAME_ENDED, (results) =>
     gameState.endGame(results)
   );
-  socket?.on(ApiServerEvents.ROUND_STARTED, (issueId) =>
-    gameState.startRound(issueId)
-  );
+  socket?.on(ApiServerEvents.ROUND_STARTED, (issueId) => {
+    modalState.resetActiveScore();
+    gameState.startRound(issueId);
+  });
   socket?.on(ApiServerEvents.ROUND_ENDED, (issueScore) =>
     gameState.endRound(issueScore)
   );
