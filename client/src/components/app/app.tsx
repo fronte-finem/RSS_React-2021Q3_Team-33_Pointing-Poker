@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Header } from '@client/components/app/header/header';
@@ -12,9 +12,17 @@ import {
   ContentLayoutContainer,
 } from '@client/components/app/layout/layout.style';
 import { DemoPagesRouter } from '@client/components/pages/demo/demo-router';
+import { message } from 'antd';
 
 export const App: React.FC = observer(() => {
-  const { themeState } = useStateService();
+  const { themeState, modalState } = useStateService();
+
+  useEffect(() => {
+    if (!modalState.systemMessage) return;
+    message.info(modalState.systemMessage).then(null);
+    modalState.resetSystemMessage();
+  }, [modalState.systemMessage]);
+
   return (
     <ThemeProvider theme={themeState.theme}>
       <BrowserRouter>

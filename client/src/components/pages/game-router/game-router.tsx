@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Alert, message } from 'antd';
+import React from 'react';
+import { Alert } from 'antd';
 import { observer } from 'mobx-react-lite';
 import { useStateService } from '@client/providers/state-service';
 import { MainPage } from '@client/components/pages/main-page/main-page';
@@ -14,14 +14,9 @@ import { ModalChat } from '@client/components/shared/modal-chat/modal-chat';
 import { PageGame } from '@client/components/pages/game/game';
 
 export const PageGameRouter: React.FC = observer(() => {
-  const { modalState, gameState } = useStateService();
+  const { gameState } = useStateService();
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
-
-  useEffect(() => {
-    if (!modalState.systemMessage) return;
-    message.info(modalState.systemMessage).then(null);
-  }, [modalState.systemMessage]);
 
   if (id) {
     gameState.setId(id);
