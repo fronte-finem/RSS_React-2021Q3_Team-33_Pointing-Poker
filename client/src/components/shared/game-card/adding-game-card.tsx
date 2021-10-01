@@ -1,8 +1,10 @@
 import React from 'react';
-
+import { observer } from 'mobx-react-lite';
+import { LogoSvg } from '@client/components/app/header/logo';
+import { GameCardBase, GameCardProps } from './game-card';
 import { StyledFrontSide } from './game-card-styles';
 
-export const AddingGameCard = () => {
+const AddingFrontSide = () => {
   return (
     <StyledFrontSide>
       <svg
@@ -19,3 +21,14 @@ export const AddingGameCard = () => {
     </StyledFrontSide>
   );
 };
+
+export const AddingGameCard = observer(({ className }: GameCardProps) => {
+  return (
+    <GameCardBase
+      invisible={false}
+      className={className}
+      front={<AddingFrontSide />}
+      back={<LogoSvg />}
+    />
+  );
+});
