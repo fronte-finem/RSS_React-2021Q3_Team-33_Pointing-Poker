@@ -4,6 +4,7 @@ import { UserCard } from '@client/components/shared/user-card/user-card';
 import { Button } from '@client/components/shared/button/button';
 import React from 'react';
 import { StyledTitle, StyledSubtitle } from '@client/components/styles/text';
+import { Tooltip } from 'antd';
 import {
   MainWrapper,
   ControlWrapper,
@@ -18,6 +19,10 @@ export const Info = observer(function Info() {
 
   const exitLobby = () => socketState.disconnect();
 
+  const btnTip = gameState.isAllIssuesRated
+    ? 'All issues is rated - stop game and show results'
+    : 'Stop game';
+
   return (
     <div>
       <TitleWrapper>
@@ -31,12 +36,14 @@ export const Info = observer(function Info() {
         </DealerWrapper>
 
         <ControlWrapper>
-          <Button
-            type="default"
-            loading={socketState.isLoading}
-            onClick={gameState.isDealer ? stopGame : exitLobby}>
-            {gameState.isDealer ? 'Stop Game' : 'Exit'}
-          </Button>
+          <Tooltip title={gameState.isDealer ? btnTip : 'Exit from game'}>
+            <Button
+              type={gameState.isAllIssuesRated ? 'primary' : 'default'}
+              loading={socketState.isLoading}
+              onClick={gameState.isDealer ? stopGame : exitLobby}>
+              {gameState.isDealer ? 'Stop Game' : 'Exit'}
+            </Button>
+          </Tooltip>
         </ControlWrapper>
       </MainWrapper>
     </div>

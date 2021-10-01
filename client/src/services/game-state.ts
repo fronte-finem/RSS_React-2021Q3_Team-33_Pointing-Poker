@@ -259,6 +259,10 @@ export class GameState {
     );
   }
 
+  @computed public get isAllIssuesRated() {
+    return this.issues.length === this.results.length;
+  }
+
   @action public startGame({ issues, settings }: GameStartPayload) {
     this.appMode = AppMode.GAME;
     this.issues = issues;
