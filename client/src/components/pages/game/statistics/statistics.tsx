@@ -7,11 +7,13 @@ import { GameCard } from '@client/components/shared/game-card/game-card';
 import { Item, List, StyledStats } from './statistics.styles';
 
 interface Props {
-  issueId: string;
+  issueId?: string;
 }
 
 export const Statistics = observer(function Statistics({ issueId }: Props) {
   const { gameState } = useStateService();
+
+  if (!issueId) return null;
 
   return (
     <StyledStats>
