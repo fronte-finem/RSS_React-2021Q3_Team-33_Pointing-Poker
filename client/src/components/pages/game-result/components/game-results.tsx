@@ -10,7 +10,7 @@ export const GameResults = observer(() => {
   return (
     <StyleGameResultsWrapper>
       {gameState.getStatistics().map((issueStats) => (
-        <IssueStatsView issueStats={issueStats} />
+        <IssueStatsView key={issueStats.issue.id} issueStats={issueStats} />
       ))}
     </StyleGameResultsWrapper>
   );

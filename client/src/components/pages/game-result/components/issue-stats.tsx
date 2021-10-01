@@ -18,7 +18,7 @@ export const IssueStatsView = ({ issueStats }: Props) => {
       <IssueCard issue={issueStats.issue} />
       <StyleGameResultIssue>
         {issueStats.stats.map(({ score, percent }) => (
-          <StyleGameResultCard>
+          <StyleGameResultCard key={score}>
             <GameCard score={score} />
             <StyleGameResultText>{percent.toFixed(1)} %</StyleGameResultText>
           </StyleGameResultCard>
