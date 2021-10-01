@@ -25,9 +25,9 @@ export const UserProgress = observer(function UserProgress({ user }: Props) {
 
   if (gameState.roundRun) {
     card = isInProgress ? (
-      <StyledGameCardUserThinking />
-    ) : (
       <StyledGameCardUserDecided />
+    ) : (
+      <StyledGameCardUserThinking />
     );
   } else {
     card = <StyledGameCardRoundResult score={gameState.getScore(user.id)} />;

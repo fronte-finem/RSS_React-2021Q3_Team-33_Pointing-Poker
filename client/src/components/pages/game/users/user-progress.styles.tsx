@@ -14,8 +14,8 @@ export const ProgressPair = styled.div`
 `;
 
 export const StyledUserCard = styled(UserCard)`
-  --user-card-width: 150px;
-  --user-card-height: 200px;
+  --user-card-width: 120px;
+  --user-card-height: 180px;
   --user-card-controls-position: absolute;
   --user-card-controls-padding: 5px;
   --user-card-font-size-name: 1.2em;
