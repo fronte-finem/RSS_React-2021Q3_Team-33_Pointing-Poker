@@ -5,16 +5,14 @@ import { getDealerInitHandler } from '@server/controllers/dealer-init';
 import { getUserInitHandler } from '@server/controllers/user-init';
 import { PointingPokerServer } from 'types/server-socket';
 
-export const logEvent =
-  (socket: Socket) =>
-  (event: string, ...args: any[]) =>
-    console.log(`event: ${event}\n socket: ${socket.id}\n payload: ${args}`);
+export const logEvent = (socket: Socket) => (event: string) =>
+  console.log(`socket: [${socket.id}] >> event: "${event}"`);
 
 export const initSocketServer = (httpServer: Server): PointingPokerServer => {
   const ioServer: PointingPokerServer = new SocketIOServer(httpServer, {});
 
   ioServer.on('connection', (socket) => {
-    // console.log(`socket connected: ${socket.id}`);
+    console.log(`socket connected: ${socket.id}`);
 
     socket.on(
       ApiClientEvents.CREATE_GAME,
@@ -23,7 +21,7 @@ export const initSocketServer = (httpServer: Server): PointingPokerServer => {
 
     socket.on(ApiClientEvents.JOIN_GAME, getUserInitHandler(socket));
 
-    // socket.onAny(logEvent(socket));
+    socket.onAny(logEvent(socket));
   });
 
   return ioServer;
