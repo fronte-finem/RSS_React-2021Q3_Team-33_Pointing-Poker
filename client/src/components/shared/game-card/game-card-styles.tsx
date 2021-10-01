@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { shadowHover, shadowMain } from '@client/themes/shadows';
+import { Shadows } from '@client/themes/shadows';
 
 const layer = css`
   position: absolute;
@@ -12,13 +12,13 @@ const layer = css`
 type Props = { interactive?: boolean; invisible?: boolean };
 
 export const CardContainer = styled.div<Props>`
-  ${shadowMain};
-  ${shadowHover};
+  --game-card-default-bg: ${({ theme }) => theme.gameCard.bg};
   --game-card-hover-bg: ${({ theme }) => theme.gameCard.hover};
+  --game-card-bg: var(--game-card-default-bg);
 
-  --game-card-normal-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  --game-card-hover-shadow: 8px 8px 8px rgba(47, 16, 185, 0.25);
-  --game-card-shadow: var(--game-card-normal-shadow);
+  --game-card-default-shadow: ${Shadows.MAIN};
+  --game-card-hover-shadow: ${Shadows.HOVER};
+  --game-card-shadow: var(--game-card-default-shadow);
 
   position: relative;
   width: var(--game-card-width, 100px);
@@ -30,10 +30,14 @@ export const CardContainer = styled.div<Props>`
   opacity: ${({ invisible }) => (invisible ? '0.5' : 'unset')};
 
   &:hover {
+    --game-card-bg: ${({ interactive }) =>
+      interactive
+        ? 'var(--game-card-hover-bg)'
+        : 'var(--game-card-default-bg)'};
     --game-card-shadow: ${({ interactive }) =>
       interactive
         ? 'var(--game-card-hover-shadow)'
-        : 'var(--game-card-normal-shadow)'};
+        : 'var(--game-card-default-shadow)'};
   }
 `;
 
@@ -68,7 +72,7 @@ export const StyledFrontSide = styled(StyledCardSide)`
   align-items: center;
 
   color: ${({ theme }) => theme.gameCard.fg};
-  background-color: ${({ theme }) => theme.gameCard.bg};
+  background-color: var(--game-card-bg);
 `;
 
 export const StyledCardScore = styled.div`

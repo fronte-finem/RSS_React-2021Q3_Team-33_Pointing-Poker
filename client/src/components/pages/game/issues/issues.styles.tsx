@@ -34,7 +34,29 @@ export const StyledIssueButton = styled(IssueButton)`
 `;
 
 export const StyledCollapse = styled(Collapse)`
+  --bg: transparent;
+  --border-color: #0002;
+
   width: 100%;
+  background-color: var(--bg);
+  border-color: var(--border-color);
+
+  & > .ant-collapse-item {
+    color: ${({ theme }) => theme.fg};
+    border-color: var(--border-color);
+    & .ant-collapse-header {
+      color: ${({ theme }) => theme.fg};
+    }
+  }
+  & > .ant-collapse-item-disabled {
+    & .ant-collapse-header {
+      color: var(--border-color);
+    }
+  }
+  & .ant-collapse-content {
+    background-color: var(--bg);
+    border-color: var(--border-color);
+  }
 `;
 
 export const StyledPanel = styled(Collapse.Panel)`
