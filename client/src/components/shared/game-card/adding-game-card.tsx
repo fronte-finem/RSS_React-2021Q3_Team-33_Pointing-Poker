@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { LogoSvg } from '@client/components/app/header/logo';
-import { GameCardBase, GameCardProps } from './game-card';
+import { GameCardBase } from './game-card';
 import { StyledFrontSide } from './game-card-styles';
 
 const AddingFrontSide = () => {
@@ -22,7 +22,11 @@ const AddingFrontSide = () => {
   );
 };
 
-export const AddingGameCard = observer(({ className }: GameCardProps) => {
+interface Props {
+  className?: string;
+}
+
+export const AddingGameCard = observer(({ className }: Props) => {
   return (
     <GameCardBase
       invisible={false}
