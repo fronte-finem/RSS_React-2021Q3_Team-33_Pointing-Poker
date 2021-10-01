@@ -15,10 +15,7 @@ export const LobbyCardsSection = observer(() => {
     <StyleLobbyCards>
       <StyleLobbyCardsText>Cards deck preview:</StyleLobbyCardsText>
       <StyleLobbyCardsWrapper>
-        {gameState.settings.cardsDeckExtras.map((score) => (
-          <GameCard key={score} score={score} />
-        ))}
-        {gameState.settings.cardsDeck.map((score) => (
+        {gameState.cardsDeck.map((score) => (
           <GameCard key={score} score={score} />
         ))}
       </StyleLobbyCardsWrapper>
