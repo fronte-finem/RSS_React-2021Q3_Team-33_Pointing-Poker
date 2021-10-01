@@ -1,33 +1,27 @@
-import { DividerProps } from 'antd';
-import React from 'react';
 import styled from 'styled-components';
 
-const StyledTimerWrapper = styled.div`
-  width: 150px;
-  height: 63px;
+export const TimerWrapper = styled.div`
+  --timer-font-size: 64px;
+
+  width: 180px;
+  height: 70px;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  justify-items: center;
+  padding: 0 10px;
+
   color: ${({ theme }) => theme.timer.fg};
   background-color: ${({ theme }) => theme.timer.bg};
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  position: relative;
+
   border-radius: 5px;
-  font-size: 64px;
-  line-height: 64px;
+
+  font-size: var(--timer-font-size);
+  line-height: var(--timer-font-size);
 `;
 
-export const StyledColon = styled.p`
-  position: absolute;
-  top: 50%;
-  right: 50%;
-  transform: translate(-50%, -50%);
-`;
+export const StyledColon = styled.div``;
 
-export const TimerSection = styled.div<{ isSeconds?: boolean }>`
-  position: absolute;
-  top: 0;
-  left: ${({ isSeconds }) => (isSeconds ? 'unset' : '20px')};
-  right: ${({ isSeconds }) => (isSeconds ? '5px' : 'unset')};
-`;
-
-export const TimerWrapper: React.FC<DividerProps> = (props) => {
-  return <StyledTimerWrapper {...props} />;
-};
+export const TimerSection = styled.div``;
