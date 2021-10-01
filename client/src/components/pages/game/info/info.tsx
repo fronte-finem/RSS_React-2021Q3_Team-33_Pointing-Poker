@@ -5,7 +5,7 @@ import { Button } from '@client/components/shared/button/button';
 import React from 'react';
 import { StyledTitle, StyledSubtitle } from '@client/components/styles/text';
 import {
-  ControlsWrapper,
+  MainWrapper,
   ControlWrapper,
   DealerWrapper,
   TitleWrapper,
@@ -24,7 +24,7 @@ export const Info = observer(function Info() {
         <StyledTitle level={2}>{gameState.title}</StyledTitle>
       </TitleWrapper>
 
-      <ControlsWrapper>
+      <MainWrapper>
         <DealerWrapper>
           <StyledSubtitle>Scram master:</StyledSubtitle>
           <UserCard user={gameState.getDealer()} />
@@ -38,7 +38,7 @@ export const Info = observer(function Info() {
             {gameState.isDealer ? 'Stop Game' : 'Exit'}
           </Button>
         </ControlWrapper>
-      </ControlsWrapper>
+      </MainWrapper>
     </div>
   );
 });
