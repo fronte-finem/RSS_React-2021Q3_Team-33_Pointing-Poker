@@ -96,7 +96,7 @@ export const getRoundStartHandler =
         if (!game.issueService.isRoundActive) return;
         const results = game.issueService.end();
         game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, results);
-      }, game.gameSettings.timeout);
+      }, 1000 * game.gameSettings.timeout);
     }
 
     game.issueService.start(issueId, timerId);

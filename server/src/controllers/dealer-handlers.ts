@@ -45,6 +45,7 @@ export const getStartGameHandler =
     const { settings } = payload;
     const issues = game.issueService.init(payload.issues);
     ackCallback(setOk({ issues, settings }));
+    game.startGame(settings);
     game.server
       .to(game.room)
       .emit(ApiServerEvents.GAME_STARTED, { issues, settings });
