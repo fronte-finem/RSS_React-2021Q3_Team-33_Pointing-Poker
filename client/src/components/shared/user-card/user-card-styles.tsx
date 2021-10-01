@@ -2,7 +2,11 @@ import styled, { css, DefaultTheme } from 'styled-components';
 import { Button as AntButton } from 'antd';
 import { StopOutlined } from '@ant-design/icons';
 import { Role } from '@shared/api-types/user';
-import { fontTextSmall, fontTitle } from '@client/themes/typography';
+import {
+  fontSubtitle,
+  fontTextSmall,
+  fontTitle,
+} from '@client/themes/typography';
 
 type Props = { userRole: Role; userKicked: boolean; userDisconnected: boolean };
 type Opts = Props & { theme: DefaultTheme };
@@ -38,9 +42,7 @@ export const StyleCard = styled.div<Props>`
 
   opacity: var(--kicked-opacity);
 
-  font-family: var(--font-roboto);
-  font-weight: 300;
-  font-size: 20px;
+  ${fontSubtitle};
   line-height: 1em;
 `;
 
@@ -100,7 +102,7 @@ export const StyledUsername = styled.div`
 export const StyledJobPosition = styled.div`
   ${fontTextSmall};
   font-size: var(--user-card-font-size-badge, 0.7em);
-  line-height: var(--user-card-font-size-badge, 0.7em);
+  line-height: var(--user-card-font-size-badge, 1em);
   color: ${({ theme }) => theme.userCard.jobPosition};
 
   ${textOverflow};

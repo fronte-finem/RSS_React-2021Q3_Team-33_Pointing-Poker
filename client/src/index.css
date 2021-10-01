@@ -1,6 +1,6 @@
 :root {
-  --font-roboto: 'Roboto', sans-serif;
-  --font-ruda: 'Ruda', sans-serif;
+  --font-main: 'Noto Sans', sans-serif;
+  --font-secondary: 'Roboto', sans-serif;
   --font-mono: 'Roboto Mono', monospace;
 
   --page-max-width: 1000px;
@@ -10,7 +10,7 @@
 
 body {
   margin: 0;
-  font-family: var(--font-roboto);
+  font-family: var(--font-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

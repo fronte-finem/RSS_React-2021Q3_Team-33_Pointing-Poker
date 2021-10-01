@@ -1,10 +1,10 @@
 import { css } from 'styled-components';
 
-const mainFont = css`
+export const mainFont = css`
   font-family: 'Noto Sans', sans-serif;
 `;
 
-const secondaryFont = css`
+export const secondaryFont = css`
   font-family: 'Roboto', sans-serif;
 `;
 
@@ -41,7 +41,7 @@ export const fontButton = css`
   font-weight: 700;
   font-size: 24px;
   line-height: 32px;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
 export const fontMainPage = css`

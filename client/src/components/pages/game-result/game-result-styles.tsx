@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 import { Button } from '@client/components/shared/button/button';
+import { fontTitle } from '@client/themes/typography';
 
 export const StyleGameResultText = styled.div`
-  font-family: var(--font-ruda);
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 30px;
-  color: ${(props) => props.theme.fg};
+  ${fontTitle};
+  color: ${({ theme }) => theme.fg};
   text-align: center;
 `;
 export const StyleGameResults = styled.div`

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Button } from '@client/components/shared/button/button';
+import { fontTitle } from '@client/themes/typography';
 
 export const Section = styled.section`
   display: flex;
@@ -14,8 +15,7 @@ export const Title = styled.h3`
   gap: 5px;
   text-align: left;
   color: ${({ theme }) => theme.fg};
-  font-family: var(--font-ruda);
-  font-weight: bold;
+  ${fontTitle};
 `;
 
 export const Controls = styled.div`
