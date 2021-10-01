@@ -1,16 +1,16 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { Form, FormInstance } from 'antd';
 import { IOption } from '@client/components/shared/select/select';
 import { Modal } from '@client/components/shared/modal/modal';
 import { IssueBase, Priority } from '@shared/api-types/issue';
 import { useStateService } from '@client/providers/state-service';
-import { Form, FormInstance, message } from 'antd';
 import {
   StyledFormItem,
   StyledInput,
   StyledSelect,
   StyledWrapper,
-} from '@client/components/shared/modal-issue/modal-issue.styles';
+} from './modal-issue.styles';
 
 const options: IOption[] = Object.entries(Priority).map(([value, label]) => ({
   value,
@@ -43,11 +43,8 @@ export const ModalIssue: React.FC<Props> = observer(
 
     const onFinish = async (issue: IssueBase) => {
       await onSubmit(issue);
-      if (socketState.isFail) {
-        message.error(socketState.failMessage);
-      } else {
-        resetForm();
-      }
+      if (socketState.isFail) return;
+      resetForm();
     };
 
     return (

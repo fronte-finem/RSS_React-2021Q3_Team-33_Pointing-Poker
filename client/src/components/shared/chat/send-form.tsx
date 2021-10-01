@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStateService } from '@client/providers/state-service';
 import { observer } from 'mobx-react-lite';
-import { Form, message } from 'antd';
+import { Form } from 'antd';
 import { FormItem } from '@client/components/shared/form-item/form-item';
 import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { CHAT_MESSAGE_MAX_LENGTH } from '@shared/api-validation/api-constants';
@@ -14,11 +14,8 @@ export const SendForm = observer(() => {
 
   const onSend = async (post: { message: string }) => {
     await socketState.postMessage(post.message);
-    if (socketState.isFail) {
-      message.error(socketState.failMessage);
-    } else {
-      form.resetFields();
-    }
+    if (socketState.isFail) return;
+    form.resetFields();
   };
 
   return (
