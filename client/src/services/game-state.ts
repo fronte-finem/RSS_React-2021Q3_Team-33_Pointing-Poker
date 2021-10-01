@@ -328,11 +328,13 @@ export class GameState {
     }));
   }
 
-  public get statistics(): IssueStats[] {
-    return this.statisticsMap.map(({ issueId, stats }) => ({
-      issueId,
-      stats: calcStats(stats),
-    }));
+  public getStatistics(): IssueStats[] {
+    return this.statisticsMap
+      .map(({ issueId, stats }) => ({
+        issue: this.getIssue(issueId),
+        stats: calcStats(stats),
+      }))
+      .filter((item): item is IssueStats => item.issue !== undefined);
   }
 
   public getIssueStats(issueId: string): CardStats[] {

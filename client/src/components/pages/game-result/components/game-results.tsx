@@ -1,20 +1,17 @@
 import React from 'react';
-
+import { observer } from 'mobx-react-lite';
+import { useStateService } from '@client/providers/state-service';
 import { StyleGameResultsWrapper } from '../game-result-styles';
-import { GameResultsRender } from '../shared/types/types';
-import { IssueStats } from './issue-stats';
+import { IssueStatsView } from './issue-stats';
 
-export const GameResults: React.FC<{
-  gameResultsRender: GameResultsRender[];
-  scoreType: string | undefined;
-}> = (props) => {
-  const { gameResultsRender, scoreType } = props;
+export const GameResults = observer(() => {
+  const { gameState } = useStateService();
 
   return (
     <StyleGameResultsWrapper>
-      {gameResultsRender.map((result: GameResultsRender) => (
-        <IssueStats result={result} scoreType={scoreType} />
+      {gameState.getStatistics().map((issueStats) => (
+        <IssueStatsView issueStats={issueStats} />
       ))}
     </StyleGameResultsWrapper>
   );
-};
+});

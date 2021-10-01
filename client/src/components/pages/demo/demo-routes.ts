@@ -53,13 +53,18 @@ export const demoRoutes: RouteConf[] = [
   },
   {
     path: '/lobby',
-    name: 'Lobby demo (🚧 mutate game-state 🚧)',
+    name: 'Lobby (🚧 mutate game-state 🚧)',
     component: PageLobbyDemo,
   },
   {
     path: '/game',
-    name: 'Game demo (🚧 mutate game-state 🚧)',
+    name: 'Game (🚧 mutate game-state 🚧)',
     component: PageGameDemo,
+  },
+  {
+    path: '/demo/game-result',
+    name: 'Game Result (🚧 mutate game-state 🚧)',
+    component: DemoGameResultPage,
   },
   {
     path: '/kick-player',
@@ -85,10 +90,5 @@ export const demoRoutes: RouteConf[] = [
     path: '/delete-issue',
     name: 'Modal - Delete Issue (🚧 mutate game-state 🚧)',
     component: ModalIssueDeleteDemo,
-  },
-  {
-    path: '/demo/game-result',
-    name: 'Game Result',
-    component: DemoGameResultPage,
   },
 ];

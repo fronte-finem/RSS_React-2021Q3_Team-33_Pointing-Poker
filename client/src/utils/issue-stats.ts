@@ -4,7 +4,7 @@ import {
   isRealScore,
 } from '@shared/api-types/game-card-settings';
 import { countItems } from '@shared/utils/array';
-import { UserScore } from '@shared/api-types/issue';
+import { Issue, UserScore } from '@shared/api-types/issue';
 
 export interface IssueStatsMap {
   issueId: string;
@@ -17,7 +17,7 @@ export interface CardStats {
 }
 
 export interface IssueStats {
-  issueId: string;
+  issue: Issue;
   stats: CardStats[];
 }
 

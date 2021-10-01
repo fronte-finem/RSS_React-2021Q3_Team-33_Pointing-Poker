@@ -12,6 +12,7 @@ import { ModalIssueEdit } from '@client/components/shared/modal-issue/modal-issu
 import { ModalIssueDelete } from '@client/components/shared/modal-issue/modal-issue-delete';
 import { ModalChat } from '@client/components/shared/modal-chat/modal-chat';
 import { PageGame } from '@client/components/pages/game/game';
+import { GameResultsPage } from '@client/components/pages/game-result/game-results-page';
 
 export const PageGameRouter: React.FC = observer(() => {
   const { gameState } = useStateService();
@@ -28,7 +29,7 @@ export const PageGameRouter: React.FC = observer(() => {
       {gameState.isModeEntry ? <MainPage /> : null}
       {gameState.isModeLobby ? <PageLobby /> : null}
       {gameState.isModeGame ? <PageGame /> : null}
-      {gameState.isModeResults ? <div>Page Game Results</div> : null}
+      {gameState.isModeResults ? <GameResultsPage /> : null}
 
       <Alert.ErrorBoundary>
         <ModalKickInit />
