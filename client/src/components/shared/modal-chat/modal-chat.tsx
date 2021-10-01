@@ -4,12 +4,13 @@ import { Alert } from 'antd';
 import { useStateService } from '@client/providers/state-service';
 import { Chat } from '@client/components/shared/chat/chat';
 import { SendForm } from '@client/components/shared/chat/send-form';
+import { CloseCircleOutlined } from '@ant-design/icons';
 import {
+  ChatDrawer,
+  SendWrapper,
   StyledChatContainer,
   StyledChatEnd,
-  StyledCloseIcon,
   StyledFrame,
-  StyledModal,
 } from './modal-chat.styles';
 
 export const ModalChat = observer(() => {
@@ -41,16 +42,13 @@ export const ModalChat = observer(() => {
     scrollToBottom();
   }, [modalState.messagesCount]);
 
-  const onCancel = () => modalState.closeChat();
-
   return (
-    <StyledModal
+    <ChatDrawer
+      placement="right"
+      onClose={() => modalState.closeChat()}
       visible={modalState.chatIsOpen}
-      zIndex={10}
-      onCancel={onCancel}
-      closeIcon={<StyledCloseIcon />}
-      closable
-      footer={null}>
+      width="min(900px, max(400px, 90%))"
+      closeIcon={<CloseCircleOutlined />}>
       <StyledFrame>
         <StyledChatContainer ref={refChat}>
           <Alert.ErrorBoundary>
@@ -59,7 +57,9 @@ export const ModalChat = observer(() => {
           <StyledChatEnd ref={refChatEnd} />
         </StyledChatContainer>
       </StyledFrame>
-      <SendForm />
-    </StyledModal>
+      <SendWrapper>
+        <SendForm />
+      </SendWrapper>
+    </ChatDrawer>
   );
 });
