@@ -13,6 +13,7 @@ import {
 } from '@client/components/app/layout/layout.style';
 import { DemoPagesRouter } from '@client/components/pages/demo/demo-router';
 import { message } from 'antd';
+import { Modals } from '@client/components/app/modals/modals';
 
 export const App: React.FC = observer(() => {
   const { themeState, modalState } = useStateService();
@@ -42,6 +43,7 @@ export const App: React.FC = observer(() => {
           </Content>
           <Footer />
         </Layout>
+        <Modals />
       </BrowserRouter>
     </ThemeProvider>
   );
