@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { StyledDrawer } from '@client/components/shared/drawer/drawer.styles';
 
 export const Page = styled.div`
   width: 100%;
@@ -7,20 +8,18 @@ export const Page = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 100px;
+  gap: 80px;
 `;
 
-export const Header = styled.div`
-  grid-area: top;
-`;
-
-export const Center = styled.div`
+export const Wrapper = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 40px;
 `;
 
-export const Footer = styled.div`
-  grid-area: bottom;
+export const IssuesDrawer = styled(StyledDrawer)`
+  z-index: 100;
+  & .ant-drawer-body {
+    padding: 0;
+  }
 `;

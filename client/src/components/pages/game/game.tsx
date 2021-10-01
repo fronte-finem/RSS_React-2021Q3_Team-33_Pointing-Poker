@@ -1,36 +1,30 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStateService } from '@client/providers/state-service';
-import { StyledDrawer } from '@client/components/shared/drawer/drawer.styles';
-import styled from 'styled-components';
 import { Info } from './info/info';
 import { Round } from './round/round';
 import { Issues } from './issues/issues';
 import { Users } from './users/users';
 import { Cards } from './cards/cards';
-import { Footer, Header, Page } from './game.styles';
-
-const IssuesDrawer = styled(StyledDrawer)`
-  & .ant-drawer-body {
-    padding: 0;
-  }
-`;
+import { IssuesDrawer, Page, Wrapper } from './game.styles';
 
 export const PageGame = observer(function PageGame() {
   const { gameState, modalState } = useStateService();
 
+  const isNotGamer = gameState.isDealer && !gameState.settings.dealerGamer;
+
   return (
     <>
       <Page>
-        <Header>
-          <Info />
-        </Header>
+        <Info />
 
         <Round />
 
-        <Users />
+        <Wrapper>
+          <Users />
 
-        <Footer>{gameState.isDealer ? null : <Cards />}</Footer>
+          {isNotGamer ? null : <Cards />}
+        </Wrapper>
       </Page>
 
       <IssuesDrawer
