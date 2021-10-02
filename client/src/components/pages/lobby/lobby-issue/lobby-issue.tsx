@@ -1,4 +1,7 @@
-import { IssueButton } from '@client/components/shared/issue/issue-button';
+import {
+  IssueButton,
+  IssuesLoadControl,
+} from '@client/components/shared/issue/issue-button';
 import { IssueCard } from '@client/components/shared/issue/issue-card';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
@@ -13,6 +16,7 @@ export const LobbyIssueSection: React.FC = observer(() => {
   return (
     <StyledLobbySection>
       <StyledTitle level={2}>Issue:</StyledTitle>
+      <IssuesLoadControl />
       <StyleLobbyIssueGrid>
         {gameState.issues.map((issue) => (
           <IssueCard key={issue.id} issue={issue} />

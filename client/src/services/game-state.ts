@@ -195,6 +195,10 @@ export class GameState {
     this.issues = issues;
   }
 
+  @action public appendIssues(issues: Issue[]) {
+    this.issues = [...this.issues, ...issues];
+  }
+
   @action public addIssue(issue: Issue) {
     this.issues.push(issue);
   }
