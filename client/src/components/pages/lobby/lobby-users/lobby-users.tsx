@@ -1,27 +1,15 @@
-import { UserCard } from '@client/components/shared/user-card/user-card';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useGameService } from '@client/providers/game-service';
-import { StyleLobbyTitle, StyledLobbySection } from '../lobby-styles';
-import { StyleLobbyUsersGrid } from './lobby-users-styles';
+import { useStateService } from '@client/providers/state-service';
+import { UsersSection } from '@client/components/pages/lobby/lobby-users/users-section';
+import { StyledLobbySection } from '../lobby-styles';
 
-export const LobbyUsersSection: React.FC = observer(() => {
-  const { gameStateActions } = useGameService();
-
+export const LobbyUsersSection = observer(() => {
+  const { gameState } = useStateService();
   return (
     <StyledLobbySection>
-      <StyleLobbyTitle level={2}>Gamers:</StyleLobbyTitle>
-      <StyleLobbyUsersGrid>
-        {gameStateActions.getGamers(false).map((user) => (
-          <UserCard key={user.id} user={user} />
-        ))}
-      </StyleLobbyUsersGrid>
-      <StyleLobbyTitle level={2}>Spectators:</StyleLobbyTitle>
-      <StyleLobbyUsersGrid>
-        {gameStateActions.getSpectators(false).map((user) => (
-          <UserCard key={user.id} user={user} />
-        ))}
-      </StyleLobbyUsersGrid>
+      <UsersSection title="Gamers" users={gameState.getGamers()} />
+      <UsersSection title="Spectators" users={gameState.getSpectators()} />
     </StyledLobbySection>
   );
 });

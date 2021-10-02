@@ -1,30 +1,26 @@
+import React from 'react';
+import { IssueStats } from '@client/utils/issue-stats';
 import { GameCard } from '@client/components/shared/game-card/game-card';
 import { IssueCard } from '@client/components/shared/issue/issue-card';
-import React from 'react';
 import {
   StyleGameResultCard,
   StyleGameResultIssue,
   StyleGameResultText,
 } from '../game-result-styles';
-import { CardResults, GameResultsRender } from '../shared/types/types';
 
-export const IssueStats: React.FC<{
-  result: GameResultsRender;
-  scoreType: string | undefined;
-}> = (props) => {
-  const { result, scoreType } = props;
+interface Props {
+  issueStats: IssueStats;
+}
 
+export const IssueStatsView = ({ issueStats }: Props) => {
   return (
     <div>
-      <IssueCard issue={result.issue} />
+      <IssueCard issue={issueStats.issue} />
       <StyleGameResultIssue>
-        {result.scores.map((score: CardResults) => (
-          <StyleGameResultCard>
-            <GameCard
-              score={score.score as number}
-              scoreType={scoreType || 'SP'}
-            />
-            <StyleGameResultText>{score.percent} %</StyleGameResultText>
+        {issueStats.stats.map(({ score, percent }) => (
+          <StyleGameResultCard key={score}>
+            <GameCard score={score} />
+            <StyleGameResultText>{percent.toFixed(1)} %</StyleGameResultText>
           </StyleGameResultCard>
         ))}
       </StyleGameResultIssue>

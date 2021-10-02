@@ -6,7 +6,7 @@ import { Input } from '@client/components/shared/input/input';
 import { Modal } from '@client/components/shared/modal/modal';
 import { Toggle } from '@client/components/shared/toggle/toggle';
 import { InputAvatarImage } from '@client/components/shared/input-file/input-avatar-image';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { DealerToJoin, Role, UserToJoin } from '@shared/api-types/user';
 import {
   StyledBody,
@@ -22,7 +22,7 @@ type Props = ModalFuncProps & { createGame?: boolean };
 
 export const EntryModal: React.FC<Props> = observer(
   ({ createGame, ...props }) => {
-    const { socketState, gameSocketActions } = useGameService();
+    const { socketState } = useStateService();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [avatar, setAvatar] = useState<string | null>(null);
@@ -38,8 +38,8 @@ export const EntryModal: React.FC<Props> = observer(
     const onSubmit = async (data: DealerToJoin & UserToJoin) => {
       console.log(data);
       await (createGame
-        ? gameSocketActions.createGame(data)
-        : gameSocketActions.login(data));
+        ? socketState.createGame(data)
+        : socketState.login(data));
       if (socketState.isFail) console.log(socketState.failMessage);
       else console.log(createGame ? 'success create game' : 'success login');
     };

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useStateService } from '@client/providers/state-service';
+import { observer } from 'mobx-react-lite';
 import { StyledColon, TimerSection, TimerWrapper } from './timer.styles';
 
 const formatTime = (time: number): { minutes: number; seconds: number } => {
@@ -6,6 +8,8 @@ const formatTime = (time: number): { minutes: number; seconds: number } => {
   const seconds = time % 60;
   return { minutes, seconds };
 };
+
+const padNum = (num: number) => `${num > 9 ? '' : '0'}${num}`;
 
 const decreaseOrStopTimer = (timerId: number) => (time: number) => {
   if (time > 0) return time - 1;
@@ -27,17 +31,46 @@ export const useTimer = (initialTime: number) => {
   return time;
 };
 
-export const Timer: React.FC<{ time: number }> = (props) => {
-  const { time } = props;
+interface Props {
+  time: number;
+}
+
+export const Timer = ({ time }: Props) => {
   const { minutes, seconds } = formatTime(useTimer(time));
 
   return (
     <TimerWrapper>
-      <TimerSection>{minutes}</TimerSection>
+      <TimerSection>{padNum(minutes)}</TimerSection>
       <StyledColon>:</StyledColon>
-      <TimerSection isSeconds>
-        {seconds > 9 ? seconds : `0${seconds}`}
-      </TimerSection>
+      <TimerSection>{padNum(seconds)}</TimerSection>
     </TimerWrapper>
   );
 };
+
+export const GameTimer = observer(() => {
+  const { gameState } = useStateService();
+  const [time, setTime] = useState(gameState.settings.timeout || 0);
+
+  useEffect(() => {
+    if (!gameState.roundRun) {
+      setTime(0);
+      return () => {};
+    }
+    setTime(gameState.settings.timeout || 0);
+    const interval = window.setInterval(
+      () => setTime(decreaseOrStopTimer(interval)),
+      1000
+    );
+    return () => window.clearInterval(interval);
+  }, [gameState.roundRun]);
+
+  const { minutes, seconds } = formatTime(time);
+
+  return (
+    <TimerWrapper>
+      <TimerSection>{padNum(minutes)}</TimerSection>
+      <StyledColon>:</StyledColon>
+      <TimerSection>{padNum(seconds)}</TimerSection>
+    </TimerWrapper>
+  );
+});

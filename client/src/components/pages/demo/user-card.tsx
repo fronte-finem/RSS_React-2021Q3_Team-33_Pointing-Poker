@@ -3,7 +3,7 @@ import { DemoGrid } from '@client/components/pages/demo/demo-styles';
 import { UserCard } from '@client/components/shared/user-card/user-card';
 import { Role } from '@shared/api-types/user';
 import { observer } from 'mobx-react-lite';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { UserFE } from '@client/services/game-state';
 
 const users: UserFE[] = [
@@ -39,10 +39,10 @@ const users: UserFE[] = [
 ];
 
 export const PageUserCardDemo: React.FC = observer(() => {
-  const { gameStateActions } = useGameService();
+  const { gameState } = useStateService();
 
   useEffect(() => {
-    gameStateActions.initUser(
+    gameState.initUser(
       {
         gameId: '42',
         gameTitle: 'Awesome',

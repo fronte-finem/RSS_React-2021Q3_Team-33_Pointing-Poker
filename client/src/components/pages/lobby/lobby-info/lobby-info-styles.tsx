@@ -33,11 +33,12 @@ export const InfoMaster = styled(Row)`
   margin-bottom: 20px;
 `;
 
-export const StyleLobbyMaster = styled(Col)`
+export const StyleLobbyMaster = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  gap: 10px;
 `;
 
 export const StyleLobbyMasterText = styled(Paragraph)`

@@ -4,7 +4,7 @@ import { ApiServerEvents } from '@shared/api-types/api-events';
 import { GAME_ROOMS } from '@server/store/game-rooms';
 import { PointingPokerServerSocket } from 'types/server-socket';
 import { AckCallback, setFail, setOk } from '@shared/api-types/api-events-maps';
-import { GameSettings } from '@shared/api-types/game-settings';
+import { GameStartPayload } from '@shared/api-types/game-settings';
 import { GAME_TITLE_MAX_LENGTH } from '@shared/api-validation/api-constants';
 
 const validate = (title: string) => {
@@ -37,13 +37,18 @@ export const getCancelGameHandler =
 
 export const getStartGameHandler =
   (socket: PointingPokerServerSocket, game: GameService) =>
-  (gameSettings: GameSettings, ackCallback: AckCallback<GameSettings>) => {
+  (payload: GameStartPayload, ackCallback: AckCallback<GameStartPayload>) => {
     if (game.isStarted) {
       ackCallback(setFail(ApiFailMessage.GAME_STARTED));
       return;
     }
-    ackCallback(setOk(gameSettings));
-    game.server.to(game.room).emit(ApiServerEvents.GAME_STARTED, gameSettings);
+    const { settings } = payload;
+    const issues = game.issueService.init(payload.issues);
+    ackCallback(setOk({ issues, settings }));
+    game.startGame(settings);
+    game.server
+      .to(game.room)
+      .emit(ApiServerEvents.GAME_STARTED, { issues, settings });
   };
 
 export const getEndGameHandler =

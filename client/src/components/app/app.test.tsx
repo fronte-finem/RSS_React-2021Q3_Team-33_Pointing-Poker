@@ -2,14 +2,14 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { App } from '@client/components/app/app';
-import { GameServiceProvider } from '@client/providers/game-service';
+import { StateServiceProvider } from '@client/providers/state-service';
 
 // https://github.com/ant-design/ant-design/issues/30964
 
 const AppWrapper = () => (
-  <GameServiceProvider>
+  <StateServiceProvider>
     <App />
-  </GameServiceProvider>
+  </StateServiceProvider>
 );
 
 describe('App', () => {

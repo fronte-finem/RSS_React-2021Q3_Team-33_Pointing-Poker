@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Input } from '@client/components/shared/input/input';
 import { Modal } from '@client/components/shared/modal/modal';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { message } from 'antd';
 
 interface LobbyEditTitleModalProps {
@@ -12,7 +12,7 @@ interface LobbyEditTitleModalProps {
 
 export const LobbyEditTitleModal: React.FC<LobbyEditTitleModalProps> = observer(
   ({ isVisible, setIsVisible }) => {
-    const { gameState, gameSocketActions, socketState } = useGameService();
+    const { gameState, socketState } = useStateService();
     const [titleValue, setTitleValue] = useState(gameState.title);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ export const LobbyEditTitleModal: React.FC<LobbyEditTitleModalProps> = observer(
     };
 
     const takeTitleChanges = async () => {
-      await gameSocketActions.changeGameTitle(titleValue);
+      await socketState.changeGameTitle(titleValue);
       if (socketState.isFail) {
         message.error(socketState.failMessage);
       } else {

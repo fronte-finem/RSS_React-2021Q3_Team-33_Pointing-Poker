@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { Role, User } from '@shared/api-types/user';
 import { getDefaultGameSettings } from '@shared/api-types/game-settings';
 import { PageLobby } from '@client/components/pages/lobby/lobby';
@@ -89,16 +89,16 @@ const init = {
 };
 
 export const PageLobbyDemo: React.FC = observer(() => {
-  const { gameState, gameStateActions } = useGameService();
+  const { gameState } = useStateService();
 
   useEffect(() => {
-    gameStateActions.initDealer(init, '4');
-    gameStateActions.setIssues(issues);
+    gameState.initDealer(init, '4');
+    gameState.initIssues(issues);
   }, []);
 
   const toggleDealer = (checked: boolean) => {
-    if (checked) gameStateActions.initDealer(init, '4');
-    else gameStateActions.initUser(init, '2');
+    if (checked) gameState.initDealer(init, '4');
+    else gameState.initUser(init, '2');
   };
 
   return (

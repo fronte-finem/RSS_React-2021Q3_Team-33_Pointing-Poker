@@ -1,8 +1,5 @@
-import { CoffeeOutlined } from '@ant-design/icons';
-import { GameCard } from '@client/components/shared/game-card/game-card';
-import { fontTitle } from '@client/themes/typography';
-import { Row } from 'antd';
 import styled from 'styled-components';
+import { fontTitle } from '@client/themes/typography';
 
 export const StyleLobbyCards = styled.div`
   margin-top: 30px;
@@ -13,20 +10,14 @@ export const StyleLobbyCards = styled.div`
   align-items: flex-start;
 `;
 
-export const StyleLobbyCardsText = styled.p`
-  margin: 0;
-  padding: 0;
+export const StyleLobbyCardsText = styled.div`
   ${fontTitle};
   color: ${({ theme }) => theme.pages.lobby.title};
 `;
 
-export const StyleLobbyCardsWrapper = styled(Row)`
+export const StyleLobbyCardsWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 30px;
-  width: 100%;
 `;
-
-export const StyleLobbyCard = styled(GameCard)`
-  margin-right: 10px;
-`;
-
-export const StyleLobbyCardsIcon = styled(CoffeeOutlined)``;

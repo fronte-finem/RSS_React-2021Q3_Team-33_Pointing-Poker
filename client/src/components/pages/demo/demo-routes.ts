@@ -12,7 +12,8 @@ import { ModalIssueCreateDemo } from '@client/components/pages/demo/modal-issue-
 import { PageComponentsDemo } from '@client/components/pages/demo/components';
 import { PageLobbyDemo } from '@client/components/pages/demo/page-lobby';
 import { ModalIssueDeleteDemo } from '@client/components/pages/demo/modal-issue-delete';
-import { DemoGameResultPage } from '../game-result/demo-geme-results';
+import { PageGameDemo } from '@client/components/pages/demo/page-game.';
+import { DemoGameResultPage } from '@client/components/pages/game-result/demo-geme-results';
 
 export const demoRoutes: RouteConf[] = [
   {
@@ -52,8 +53,18 @@ export const demoRoutes: RouteConf[] = [
   },
   {
     path: '/lobby',
-    name: 'Lobby demo (🚧 mutate game-state 🚧)',
+    name: 'Lobby (🚧 mutate game-state 🚧)',
     component: PageLobbyDemo,
+  },
+  {
+    path: '/game',
+    name: 'Game (🚧 mutate game-state 🚧)',
+    component: PageGameDemo,
+  },
+  {
+    path: '/demo/game-result',
+    name: 'Game Result (🚧 mutate game-state 🚧)',
+    component: DemoGameResultPage,
   },
   {
     path: '/kick-player',
@@ -79,10 +90,5 @@ export const demoRoutes: RouteConf[] = [
     path: '/delete-issue',
     name: 'Modal - Delete Issue (🚧 mutate game-state 🚧)',
     component: ModalIssueDeleteDemo,
-  },
-  {
-    path: '/demo/game-result',
-    name: 'Game Result',
-    component: DemoGameResultPage,
   },
 ];

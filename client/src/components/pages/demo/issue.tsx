@@ -4,7 +4,7 @@ import { IssueCard } from '@client/components/shared/issue/issue-card';
 import { IssueButton } from '@client/components/shared/issue/issue-button';
 import { Issue, Priority } from '@shared/api-types/issue';
 import { observer } from 'mobx-react-lite';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { getDefaultGameSettings } from '@shared/api-types/game-settings';
 import { Toggle } from '@client/components/shared/toggle/toggle';
 import { Button } from '@client/components/shared/button/button';
@@ -30,23 +30,23 @@ const init = {
 };
 
 export const PageIssueDemo: React.FC = observer(() => {
-  const { gameState, gameStateActions } = useGameService();
+  const { gameState } = useStateService();
 
   let i = 0;
 
   const selectNext = () => {
-    gameStateActions.startRound(issues[i].id);
+    gameState.startRound(issues[i].id);
     i = i >= issues.length - 1 ? 0 : i + 1;
   };
 
-  const toggleGameState = (checked: boolean) => {
-    if (checked) gameStateActions.startGame(settings);
-    else gameStateActions.endGame([]);
+  const toggleDealer = (checked: boolean) => {
+    if (checked) gameState.initDealer(init, '42');
+    else gameState.initUser(init, '123');
   };
 
-  const toggleDealer = (checked: boolean) => {
-    if (checked) gameStateActions.initDealer(init, '42');
-    else gameStateActions.initUser(init, '123');
+  const toggleGameState = (checked: boolean) => {
+    if (checked) gameState.startGame({ issues, settings });
+    else toggleDealer(gameState.isDealer);
   };
 
   return (
@@ -69,9 +69,9 @@ export const PageIssueDemo: React.FC = observer(() => {
           unCheckedChildren="lobby"
           checkedChildren="game"
           onChange={toggleGameState}
-          checked={gameState.gameRun}
+          checked={gameState.isModeGame}
         />
-        <Button onClick={selectNext} disabled={!gameState.gameRun}>
+        <Button onClick={selectNext} disabled={!gameState.isModeGame}>
           Select next issue
         </Button>
       </div>

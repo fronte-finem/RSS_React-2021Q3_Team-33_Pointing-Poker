@@ -2,10 +2,10 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { message } from 'antd';
 import { Modal } from '@client/components/shared/modal/modal';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 
 export const ModalIssueDelete: React.FC = observer(() => {
-  const { modalState, socketState, gameSocketActions } = useGameService();
+  const { gameState, modalState, socketState } = useStateService();
 
   const onCancel = () => {
     modalState.resetDeleteIssue();
@@ -13,7 +13,12 @@ export const ModalIssueDelete: React.FC = observer(() => {
 
   const onOk = async () => {
     if (!modalState.deleteIssue) return;
-    await gameSocketActions.deleteIssue(modalState.deleteIssue.id);
+    if (gameState.isModeLobbyDealer) {
+      gameState.deleteIssue(modalState.deleteIssue.id);
+      modalState.resetDeleteIssue();
+      return;
+    }
+    await socketState.deleteIssue(modalState.deleteIssue.id);
     if (socketState.isFail) {
       message.error(socketState.failMessage);
     } else {

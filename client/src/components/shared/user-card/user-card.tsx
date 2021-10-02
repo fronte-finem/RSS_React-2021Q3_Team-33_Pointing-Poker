@@ -3,7 +3,7 @@ import { Avatar } from '@client/components/shared/avatar/avatar';
 import { Tooltip } from 'antd';
 import { Role, UserBase } from '@shared/api-types/user';
 import { UserFE } from '@client/services/game-state';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { observer } from 'mobx-react-lite';
 import {
   StyleCard,
@@ -22,53 +22,58 @@ const getFullName = ({ firstName, lastName }: UserBase) =>
 
 interface UserCardProps {
   user?: UserFE | null;
-  style?: React.CSSProperties | undefined;
+  className?: string;
+  style?: React.CSSProperties;
+  avatarSize?: number;
 }
 
-export const UserCard: React.FC<UserCardProps> = observer(({ user, style }) => {
-  const { modalState, gameState } = useGameService();
+export const UserCard: React.FC<UserCardProps> = observer(
+  ({ user, className, style, avatarSize = 50 }) => {
+    const { modalState, gameState } = useStateService();
 
-  if (!user) return null;
-  const { id, firstName, lastName, avatar, jobPosition, role } = user;
-  const username = getFullName({ firstName, lastName });
-  const isKicked = Boolean(user.kicked);
-  const isDisconnected = Boolean(user.disconnected);
+    if (!user) return null;
+    const { id, firstName, lastName, avatar, jobPosition, role } = user;
+    const username = getFullName({ firstName, lastName });
+    const isKicked = Boolean(user.kicked);
+    const isDisconnected = Boolean(user.disconnected);
 
-  const isOwner = gameState.selfUserId === id;
-  const isKickPossible =
-    !isDisconnected && !isKicked && !isOwner && role !== Role.DEALER;
+    const isOwner = gameState.selfUserId === id;
+    const isKickPossible =
+      !isDisconnected && !isKicked && !isOwner && role !== Role.DEALER;
 
-  const onKick = async () => {
-    modalState.initKickUser(id);
-  };
+    const onKick = async () => {
+      modalState.initKickUser(id);
+    };
 
-  const kickBtn = (
-    <StyledButton
-      type="link"
-      icon={<StyleStopOutlined rotate={90} />}
-      onClick={onKick}
-    />
-  );
+    const kickBtn = (
+      <StyledButton
+        type="link"
+        icon={<StyleStopOutlined rotate={90} />}
+        onClick={onKick}
+      />
+    );
 
-  return (
-    <StyleCard
-      userRole={role}
-      userKicked={isKicked}
-      userDisconnected={isDisconnected}
-      style={style}>
-      <StyledAvatarContainer>
-        <Avatar user={user} size={50} src={avatar} />
-      </StyledAvatarContainer>
-      <StyledBodyContainer>
-        {isOwner ? <StyleCardOwner>It&prime;s you</StyleCardOwner> : null}
-        <Tooltip title={username} placement="bottom">
-          <StyledUsername>{username}</StyledUsername>
-        </Tooltip>
-        <StyledJobPosition>{jobPosition}</StyledJobPosition>
-      </StyledBodyContainer>
-      <StyledControlContainer>
-        {isKickPossible ? kickBtn : null}
-      </StyledControlContainer>
-    </StyleCard>
-  );
-});
+    return (
+      <StyleCard
+        userRole={role}
+        userKicked={isKicked}
+        userDisconnected={isDisconnected}
+        className={className}
+        style={style}>
+        <StyledAvatarContainer>
+          <Avatar user={user} size={avatarSize} src={avatar} />
+        </StyledAvatarContainer>
+        <StyledBodyContainer>
+          <StyleCardOwner>{isOwner ? "It's you" : ''}</StyleCardOwner>
+          <Tooltip title={username} placement="bottom">
+            <StyledUsername>{username}</StyledUsername>
+          </Tooltip>
+          <StyledJobPosition>{jobPosition}</StyledJobPosition>
+        </StyledBodyContainer>
+        <StyledControlContainer>
+          {isKickPossible ? kickBtn : null}
+        </StyledControlContainer>
+      </StyleCard>
+    );
+  }
+);

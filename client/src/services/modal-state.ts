@@ -5,21 +5,30 @@ import {
   ChatMessagesList,
   KickVoteInit,
 } from '@shared/api-types/chat';
+import { AllowUserToJoin } from '@client/services/game-state';
+import { CardScore } from '@shared/api-types/game-card-settings';
 
 export interface ChatMessageFE extends ChatMessage {
   system?: boolean;
 }
 
 export class ModalState {
-  @observable public systemMessage: null | string = null;
+  @observable public systemMessage?: null | string = null;
   @observable public messages: ChatMessageFE[] = [];
   @observable public chatIsOpen: boolean = false;
   @observable public chatOldMessages: number = 0;
   @observable public createIssue: boolean = false;
-  @observable public editIssue: null | Issue = null;
-  @observable public deleteIssue: null | Issue = null;
-  @observable public kickUser: null | string = null;
-  @observable public kickVote: null | KickVoteInit = null;
+  @observable public editIssue?: null | Issue = null;
+  @observable public deleteIssue?: null | Issue = null;
+  @observable public selectIssue?: string;
+  @observable public kickUser?: null | string = null;
+  @observable public kickVote?: null | KickVoteInit = null;
+  @observable public allowUserToJoin?: null | AllowUserToJoin = null;
+  @observable public customizeCards: boolean = false;
+  @observable public issuesVisible: boolean = false;
+  @observable public activeScore?: CardScore;
+  @observable public usersCompact: boolean = false;
+  @observable public cardsCompact: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -29,7 +38,7 @@ export class ModalState {
     return Boolean(this.systemMessage);
   }
 
-  @action public initSystemMessage(message: null | string) {
+  @action public initSystemMessage(message?: string) {
     this.systemMessage = message;
   }
 
@@ -104,6 +113,18 @@ export class ModalState {
     this.deleteIssue = null;
   }
 
+  @computed public get isSelectIssueActive(): boolean {
+    return Boolean(this.selectIssue);
+  }
+
+  @action public initSelectIssue(issueId: string) {
+    this.selectIssue = issueId;
+  }
+
+  @action public resetSelectIssue() {
+    this.selectIssue = undefined;
+  }
+
   @computed public get isKickUserActive(): boolean {
     return Boolean(this.kickUser);
   }
@@ -126,5 +147,49 @@ export class ModalState {
 
   @action public resetKickVote() {
     this.kickVote = null;
+  }
+
+  @computed public get isAllowUserToJoin(): boolean {
+    return Boolean(this.allowUserToJoin);
+  }
+
+  @action public initAllowUserToJoin(init: AllowUserToJoin) {
+    this.allowUserToJoin = init;
+  }
+
+  @action public resetAllowUserToJoin() {
+    this.allowUserToJoin = null;
+  }
+
+  @action public openCardsCustomize() {
+    this.customizeCards = true;
+  }
+
+  @action public closeCardsCustomize() {
+    this.customizeCards = false;
+  }
+
+  @action public showIssues() {
+    this.issuesVisible = true;
+  }
+
+  @action public hideIssues() {
+    this.issuesVisible = false;
+  }
+
+  @action public setActiveScore(score: CardScore) {
+    this.activeScore = score;
+  }
+
+  @action public resetActiveScore() {
+    this.activeScore = undefined;
+  }
+
+  @action public setUsersCompact(compact: boolean) {
+    this.usersCompact = compact;
+  }
+
+  @action public setCardsCompact(compact: boolean) {
+    this.cardsCompact = compact;
   }
 }

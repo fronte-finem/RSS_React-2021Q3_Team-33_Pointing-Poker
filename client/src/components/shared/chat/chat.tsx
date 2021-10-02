@@ -1,11 +1,11 @@
 import React from 'react';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { observer } from 'mobx-react-lite';
 import { Post, SystemPost } from '@client/components/shared/chat/post';
 import { StyledChat } from './chat.styles';
 
 export const Chat = observer(() => {
-  const { modalState } = useGameService();
+  const { modalState } = useStateService();
   return (
     <StyledChat>
       {modalState.messages.map((post) => {

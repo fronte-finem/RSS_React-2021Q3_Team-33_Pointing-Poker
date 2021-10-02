@@ -1,14 +1,26 @@
 import styled, { DefaultTheme } from 'styled-components';
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button as AntButton } from 'antd';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  PlayCircleOutlined,
+  PlusOutlined,
+  PoweroffOutlined,
+  ReloadOutlined,
+} from '@ant-design/icons';
+import { fontSubtitle, fontTextSmall } from '@client/themes/typography';
 import {
   issueCardControlsStyle,
   issueCardInfoStyle,
   issueCardStyle,
-} from '@client/components/shared/issue/issue-styles';
-import { fontSubtitle, fontTextSmall } from '@client/themes/typography';
+} from './issue-styles';
 
-type Props = { isCurrent: boolean };
+type Props = {
+  isCurrent?: boolean;
+  isSelected?: boolean;
+  isHaveStats?: boolean;
+  isGameMode?: boolean;
+};
 type Opts = Props & { theme: DefaultTheme };
 
 const selector = ({ theme, isCurrent }: Opts) =>
@@ -18,6 +30,9 @@ export const StyleIssueCard = styled.div<Props>`
   ${issueCardStyle};
   --fg: ${(props) => selector(props).fg};
   --bg: ${(props) => selector(props).bg};
+
+  cursor: ${({ isGameMode }) => (isGameMode ? 'pointer' : 'default')};
+  outline: ${({ isHaveStats }) => (isHaveStats ? '3px solid #f80' : 'unset')};
 `;
 
 export const StyledIssueCardInfo = styled.div`
@@ -29,10 +44,13 @@ export const StyledIssueCardControls = styled.div`
 `;
 
 export const StyledIssueTitle = styled.div`
-  margin: 0;
-  padding: 0;
   ${fontSubtitle};
   color: var(--fg);
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  mask: linear-gradient(to left, #fff0, #fff 20%);
 `;
 
 export const StyledMark = styled.div`
@@ -93,4 +111,16 @@ export const StyledEditIcon = styled(EditOutlined)`
 
 export const StyledDeleteIcon = styled(DeleteOutlined)`
   font-size: 23px;
+`;
+
+export const StyledRunIcon = styled(PlayCircleOutlined)`
+  font-size: 33px;
+`;
+
+export const StyledRestartIcon = styled(ReloadOutlined)`
+  font-size: 32px;
+`;
+
+export const StyledStopIcon = styled(PoweroffOutlined)`
+  font-size: 33px;
 `;

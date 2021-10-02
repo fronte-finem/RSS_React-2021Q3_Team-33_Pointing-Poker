@@ -11,7 +11,7 @@
  * @external { import("./issue").Issue } Issue
  * @external { import("./issue").GameResults } GameResults
  * @external { import("./issue").IssueScore } IssueScore
- * @external { import("./game-settings").GameSettings } GameSettings
+ * @external { import("./game-settings").GameStartPayload } GameStartPayload
  * @external { import("./game-settings").CardScore } CardScore
  */
 
@@ -78,8 +78,8 @@ export const enum ApiClientEvents {
    */
   EDIT_ISSUE = 'edit issue',
   /**
-   * - payload: {@link GameSettings}
-   * - callback: {@link String fail-message} | {@link GameSettings}
+   * - payload: {@link GameStartPayload}
+   * - callback: {@link String fail-message} | {@link GameStartPayload}
    */
   START_GAME = 'start game',
   /**
@@ -180,7 +180,7 @@ export const enum ApiServerEvents {
    */
   ISSUE_EDITED = 'issue edited',
   /**
-   * - payload: {@link GameSettings}
+   * - payload: {@link GameStartPayload}
    */
   GAME_STARTED = 'game started',
   /**

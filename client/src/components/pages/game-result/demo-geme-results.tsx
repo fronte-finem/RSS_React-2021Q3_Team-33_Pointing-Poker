@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Alert } from 'antd';
-import { useGameService } from '@client/providers/game-service';
 import { GameResults, IssuesList, Priority } from '@shared/api-types/issue';
 import { Role, UsersList } from '@shared/api-types/user';
+import { useStateService } from '@client/providers/state-service';
+import { ExtraScoreKind } from '@shared/api-types/game-card-settings';
 import { GameResultsPage } from './game-results-page';
 
 const users: UsersList = [
@@ -50,7 +51,7 @@ const gameResult: GameResults = [
     issueId: '1',
     scores: [
       { userId: '123', score: 5 },
-      { userId: '124', score: 'coffee' },
+      { userId: '124', score: ExtraScoreKind.COFFEE },
       { userId: '125', score: 42 },
     ],
   },
@@ -65,10 +66,10 @@ const gameResult: GameResults = [
 ];
 
 export const DemoGameResultPage: React.FC = observer(() => {
-  const { gameStateActions } = useGameService();
+  const { gameState } = useStateService();
 
   useEffect(() => {
-    gameStateActions.initUser(
+    gameState.initUser(
       {
         gameId: '11',
         gameTitle: 'Demo Game',

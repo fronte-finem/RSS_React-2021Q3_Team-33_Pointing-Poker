@@ -12,9 +12,10 @@ import {
   IssueBase,
   IssueScore,
 } from '@shared/api-types/issue';
-import { CardScore, GameSettings } from '@shared/api-types/game-settings';
+import { GameStartPayload } from '@shared/api-types/game-settings';
 import { InitDealer, InitUser } from '@shared/api-types/init';
 import { ChatMessage, KickResult, KickVoteInit } from '@shared/api-types/chat';
+import { CardScore } from '@shared/api-types/game-card-settings';
 
 type ApiClientEventsMap = { [event in ApiClientEvents]: Function };
 type ApiServerEventsMap = { [event in ApiServerEvents]: Function };
@@ -100,8 +101,8 @@ export interface PointingPokerClientToServerEvents extends ApiClientEventsMap {
     ackCallback: AckCallback<Issue>
   ) => void;
   [ApiClientEvents.START_GAME]: (
-    gameSettings: GameSettings,
-    ackCallback: AckCallback<GameSettings>
+    payload: GameStartPayload,
+    ackCallback: AckCallback<GameStartPayload>
   ) => void;
   [ApiClientEvents.END_GAME]: (ackCallback: AckCallback<true>) => void;
   [ApiClientEvents.START_ROUND]: (
@@ -147,7 +148,7 @@ export interface PointingPokerServerToClientEvents extends ApiServerEventsMap {
   [ApiServerEvents.ISSUE_ADDED]: (issue: Issue) => void;
   [ApiServerEvents.ISSUE_DELETED]: (issueId: string) => void;
   [ApiServerEvents.ISSUE_EDITED]: (issue: Issue) => void;
-  [ApiServerEvents.GAME_STARTED]: (gameSettings: GameSettings) => void;
+  [ApiServerEvents.GAME_STARTED]: (payload: GameStartPayload) => void;
   [ApiServerEvents.GAME_ENDED]: (gameResults: GameResults) => void;
   [ApiServerEvents.ROUND_STARTED]: (issueId: string) => void;
   [ApiServerEvents.ROUND_ENDED]: (issueScore: IssueScore) => void;

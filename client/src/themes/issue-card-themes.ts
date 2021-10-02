@@ -11,7 +11,7 @@ export const lightIssueCardTheme: IssueCardTheme = {
   },
   button: {
     default: {
-      normal: LightThemeColor.GREY,
+      normal: LightThemeColor.ACCENT_DARK,
       hover: LightThemeColor.PRIMARY,
       active: LightThemeColor.PRIMARY_DARK,
     },

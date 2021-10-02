@@ -9,7 +9,7 @@ export const PageGameCardDemo: React.FC = () => {
     <DemoGrid>
       {getPow2Sequence(10).map((score) => (
         <div key={score}>
-          <GameCard score={score} scoreType="xyz" />
+          <GameCard score={score} />
         </div>
       ))}
       <div>

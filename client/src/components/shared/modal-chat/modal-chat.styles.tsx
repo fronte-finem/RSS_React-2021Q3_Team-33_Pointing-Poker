@@ -1,23 +1,13 @@
 import styled from 'styled-components';
-import { Modal } from '@client/components/shared/modal/modal';
-import { CloseCircleFilled } from '@ant-design/icons';
+import { StyledDrawer } from '@client/components/shared/drawer/drawer.styles';
 
-export const StyledModal = styled(Modal)`
-  --bg: ${({ theme }) => theme.chat.modal.bg};
-
-  .ant-modal-title,
-  .ant-modal-content {
-    background-color: var(--bg);
-  }
-
-  .ant-modal-body {
+export const ChatDrawer = styled(StyledDrawer)`
+  z-index: 100;
+  & .ant-drawer-body {
     padding: 0;
   }
-
-  .ant-modal-close-x {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  & .ant-drawer-close {
+    font-size: 30px;
   }
 `;
 
@@ -38,7 +28,7 @@ export const StyledFrame = styled.div`
 `;
 
 export const StyledChatContainer = styled.div`
-  height: 60vh;
+  height: 90vh;
   overflow: auto;
   padding: 10px;
 `;
@@ -56,6 +46,9 @@ export const StyledFooter = styled.div`
   gap: 10px;
 `;
 
-export const StyledCloseIcon = styled(CloseCircleFilled)`
-  font-size: 30px;
+export const SendWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  padding: 20px;
 `;

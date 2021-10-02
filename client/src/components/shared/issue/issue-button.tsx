@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import {
   StyleAddIcon,
   StyledIssueButtonCard,
@@ -9,15 +9,19 @@ import {
   StyleIssueTitle,
 } from './issue-button-styles';
 
-export const IssueButton = observer(() => {
-  const { modalState } = useGameService();
+interface Props {
+  className?: string;
+}
+
+export const IssueButton: React.FC<Props> = observer(({ className }) => {
+  const { modalState } = useStateService();
 
   const onClick = () => {
     modalState.initCreateIssue();
   };
 
   return (
-    <StyledIssueButtonCard onClick={onClick}>
+    <StyledIssueButtonCard onClick={onClick} className={className}>
       <StyledIssueButtonCardInfo>
         <StyleIssueTitle>Create new Issue</StyleIssueTitle>
       </StyledIssueButtonCardInfo>

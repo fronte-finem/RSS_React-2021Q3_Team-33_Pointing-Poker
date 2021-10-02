@@ -57,6 +57,7 @@ export const darkSelectTheme: SelectTheme = {
 
 export const lightGameCardTheme: GameCardTheme = {
   ...lightDefaultTheme,
+  bg: '#fafafa',
   fg: LightThemeColor.FONT_TITLE,
   hover: LightThemeColor.WHITE,
   active: {

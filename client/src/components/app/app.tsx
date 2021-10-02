@@ -1,22 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Header } from '@client/components/app/header/header';
 import { Footer } from '@client/components/app/footer/footer';
 import { routes } from '@client/components/app/routes';
 import { Layout } from '@client/components/app/layout/layout';
-import { useGameService } from '@client/providers/game-service';
+import { useStateService } from '@client/providers/state-service';
 import { observer } from 'mobx-react-lite';
 import {
   Content,
   ContentLayoutContainer,
 } from '@client/components/app/layout/layout.style';
 import { DemoPagesRouter } from '@client/components/pages/demo/demo-router';
+import { message } from 'antd';
+import { Modals } from '@client/components/app/modals/modals';
 
 export const App: React.FC = observer(() => {
-  const { gameState } = useGameService();
+  const { themeState, modalState } = useStateService();
+
+  useEffect(() => {
+    if (!modalState.systemMessage) return;
+    message.info(modalState.systemMessage).then(null);
+    modalState.resetSystemMessage();
+  }, [modalState.systemMessage]);
+
   return (
-    <ThemeProvider theme={gameState.theme}>
+    <ThemeProvider theme={themeState.theme}>
       <BrowserRouter>
         <Layout data-testid="app">
           <Header />
@@ -34,6 +43,7 @@ export const App: React.FC = observer(() => {
           </Content>
           <Footer />
         </Layout>
+        <Modals />
       </BrowserRouter>
     </ThemeProvider>
   );

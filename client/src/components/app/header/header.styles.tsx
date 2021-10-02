@@ -25,10 +25,13 @@ export const LogoWrapper = styled.div`
   width: 80px;
 `;
 
-export const StyledLogoSvg = styled.svg`
+export const LogoPosition = styled.div`
   position: absolute;
   top: 24px;
   left: 0;
+`;
+
+export const StyledLogoSvg = styled.svg`
   width: 80px;
   height: 80px;
   .letter1 {
