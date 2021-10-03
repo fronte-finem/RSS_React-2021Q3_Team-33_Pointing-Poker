@@ -1,13 +1,24 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { Button } from '@client/components/shared/button/button';
 import { useStateService } from '@client/providers/state-service';
 import { InfoControl, StyleLobbyControl } from './lobby-info-styles';
 
 export const LobbyInfoControl = observer(() => {
-  const { gameState, socketState } = useStateService();
+  const { gameState, socketState, modalState } = useStateService();
 
-  const startGame = () => socketState.startGame();
+  const startGame = () => {
+    if (gameState.issues.length === 0) {
+      modalState.initSystemMessage(ApiFailMessage.GAME_NEED_ISSUES);
+      return;
+    }
+    if (gameState.cardsDeck.length === 0) {
+      modalState.initSystemMessage(ApiFailMessage.CARDS_DECK_NEED_CARDS);
+      return;
+    }
+    socketState.startGame().then(null);
+  };
 
   const exitLobby = async () => {
     console.log('exit lobby');
