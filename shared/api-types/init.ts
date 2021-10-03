@@ -45,6 +45,10 @@ export interface InitUser {
   /**
    * Активный раунд.
    */
+  roundRun?: boolean;
+  /**
+   * Активный раунд.
+   */
   roundIssueId?: string;
   /**
    * Прогресс по активному раунду.

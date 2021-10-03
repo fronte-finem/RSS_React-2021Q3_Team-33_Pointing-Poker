@@ -19,6 +19,8 @@ export const PageGameDemo = observer(function PageGameDemo() {
     else gameState.initUser(initUserState, initUserState.users[3].id);
     gameState.startGame(initGameState);
     gameState.initResults(initUserState.gameResult);
+    gameState.startRound(initGameState.issues[5].id);
+    gameState.endRound({ issueId: initGameState.issues[5].id, scores: [] });
   };
 
   const toggleRound = (checked: boolean) => {

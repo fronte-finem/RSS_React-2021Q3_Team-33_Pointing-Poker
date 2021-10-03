@@ -98,6 +98,7 @@ export class GameService {
       initUser.issues = this._issueService.getIssues();
       initUser.gameSettings = this._gameSettings;
       initUser.gameResult = this._issueService.getResults();
+      initUser.roundRun = this.issueService.isRoundActiveRun;
       initUser.roundIssueId = this.issueService.activeId;
       initUser.roundProgress = this.issueService.activeProgress;
     }

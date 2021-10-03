@@ -13,8 +13,9 @@ export const Users = observer(function Users() {
   const Container = modalState.usersCompact ? List : Grid;
   const bumper = modalState.usersCompact ? <BumperItem /> : null;
 
-  const issue = gameState.currentIssue;
-  const scores = issue ? gameState.getIssueScores(issue.id) : [];
+  const scores = gameState.roundIssueId
+    ? gameState.getIssueScores(gameState.roundIssueId)
+    : [];
   const statsParams = calcStatsParams(scores);
 
   const statsParamsView =

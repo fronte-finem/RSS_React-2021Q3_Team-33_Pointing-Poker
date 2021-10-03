@@ -19,7 +19,7 @@ export const GameCardRoundResult = observer(
     const { gameState } = useStateService();
 
     const front = isNoneScore(score) ? (
-      <div>{gameState.currentIssue ? <CloseCircleOutlined /> : ''}</div>
+      <div>{gameState.roundIssueId ? <CloseCircleOutlined /> : ''}</div>
     ) : (
       <GameCardFront score={score} />
     );

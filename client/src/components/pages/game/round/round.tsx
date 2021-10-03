@@ -26,10 +26,10 @@ export const Round = observer(function Round() {
       <Center>
         {title}
         <IssueCard
-          issue={gameState.currentIssue}
+          issue={gameState.getRoundIssue()}
           controls={gameState.isDealer}
         />
-        <Statistics issueId={gameState.currentIssue?.id} />
+        <Statistics issueId={gameState.roundIssueId} />
       </Center>
       <Center>{gameState.settings.timeout ? <GameTimer /> : null}</Center>
       <Center>

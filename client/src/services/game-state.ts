@@ -60,7 +60,7 @@ export class GameState {
   @observable public settings!: GameSettings;
   @observable public results!: GameResults;
   @observable public roundRun!: boolean;
-  @observable public roundIssueId!: null | string;
+  @observable public roundIssueId?: string;
   @observable public roundProgress!: string[];
 
   private init() {
@@ -74,7 +74,7 @@ export class GameState {
     this.settings = getDefaultGameSettings();
     this.results = [];
     this.roundRun = false;
-    this.roundIssueId = null;
+    this.roundIssueId = undefined;
     this.roundProgress = [];
   }
 
@@ -194,8 +194,8 @@ export class GameState {
     this.issues = initUser.issues || [];
     this.results = initUser.gameResult || [];
     this.settings = initUser.gameSettings || this.settings;
-    this.roundRun = Boolean(initUser.roundIssueId);
-    this.roundIssueId = initUser.roundIssueId || null;
+    this.roundRun = initUser.roundRun || false;
+    this.roundIssueId = initUser.roundIssueId || this.issues[0]?.id;
     this.roundProgress = initUser.roundProgress || [];
   }
 
@@ -257,7 +257,7 @@ export class GameState {
     return this.issues.find(({ id }) => id === issueId);
   }
 
-  public get currentIssue(): Issue | undefined {
+  public getRoundIssue(): Issue | undefined {
     if (!this.roundIssueId) return undefined;
     return this.getIssue(this.roundIssueId);
   }
@@ -303,6 +303,7 @@ export class GameState {
   @action public startGame({ issues, settings }: GameStartPayload) {
     this.appMode = AppMode.GAME;
     this.issues = issues;
+    this.roundIssueId = this.issues[0]?.id;
     this.settings = settings;
     this.store.save(settings);
   }
@@ -398,8 +399,8 @@ export class GameState {
   }
 
   public getScore(userId: string): CardScore {
-    if (!this.currentIssue) return undefined;
-    return this.getIssueScores(this.currentIssue.id).find(
+    if (!this.roundIssueId) return undefined;
+    return this.getIssueScores(this.roundIssueId).find(
       (userScore) => userScore.userId === userId
     )?.score;
   }
