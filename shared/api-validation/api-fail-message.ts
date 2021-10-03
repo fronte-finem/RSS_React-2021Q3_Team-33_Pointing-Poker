@@ -27,4 +27,5 @@ export const enum ApiFailMessage {
   SOCKET_OF_USER_FOR_KICK_NOT_FOUND = 'Socket of user for kick not found!',
   GAME_NEED_ISSUES = 'Game need issues for start, please add some!',
   CARDS_DECK_NEED_CARDS = 'Cards deck is empty, please add some cards!',
+  ADD_SCORE_AFTER_ROUND_UNSET = 'Add score after round forbidden by dealer settings!',
 }

@@ -43,6 +43,10 @@ export const getAddIssueHandler =
       return;
     }
     const issue = game.issueService.add(issueData);
+    if (!issue) {
+      ackCallback(setFail('Issue adding failed'));
+      return;
+    }
     ackCallback(setOk(issue));
     conditionalEmit(ApiServerEvents.ISSUE_ADDED, issue, game);
   };
@@ -77,6 +81,10 @@ export const getModifyIssueHandler =
       return;
     }
     const modifiedIssue = game.issueService.modify(issue);
+    if (!modifiedIssue) {
+      ackCallback(setFail('Issue modifying failed'));
+      return;
+    }
     ackCallback(setOk(modifiedIssue));
     conditionalEmit(ApiServerEvents.ISSUE_EDITED, modifiedIssue, game);
   };
@@ -84,7 +92,7 @@ export const getModifyIssueHandler =
 export const getRoundStartHandler =
   (socket: PointingPokerServerSocket, game: GameService) =>
   (issueId: string, ackCallback: AckCallback<string>) => {
-    if (game.issueService.isRoundActive) {
+    if (game.issueService.isRoundActiveRun) {
       ackCallback(setFail(ApiFailMessage.ACTIVE_ROUND));
       return;
     }
@@ -99,8 +107,9 @@ export const getRoundStartHandler =
     if (game.gameSettings.timeout) {
       timerId = global.setTimeout(() => {
         if (!game.issueService.isRoundActive) return;
-        const results = game.issueService.end();
-        game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, results);
+        const result = game.issueService.end();
+        if (!result) return;
+        game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, result);
       }, 1000 * game.gameSettings.timeout);
     }
 
@@ -116,32 +125,55 @@ export const getRoundEndHandler =
       return;
     }
     ackCallback(setOk(true));
-    const results = game.issueService.end();
-    game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, results);
+    const result = game.issueService.end();
+    if (!result) return;
+    game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, result);
   };
 
 export const getScoreAddHandler =
   (socket: PointingPokerServerSocket, game: GameService) =>
   (score: CardScore, ackCallback: AckCallback<CardScore>) => {
-    if (!game.issueService.isRoundActive) {
+    const isNoRound = !game.issueService.isRoundActive;
+    const isRoundStopped = !game.issueService.isRoundActiveRun;
+    const isAfterRoundForbidden = !game.gameSettings.changeAfterRoundEnd;
+
+    if (isNoRound) {
       ackCallback(setFail(ApiFailMessage.NO_ACTIVE_ROUND));
       return;
     }
+    if (isRoundStopped && isAfterRoundForbidden) {
+      ackCallback(setFail(ApiFailMessage.ADD_SCORE_AFTER_ROUND_UNSET));
+      return;
+    }
+
     const userId = socket.id;
     if (!game.gameSettings.dealerGamer && userId === game.dealerSocket.id) {
       ackCallback(setFail(ApiFailMessage.DEALER_NOT_GAMER));
       return;
     }
+
     game.issueService.addScore({ userId, score });
     ackCallback(setOk(score));
     game.server.to(game.room).emit(ApiServerEvents.SCORE_ADDED, userId);
 
+    if (isRoundStopped && !isAfterRoundForbidden) {
+      const result = game.issueService.getRoundScore();
+      if (!result) return;
+      game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, result);
+      return;
+    }
+
     if (game.gameSettings.autoOpenCards) {
-      const plusDealer = game.gameSettings.dealerGamer ? 1 : 0;
-      const gamersNum = game.userService.getGamers().length + plusDealer;
-      const scoresNum = game.issueService.getRoundScore()!.scores.length;
-      if (scoresNum < gamersNum) return;
-      const results = game.issueService.end();
-      game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, results);
+      autoOpenCards(game);
     }
   };
+
+function autoOpenCards(game: GameService) {
+  const plusDealer = game.gameSettings.dealerGamer ? 1 : 0;
+  const gamersNum = game.userService.getGamers().length + plusDealer;
+  const scoresNum = game.issueService.getRoundScore()!.scores.length;
+  if (scoresNum < gamersNum) return;
+  const results = game.issueService.end();
+  if (!results) return;
+  game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, results);
+}

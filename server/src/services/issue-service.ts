@@ -1,4 +1,3 @@
-import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import {
   GameResults,
   Issue,
@@ -12,6 +11,7 @@ import { IssueItem } from '@server/models/issue-item';
 export class IssueService {
   private _store: IssueItem[] = [];
   private _activeIssueItem: null | IssueItem = null;
+  private _isActiveRun: boolean = false;
   private _timerId: null | NodeJS.Timeout = null;
 
   public getIssues(): IssuesList {
@@ -27,9 +27,8 @@ export class IssueService {
     return this._store.map((item) => item.getDTO());
   }
 
-  public add(issueData: IssueBase): Issue {
-    if (this.isInStore(issueData))
-      throw new Error(ApiFailMessage.SAME_TITLE_ISSUE_ALREADY_EXIST);
+  public add(issueData: IssueBase): Issue | undefined {
+    if (this.isInStore(issueData)) return undefined;
     const item = new IssueItem(issueData);
     this._store.push(item);
     return item.getDTO();
@@ -47,11 +46,10 @@ export class IssueService {
     this._store = this._store.filter((item) => item.id !== issueId);
   }
 
-  public modify(issue: Issue): Issue {
+  public modify(issue: Issue): Issue | undefined {
     const item = this.findItem(issue.id);
-    if (!item) throw new Error(ApiFailMessage.ISSUE_NOT_FOUND);
-    if (this.isInStore(issue))
-      throw new Error(ApiFailMessage.SAME_TITLE_ISSUE_ALREADY_EXIST);
+    if (!item) return undefined;
+    if (this.isInStore(issue)) return undefined;
     item.modify(issue);
     return item.getDTO();
   }
@@ -61,15 +59,20 @@ export class IssueService {
   }
 
   public start(issueId: string, timerId: null | NodeJS.Timeout = null): void {
-    if (this._activeIssueItem) throw new Error(ApiFailMessage.ACTIVE_ROUND);
+    if (this._isActiveRun) return;
     const item = this.findItem(issueId);
-    if (!item) throw new Error(ApiFailMessage.ISSUE_NOT_FOUND);
+    if (!item) return;
+    this._isActiveRun = true;
     this._activeIssueItem = item;
     this._timerId = timerId;
   }
 
   public get isRoundActive(): boolean {
     return Boolean(this._activeIssueItem);
+  }
+
+  public get isRoundActiveRun(): boolean {
+    return this._isActiveRun;
   }
 
   public get activeId(): string | undefined {
@@ -80,10 +83,10 @@ export class IssueService {
     return this._activeIssueItem && this._activeIssueItem.getScore();
   }
 
-  public end(): IssueScore {
-    if (!this._activeIssueItem) throw new Error(ApiFailMessage.NO_ACTIVE_ROUND);
+  public end(): IssueScore | undefined {
+    if (!this._activeIssueItem) return undefined;
     const issueScore = this._activeIssueItem.getScore();
-    this._activeIssueItem = null;
+    this._isActiveRun = false;
     if (this._timerId) {
       global.clearTimeout(this._timerId);
       this._timerId = null;
@@ -92,7 +95,7 @@ export class IssueService {
   }
 
   public addScore(score: UserScore): void {
-    if (!this._activeIssueItem) throw new Error(ApiFailMessage.NO_ACTIVE_ROUND);
+    if (!this._activeIssueItem) return;
     this._activeIssueItem.addScore(score);
   }
 
