@@ -12,9 +12,9 @@ import {
   StyledWrapper,
 } from './modal-issue.styles';
 
-const options: IOption[] = Object.entries(Priority).map(([value, label]) => ({
+const options: IOption[] = Object.values(Priority).map((value) => ({
+  label: value,
   value,
-  label,
 }));
 
 interface Props {
