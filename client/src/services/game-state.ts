@@ -9,7 +9,7 @@ import {
   GameResults,
   Issue,
   IssueScore,
-  RoundResults,
+  UserScore,
 } from '@shared/api-types/issue';
 import {
   calcStats,
@@ -286,10 +286,11 @@ export class GameState {
   }
 
   public isHaveStats(issueId: string): boolean {
-    return this.results.some((results) => results.issueId === issueId);
+    const results = this.getIssueScores(issueId);
+    return results.length > 0;
   }
 
-  public getIssueScores(issueId: string): RoundResults {
+  public getIssueScores(issueId: string): UserScore[] {
     return (
       this.results.find((results) => results.issueId === issueId)?.scores || []
     );
