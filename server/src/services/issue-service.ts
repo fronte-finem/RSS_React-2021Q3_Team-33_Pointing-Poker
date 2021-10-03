@@ -50,6 +50,8 @@ export class IssueService {
   public modify(issue: Issue): Issue {
     const item = this.findItem(issue.id);
     if (!item) throw new Error(ApiFailMessage.ISSUE_NOT_FOUND);
+    if (this.isInStore(issue))
+      throw new Error(ApiFailMessage.SAME_TITLE_ISSUE_ALREADY_EXIST);
     item.modify(issue);
     return item.getDTO();
   }

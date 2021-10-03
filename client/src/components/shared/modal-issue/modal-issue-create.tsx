@@ -27,11 +27,12 @@ export const ModalIssueCreate = observer(() => {
 
   const onSubmit = async (issue: IssueBase) => {
     if (gameState.isModeLobbyDealer) {
-      gameState.addIssue(addId(issue, gameState.issues));
-      modalState.resetCreateIssue();
-      return;
+      const ok = gameState.addIssue(addId(issue, gameState.issues));
+      if (ok) modalState.resetCreateIssue();
+      return ok;
     }
     if (gameState.isModeGame) await socketState.addIssue(issue);
+    return !socketState.isFail;
   };
 
   return (

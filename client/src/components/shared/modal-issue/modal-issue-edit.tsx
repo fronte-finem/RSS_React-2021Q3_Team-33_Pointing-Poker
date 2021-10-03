@@ -19,13 +19,14 @@ export const ModalIssueEdit = observer(() => {
   };
 
   const onSubmit = async (issue: IssueBase) => {
-    if (!modalState.editIssue) return;
+    if (!modalState.editIssue) return false;
     if (gameState.isModeLobbyDealer) {
-      gameState.modifyIssue({ ...modalState.editIssue, ...issue });
-      modalState.resetEditIssue();
-      return;
+      const ok = gameState.modifyIssue({ ...modalState.editIssue, ...issue });
+      if (ok) modalState.resetEditIssue();
+      return ok;
     }
     await socketState.editIssue({ ...modalState.editIssue, ...issue });
+    return !socketState.isFail;
   };
 
   return (

@@ -18,7 +18,7 @@ const StateServiceContext = createContext<IStateServiceContext | undefined>(
 export const StateServiceProvider: React.FC = ({ children }) => {
   const themeState = new ThemeState();
   const modalState = new ModalState();
-  const gameState = new GameState();
+  const gameState = new GameState(modalState);
   const socketState = new SocketState(modalState, gameState);
 
   return (

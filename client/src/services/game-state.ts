@@ -24,6 +24,8 @@ import {
   CardScore,
   ExtraScoreKind,
 } from '@shared/api-types/game-card-settings';
+import { ModalState } from '@client/services/modal-state';
+import { validateIssueTitle } from '@shared/api-validation/issue';
 
 export const enum AppMode {
   ENTRY = 'entry',
@@ -71,7 +73,7 @@ export class GameState {
     this.roundProgress = [];
   }
 
-  constructor() {
+  constructor(private modalState: ModalState) {
     this.init();
     makeObservable(this);
   }
@@ -199,21 +201,33 @@ export class GameState {
     this.issues = [...this.issues, ...issues];
   }
 
-  @action public addIssue(issue: Issue) {
+  @action public addIssue(issue: Issue): boolean {
+    const message = validateIssueTitle(issue, this.issues);
+    if (message) {
+      this.modalState.initSystemMessage(message);
+      return false;
+    }
     this.issues.push(issue);
+    return true;
   }
 
   @action public deleteIssue(issueId: string) {
     this.issues = this.issues.filter(({ id }) => id !== issueId);
   }
 
-  @action public modifyIssue(issue: Issue) {
+  @action public modifyIssue(issue: Issue): boolean {
+    const message = validateIssueTitle(issue, this.issues);
+    if (message) {
+      this.modalState.initSystemMessage(message);
+      return false;
+    }
     const index = this.issues.findIndex(({ id }) => id === issue.id);
     if (index < 0) {
       this.issues.push(issue);
     } else {
       this.issues[index] = issue;
     }
+    return true;
   }
 
   public getIssues(withCurrent = false): Issue[] {

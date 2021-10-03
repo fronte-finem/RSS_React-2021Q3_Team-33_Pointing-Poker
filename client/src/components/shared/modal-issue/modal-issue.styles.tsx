@@ -21,6 +21,16 @@ export const StyledFormItem = styled(Form.Item)`
     ${fontSubtitle};
     color: ${({ theme }) => theme.modal.title};
   }
+
+  && .ant-form-item-control {
+    position: relative;
+    display: block;
+  }
+
+  && .ant-form-item-explain,
+  .ant-form-item-extra {
+    position: absolute;
+  }
 `;
 
 export const StyledInput = styled(Input)`

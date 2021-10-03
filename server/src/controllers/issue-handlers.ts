@@ -3,11 +3,12 @@ import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { ApiServerEvents } from '@shared/api-types/api-events';
 import { PointingPokerServerSocket } from 'types/server-socket';
 import { AckCallback, setFail, setOk } from '@shared/api-types/api-events-maps';
-import { Issue, IssueBase, Priority } from '@shared/api-types/issue';
+import { Issue, IssueBase } from '@shared/api-types/issue';
 import { CardScore } from '@shared/api-types/game-card-settings';
-import { ISSUE_TITLE_MAX_LENGTH } from '@shared/api-validation/api-constants';
-
-const getPriorities = () => Object.values(Priority).join(', ');
+import {
+  validateIssuePriority,
+  validateIssueTitle,
+} from '@shared/api-validation/issue';
 
 const conditionalEmit = (
   event: ApiServerEvents,
@@ -21,19 +22,18 @@ const conditionalEmit = (
   }
 };
 
-const validateAddIssue = ({ title, priority }: IssueBase) => {
-  if (!title) return ApiFailMessage.ISSUE_NEED_TITLE;
-  if (title.length > ISSUE_TITLE_MAX_LENGTH)
-    return `${ApiFailMessage.ISSUE_TITLE_TO_LONG}${ISSUE_TITLE_MAX_LENGTH}`;
-  if (!priority)
-    return `${ApiFailMessage.ISSUE_NEED_PRIORITY}${getPriorities()}`;
-  return null;
-};
-
 export const getAddIssueHandler =
   (socket: PointingPokerServerSocket, game: GameService) =>
   (issueData: IssueBase, ackCallback: AckCallback<Issue>) => {
-    const failMessage = validateAddIssue(issueData);
+    let failMessage = validateIssueTitle(
+      issueData,
+      game.issueService.getIssues()
+    );
+    if (failMessage) {
+      ackCallback(setFail(failMessage));
+      return;
+    }
+    failMessage = validateIssuePriority(issueData);
     if (failMessage) {
       ackCallback(setFail(failMessage));
       return;
@@ -66,7 +66,12 @@ export const getModifyIssueHandler =
       ackCallback(setFail(ApiFailMessage.ISSUE_NOT_FOUND));
       return;
     }
-    const failMessage = validateAddIssue(issue);
+    let failMessage = validateIssueTitle(issue, game.issueService.getIssues());
+    if (failMessage) {
+      ackCallback(setFail(failMessage));
+      return;
+    }
+    failMessage = validateIssuePriority(issue);
     if (failMessage) {
       ackCallback(setFail(failMessage));
       return;
