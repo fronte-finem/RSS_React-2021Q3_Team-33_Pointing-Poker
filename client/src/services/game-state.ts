@@ -184,7 +184,8 @@ export class GameState {
   }
 
   @action public initUser(initUser: InitUser, selfUserId: string) {
-    this.appMode = AppMode.LOBBY;
+    const isGameRun = Boolean(initUser.gameSettings);
+    this.appMode = isGameRun ? AppMode.GAME : AppMode.LOBBY;
     this.isDealer = false;
     this.id = initUser.gameId;
     this.title = initUser.gameTitle;
@@ -193,6 +194,9 @@ export class GameState {
     this.issues = initUser.issues || [];
     this.results = initUser.gameResult || [];
     this.settings = initUser.gameSettings || this.settings;
+    this.roundRun = Boolean(initUser.roundIssueId);
+    this.roundIssueId = initUser.roundIssueId || null;
+    this.roundProgress = initUser.roundProgress || [];
   }
 
   @action public addUser(user: User) {
@@ -207,13 +211,17 @@ export class GameState {
     this.issues = [...this.issues, ...issues];
   }
 
-  @action public addIssue(issue: Issue): boolean {
+  @action public addIssue(issue: Issue) {
+    this.issues.push(issue);
+  }
+
+  @action public addIssueValidate(issue: Issue): boolean {
     const message = validateIssueTitle(issue, this.issues);
     if (message) {
       this.modalState.initSystemMessage(message);
       return false;
     }
-    this.issues.push(issue);
+    this.addIssue(issue);
     return true;
   }
 
@@ -221,18 +229,22 @@ export class GameState {
     this.issues = this.issues.filter(({ id }) => id !== issueId);
   }
 
-  @action public modifyIssue(issue: Issue): boolean {
-    const message = validateIssueTitle(issue, this.issues);
-    if (message) {
-      this.modalState.initSystemMessage(message);
-      return false;
-    }
+  @action public modifyIssue(issue: Issue) {
     const index = this.issues.findIndex(({ id }) => id === issue.id);
     if (index < 0) {
       this.issues.push(issue);
     } else {
       this.issues[index] = issue;
     }
+  }
+
+  @action public modifyIssueValidate(issue: Issue): boolean {
+    const message = validateIssueTitle(issue, this.issues);
+    if (message) {
+      this.modalState.initSystemMessage(message);
+      return false;
+    }
+    this.modifyIssue(issue);
     return true;
   }
 

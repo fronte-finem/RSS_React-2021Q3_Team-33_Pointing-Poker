@@ -72,6 +72,10 @@ export class IssueService {
     return Boolean(this._activeIssueItem);
   }
 
+  public get activeId(): string | undefined {
+    return this._activeIssueItem?.id;
+  }
+
   public getRoundScore(): IssueScore | null {
     return this._activeIssueItem && this._activeIssueItem.getScore();
   }
@@ -90,6 +94,10 @@ export class IssueService {
   public addScore(score: UserScore): void {
     if (!this._activeIssueItem) throw new Error(ApiFailMessage.NO_ACTIVE_ROUND);
     this._activeIssueItem.addScore(score);
+  }
+
+  public get activeProgress(): string[] | undefined {
+    return this._activeIssueItem?.getProgress();
   }
 
   public getResults(): GameResults {

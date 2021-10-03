@@ -21,7 +21,10 @@ export const ModalIssueEdit = observer(() => {
   const onSubmit = async (issue: IssueBase) => {
     if (!modalState.editIssue) return false;
     if (gameState.isModeLobbyDealer) {
-      const ok = gameState.modifyIssue({ ...modalState.editIssue, ...issue });
+      const ok = gameState.modifyIssueValidate({
+        ...modalState.editIssue,
+        ...issue,
+      });
       if (ok) modalState.resetEditIssue();
       return ok;
     }

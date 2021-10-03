@@ -92,13 +92,14 @@ export class GameService {
       gameId: this._room,
       gameTitle: this._title,
       users: this._userService.getUsers(),
+      messages: this._chatService.getChatMessages(),
     };
-    if (!this.isStarted) {
-      initUser.messages = this._chatService.getChatMessages();
-    } else {
+    if (this.isStarted) {
       initUser.issues = this._issueService.getIssues();
       initUser.gameSettings = this._gameSettings;
       initUser.gameResult = this._issueService.getResults();
+      initUser.roundIssueId = this.issueService.activeId;
+      initUser.roundProgress = this.issueService.activeProgress;
     }
     return initUser;
   }
