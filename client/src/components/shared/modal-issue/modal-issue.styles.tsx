@@ -35,3 +35,10 @@ export const StyledSelect = styled(Select)`
     margin-right: auto;
   }
 `;
+
+export const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+`;

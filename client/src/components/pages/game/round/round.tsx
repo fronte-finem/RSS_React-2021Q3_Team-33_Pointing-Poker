@@ -25,7 +25,10 @@ export const Round = observer(function Round() {
     <StyledRound>
       <Center>
         {title}
-        <IssueCard issue={gameState.currentIssue} />
+        <IssueCard
+          issue={gameState.currentIssue}
+          controls={gameState.isDealer}
+        />
         <Statistics issueId={gameState.currentIssue?.id} />
       </Center>
       <Center>{gameState.settings.timeout ? <GameTimer /> : null}</Center>

@@ -23,12 +23,14 @@ import {
 export interface IssueProps {
   issue?: Issue;
   className?: string;
+  controls?: boolean;
 }
 
-export const IssueCard: React.FC<IssueProps> = observer(function IssueCard({
+export const IssueCard = observer(function IssueCard({
   issue,
   className,
-}) {
+  controls,
+}: IssueProps) {
   const { gameState, modalState, socketState } = useStateService();
 
   if (!issue) return null;
@@ -115,7 +117,7 @@ export const IssueCard: React.FC<IssueProps> = observer(function IssueCard({
         </Tooltip>
         <StyledIssuePriority>{issue.priority}</StyledIssuePriority>
       </StyledIssueCardInfo>
-      {gameState.isDealer ? (
+      {controls ? (
         <StyledIssueCardControls>
           {processBtn}
           {editBtn}
