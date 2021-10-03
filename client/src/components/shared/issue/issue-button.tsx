@@ -64,7 +64,9 @@ export const IssuesLoadControl = observer(({ className }: Props) => {
     if (!file) return;
     const issues = await parseFileToIssue(file);
     if (issues.length === 0) return;
-    gameState.appendIssues(issues.map((item) => ({ ...item, id: '' })));
+    gameState.appendIssues(
+      issues.map((item) => ({ ...item, id: `${Math.random()}` }))
+    );
   };
 
   const onClick = () => {

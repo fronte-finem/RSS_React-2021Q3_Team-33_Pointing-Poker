@@ -14,6 +14,10 @@ export const validateIssue = (
   if (typeof data !== 'object') return undefined;
   if (data === null) return undefined;
 
+  if (typeof data.title === 'number') {
+    data.title = String(data.title);
+  }
+
   if (!isNoEmptyString(data.title)) return undefined;
   if (!isNoEmptyString(data.priority)) return undefined;
 
