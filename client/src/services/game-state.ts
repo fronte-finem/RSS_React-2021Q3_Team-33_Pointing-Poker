@@ -26,6 +26,9 @@ import {
 } from '@shared/api-types/game-card-settings';
 import { ModalState } from '@client/services/modal-state';
 import { validateIssueTitle } from '@shared/api-validation/issue';
+import { Store } from '@client/utils/store';
+
+const SETTINGS_STORE_KEY = 't33-pp:settings';
 
 export const enum AppMode {
   ENTRY = 'entry',
@@ -45,6 +48,8 @@ export interface UserFE extends User {
 }
 
 export class GameState {
+  private store = new Store<GameSettings>(SETTINGS_STORE_KEY);
+
   @observable public appMode!: AppMode;
   @observable public id!: string;
   @observable public title!: string;
@@ -174,6 +179,7 @@ export class GameState {
     this.title = initDealer.gameTitle;
     this.selfUserId = selfUserId;
     this.settings = initDealer.gameSettings;
+    this.settings = this.store.load(initDealer.gameSettings);
     this.users = initDealer.users;
   }
 
@@ -285,6 +291,7 @@ export class GameState {
     this.appMode = AppMode.GAME;
     this.issues = issues;
     this.settings = settings;
+    this.store.save(settings);
   }
 
   @action public endGame(results: GameResults) {
@@ -309,34 +316,42 @@ export class GameState {
 
   @action public setCardsDeck(cardsSet: number[]) {
     this.settings.cardsDeck = cardsSet;
+    this.store.save(this.settings);
   }
 
   @action public setCardsDeckExtras(cardsSet: ExtraScoreKind[]) {
     this.settings.cardsDeckExtras = cardsSet;
+    this.store.save(this.settings);
   }
 
   @action public setScoreType(scoreType: string) {
     this.settings.cardsScoreType = scoreType;
+    this.store.save(this.settings);
   }
 
   @action public setAutoJoinToGame(autoJoinToGame: boolean) {
     this.settings.autoJoinToGame = autoJoinToGame;
+    this.store.save(this.settings);
   }
 
   @action public setAutoOpenCards(autoOpenCards: boolean) {
     this.settings.autoOpenCards = autoOpenCards;
+    this.store.save(this.settings);
   }
 
   @action public setChangeAfterRoundEnd(changeAfterRoundEnd: boolean) {
     this.settings.changeAfterRoundEnd = changeAfterRoundEnd;
+    this.store.save(this.settings);
   }
 
   @action public setDealerGamer(dealerGamer: boolean) {
     this.settings.dealerGamer = dealerGamer;
+    this.store.save(this.settings);
   }
 
   @action public setTimeout(timeout?: number) {
     this.settings.timeout = timeout;
+    this.store.save(this.settings);
   }
 
   @computed public get cardsDeck(): CardScore[] {
