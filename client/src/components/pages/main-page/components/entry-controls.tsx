@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Form, message } from 'antd';
+import { Form } from 'antd';
 import { useStateService } from '@client/providers/state-service';
 import { EntryModal } from './entry-modal';
 import {
@@ -39,7 +39,6 @@ export const EntryControls = observer(() => {
     await socketState.joinGame(gameId);
     if (socketState.isFail) {
       socketState.disconnect();
-      message.error(socketState.failMessage);
       return;
     }
     showJoinToGameModal();

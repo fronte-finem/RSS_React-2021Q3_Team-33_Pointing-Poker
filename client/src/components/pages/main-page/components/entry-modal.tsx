@@ -112,7 +112,6 @@ export const EntryModal: React.FC<Props> = observer(
         <StyledFooter>
           <Avatar size={83} src={avatar} user={{ firstName, lastName }} />
         </StyledFooter>
-        {socketState.isFail && <div>{socketState.failMessage}</div>}
       </Modal>
     );
   }
