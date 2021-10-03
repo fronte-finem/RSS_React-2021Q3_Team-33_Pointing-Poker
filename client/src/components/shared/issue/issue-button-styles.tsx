@@ -1,5 +1,5 @@
-import styled, { DefaultTheme } from 'styled-components';
-import { PlusOutlined } from '@ant-design/icons';
+import styled, { css, DefaultTheme } from 'styled-components';
+import { DownloadOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   issueCardControlsStyle,
   issueCardInfoStyle,
@@ -10,7 +10,7 @@ import { fontText } from '@client/themes/typography';
 const selector = ({ theme }: { theme: DefaultTheme }) =>
   theme.issueCard.button.default;
 
-export const StyledIssueButtonCard = styled.button`
+const issueButtonCard = css`
   ${issueCardStyle};
 
   --icon-normal: ${(props) => selector(props).normal};
@@ -38,6 +38,14 @@ export const StyledIssueButtonCard = styled.button`
   }
 `;
 
+export const StyledIssueButtonCard = styled.button`
+  ${issueButtonCard};
+`;
+
+export const StyledIssuesLoadInput = styled.input`
+  display: none;
+`;
+
 export const StyledIssueButtonCardInfo = styled.div`
   ${issueCardInfoStyle};
 `;
@@ -52,8 +60,16 @@ export const StyleIssueTitle = styled.div`
   font-size: var(--title-font-size);
 `;
 
-export const StyleAddIcon = styled(PlusOutlined)`
+const styleIcon = css`
   color: var(--icon);
   font-size: var(--icon-font-size);
   transition: all 300ms;
+`;
+
+export const StyleAddIcon = styled(PlusOutlined)`
+  ${styleIcon};
+`;
+
+export const StyledLoadIcon = styled(DownloadOutlined)`
+  ${styleIcon};
 `;

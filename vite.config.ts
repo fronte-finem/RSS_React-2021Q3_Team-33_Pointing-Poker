@@ -40,6 +40,20 @@ export default defineConfig(({ mode, command }) => {
       minify: 'esbuild',
       sourcemap: 'hidden',
       brotliSize: false,
+      rollupOptions: {
+        output: {
+          sourcemapExcludeSources: true,
+          manualChunks: {
+            react: ['react', 'react-dom', 'react-router-dom'],
+            antd: ['antd', '@ant-design/icons'],
+            mobx: ['mobx', 'mobx-react-lite'],
+            xlsx: ['xlsx'],
+            styled: ['styled-components'],
+            frontend: ['socket.io-client'],
+            backend: ['socket.io', 'express', 'cors'],
+          },
+        },
+      },
     },
 
     plugins: [

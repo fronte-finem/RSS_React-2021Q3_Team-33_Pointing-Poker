@@ -50,3 +50,17 @@ export function getBase64(file?: Blob): Promise<string | null> {
     )
   );
 }
+
+export const loadFile = (file: File): Promise<Uint8Array> => {
+  const reader = new FileReader();
+  reader.readAsArrayBuffer(file);
+  return new Promise<Uint8Array>((resolve) => {
+    reader.onload = () => {
+      if (reader.result instanceof ArrayBuffer) {
+        resolve(new Uint8Array(reader.result));
+        return;
+      }
+      resolve(new Uint8Array());
+    };
+  });
+};

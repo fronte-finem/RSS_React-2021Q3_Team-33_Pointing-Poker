@@ -14,11 +14,11 @@ export enum Priority {
  */
 export interface IssueBase {
   title: string;
+  priority: Priority;
   /**
    * @format uri
    */
-  link: string;
-  priority: Priority;
+  link?: string;
 }
 
 /**

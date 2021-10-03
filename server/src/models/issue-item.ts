@@ -17,7 +17,7 @@ const cloneScore = (score: UserScore): UserScore => ({ ...score });
 export class IssueItem {
   private readonly _id: string = randomUUID();
   private _title: string;
-  private _link: string;
+  private _link?: string;
   private _priority: Priority;
   private _scores: UserScore[] = [];
 

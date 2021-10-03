@@ -25,6 +25,7 @@ module.exports = {
     'react/prop-types': 'off',
     'react/require-default-props': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'no-param-reassign': ['error', { props: false }],
     'no-underscore-dangle': ['warn', { allowAfterThis: true }],
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
