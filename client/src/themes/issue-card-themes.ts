@@ -2,16 +2,16 @@ import { IssueCardTheme } from 'types/styled';
 import { DarkThemeColor, LightThemeColor } from '@client/themes/colors';
 
 export const lightIssueCardTheme: IssueCardTheme = {
-  fg: LightThemeColor.FONT_TITLE,
-  bg: LightThemeColor.WHITE,
+  fg: LightThemeColor.WHITE,
+  bg: LightThemeColor.PRIMARY_LIGHT,
   priority: LightThemeColor.FONT_TEXT,
   current: {
-    fg: LightThemeColor.WHITE,
-    bg: LightThemeColor.PRIMARY_LIGHT,
+    fg: LightThemeColor.FONT_TITLE,
+    bg: LightThemeColor.ACCENT_DARK,
   },
   button: {
     default: {
-      normal: LightThemeColor.ACCENT_DARK,
+      normal: LightThemeColor.WHITE,
       hover: LightThemeColor.PRIMARY,
       active: LightThemeColor.PRIMARY_DARK,
     },
@@ -28,7 +28,7 @@ export const darkIssueCardTheme: IssueCardTheme = {
   bg: DarkThemeColor.PRIMARY_LIGHT,
   priority: DarkThemeColor.FONT_TEXT,
   current: {
-    fg: DarkThemeColor.WHITE,
+    fg: DarkThemeColor.BLACK,
     bg: DarkThemeColor.ACCENT,
   },
   button: {

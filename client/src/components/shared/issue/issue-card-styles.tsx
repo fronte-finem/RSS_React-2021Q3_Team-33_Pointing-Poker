@@ -31,8 +31,7 @@ export const StyleIssueCard = styled.div<Props>`
   --fg: ${(props) => selector(props).fg};
   --bg: ${(props) => selector(props).bg};
 
-  cursor: ${({ isGameMode }) => (isGameMode ? 'pointer' : 'default')};
-  outline: ${({ isHaveStats }) => (isHaveStats ? '3px solid #f80' : 'unset')};
+  cursor: default;
 `;
 
 export const StyledIssueCardInfo = styled.div`
@@ -68,11 +67,41 @@ export const StyledIssuePriority = styled.div`
   ${fontTextSmall};
 `;
 
+export const StyledButtonText = styled.div`
+  order: -1;
+  overflow: hidden;
+  text-transform: uppercase;
+  width: 0;
+  padding: 0;
+  transition: all 200ms;
+`;
+
 const StyledButton = styled(AntButton)`
-  display: flex;
-  justify-content: center;
+  position: relative;
+  height: 35px;
+  display: grid;
+  grid-template-columns: auto 35px;
+  justify-items: center;
   align-items: center;
+  overflow: hidden;
+
+  padding: 0;
   border: none;
+  border-radius: 50px;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.bg};
+
+    & ${StyledButtonText} {
+      padding: 10px;
+      width: 130px;
+    }
+  }
+
+  & span,
+  & svg {
+    display: block;
+  }
 `;
 
 export const StyledDefaultButton = styled(StyledButton)`
