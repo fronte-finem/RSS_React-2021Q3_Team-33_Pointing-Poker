@@ -27,11 +27,16 @@ export interface ForeGroundBackGround {
 }
 
 export interface InputTheme extends ForeGroundBackGround {}
+
 export interface SelectTheme extends ForeGroundBackGround {}
-export interface GameCardTheme extends ForeGroundBackGround {
-  hover: string;
+
+export interface GameCardTheme {
+  default: ForeGroundBackGround;
+  hover: ForeGroundBackGround;
   active: ForeGroundBackGround;
+  cover: ForeGroundBackGround;
 }
+
 export interface TimerTheme extends ForeGroundBackGround {
   desc: string;
 }
@@ -40,6 +45,7 @@ export interface ModalTheme extends ForeGroundBackGround {
   title: string;
   kick: string;
 }
+
 export interface AvatarTheme extends ForeGroundBackGround {}
 
 export interface UserCardTheme extends ForeGroundBackGround {
@@ -52,9 +58,11 @@ export interface UserCardTheme extends ForeGroundBackGround {
 export interface ChatModalTheme extends ForeGroundBackGround {
   failMessage: string;
 }
+
 export interface ChatMessageTheme extends ForeGroundBackGround {
   dateTime: string;
 }
+
 export interface ChatTheme {
   modal: ChatModalTheme;
   message: ChatMessageTheme;
