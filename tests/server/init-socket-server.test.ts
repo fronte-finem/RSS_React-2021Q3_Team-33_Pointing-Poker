@@ -10,7 +10,7 @@ let ioServer: PointingPokerServer | undefined;
 
 beforeEach(() => {
   httpServer = createServer();
-  ioServer = initSocketServer(httpServer);
+  ioServer = initSocketServer(httpServer, false);
   httpServer.listen(PORT);
 });
 
