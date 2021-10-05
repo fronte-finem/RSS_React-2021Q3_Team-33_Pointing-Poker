@@ -24,7 +24,7 @@
       "@server/*": ["server/src/*"]
     }
   },
-  "include": ["./shared", "./client", "./server"],
+  "include": ["./tests", "./shared", "./client", "./server"],
   "ts-node": {
     "transpileOnly": true,
     "require": ["tsconfig-paths/register"],

@@ -19,7 +19,12 @@ module.exports = {
     DEV_MODE: true,
     PROD_MODE: false,
   },
-  roots: ['<rootDir>/client/src/', '<rootDir>/server/src/'],
+  roots: [
+    '<rootDir>/tests/',
+    '<rootDir>/shared/',
+    '<rootDir>/client/src/',
+    '<rootDir>/server/src/',
+  ],
   moduleDirectories: ['node_modules', 'client/src', 'server/src'],
   moduleNameMapper: {
     [FONT]: FILE_MOCK,
