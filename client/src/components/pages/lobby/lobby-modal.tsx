@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { Input } from '@client/components/shared/input/input';
 import { Modal } from '@client/components/shared/modal/modal';
 import { useStateService } from '@client/providers/state-service';
-import { message } from 'antd';
 
 interface LobbyEditTitleModalProps {
   isVisible: boolean;
@@ -26,9 +25,7 @@ export const LobbyEditTitleModal: React.FC<LobbyEditTitleModalProps> = observer(
 
     const takeTitleChanges = async () => {
       await socketState.changeGameTitle(titleValue);
-      if (socketState.isFail) {
-        message.error(socketState.failMessage);
-      } else {
+      if (!socketState.isFail) {
         setIsVisible(false);
       }
     };

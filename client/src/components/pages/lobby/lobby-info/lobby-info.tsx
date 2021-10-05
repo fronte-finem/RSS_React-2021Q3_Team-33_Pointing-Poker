@@ -22,7 +22,7 @@ export const LobbyInfoSection = observer(() => {
     <>
       <InfoTitle>
         <StyleLobbyInfo span={24}>
-          <StyledTitle level={2}>{gameState.title}</StyledTitle>
+          <StyledTitle level={1}>{gameState.title}</StyledTitle>
           {gameState.isDealer ? (
             <EditTitleButton setEditModal={setIsEditModal} />
           ) : null}

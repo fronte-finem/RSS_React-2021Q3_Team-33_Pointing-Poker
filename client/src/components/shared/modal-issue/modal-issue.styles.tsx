@@ -21,6 +21,16 @@ export const StyledFormItem = styled(Form.Item)`
     ${fontSubtitle};
     color: ${({ theme }) => theme.modal.title};
   }
+
+  && .ant-form-item-control {
+    position: relative;
+    display: block;
+  }
+
+  && .ant-form-item-explain,
+  .ant-form-item-extra {
+    position: absolute;
+  }
 `;
 
 export const StyledInput = styled(Input)`
@@ -34,4 +44,11 @@ export const StyledSelect = styled(Select)`
     max-width: 150px;
     margin-right: auto;
   }
+`;
+
+export const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 `;

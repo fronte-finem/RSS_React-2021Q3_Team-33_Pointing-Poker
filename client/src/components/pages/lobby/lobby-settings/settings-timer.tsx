@@ -7,7 +7,9 @@ import { LobbyTimer } from '@client/components/pages/lobby/lobby-settings/lobby-
 
 export const SettingsTimer = observer(() => {
   const { gameState } = useStateService();
-  const [isShowGameTimer, setIsShowGameTimer] = useState(false);
+  const [isShowGameTimer, setIsShowGameTimer] = useState(
+    Boolean(gameState.settings.timeout)
+  );
 
   const toggleTimer = (isShow: boolean) => {
     setIsShowGameTimer(isShow);
@@ -19,7 +21,10 @@ export const SettingsTimer = observer(() => {
   return (
     <>
       <SettingsItem title="Is timer needed:">
-        <Toggle onChange={toggleTimer} />
+        <Toggle
+          onChange={toggleTimer}
+          defaultChecked={Boolean(gameState.settings.timeout)}
+        />
       </SettingsItem>
       {isShowGameTimer ? (
         <SettingsItem title="Round time:">

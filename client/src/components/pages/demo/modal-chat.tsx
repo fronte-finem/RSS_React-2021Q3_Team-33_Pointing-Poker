@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { message } from 'antd';
 import { Chat } from '@client/components/shared/chat/chat';
 import { Role } from '@shared/api-types/user';
 import { UserFE } from '@client/services/game-state';
@@ -95,11 +94,6 @@ export const PageChatDemo = observer(() => {
       2000
     );
   }, []);
-
-  useEffect(() => {
-    if (!modalState.systemMessage) return;
-    message.info(modalState.systemMessage).then(null);
-  }, [modalState.systemMessage]);
 
   return (
     <div style={{ padding: 20 }}>

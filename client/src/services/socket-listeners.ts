@@ -23,13 +23,15 @@ export const setDealerListeners: SocketListenerSetter = ({
 export const setUserListeners: SocketListenerSetter = ({
   socket,
   modalState,
+  gameState,
 }) => {
   socket?.on(ApiServerEvents.KICK_VOTE_STARTED, (kickVoteInit) =>
     modalState.initKickVote(kickVoteInit)
   );
-  socket?.on(ApiServerEvents.KICKED, (message) =>
-    modalState.initSystemMessage(message)
-  );
+  socket?.on(ApiServerEvents.KICKED, (message) => {
+    gameState.reset();
+    modalState.initSystemMessage(message);
+  });
 };
 
 export const setSharedListeners: SocketListenerSetter = ({

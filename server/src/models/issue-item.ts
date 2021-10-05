@@ -51,6 +51,10 @@ export class IssueItem {
     };
   }
 
+  public getProgress(): string[] {
+    return this._scores.map(({ userId }) => userId);
+  }
+
   public modify({ title, link, priority }: IssueBase) {
     this._title = title;
     this._link = link;

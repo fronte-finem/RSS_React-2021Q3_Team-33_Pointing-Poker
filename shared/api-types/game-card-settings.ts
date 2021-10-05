@@ -38,3 +38,10 @@ export const isNoneScore = (score: CardScore): boolean =>
   score === '' || score === undefined || score === null;
 
 export const isRealScore = (score: CardScore): boolean => !isNoneScore(score);
+
+export function cardScoreToNum(cardScore: CardScore): number | undefined {
+  if (cardScore === ExtraScoreKind.ZERO) return 0;
+  if (cardScore === ExtraScoreKind.ONE_HALF) return 0.5;
+  if (typeof cardScore === 'number') return cardScore;
+  return undefined;
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
   GameCardBase,
@@ -7,22 +7,19 @@ import {
 import { isNoneScore } from '@shared/api-types/game-card-settings';
 import { GameCardFront } from '@client/components/shared/game-card/game-card-front';
 import { LogoSvg } from '@client/components/app/header/logo';
-import { useStateService } from '@client/providers/state-service';
-import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  QuestionCircleOutlined,
-} from '@ant-design/icons';
+import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 
 export const GameCardRoundResult = observer(
   ({ score, className }: GameCardProps) => {
-    const { gameState } = useStateService();
-
     const front = isNoneScore(score) ? (
-      <div>{gameState.currentIssue ? <CloseCircleOutlined /> : ''}</div>
+      <LogoSvg />
     ) : (
       <GameCardFront score={score} />
     );
+
+    const style = isNoneScore(score)
+      ? ({ '--game-card-flip': '180deg' } as CSSProperties)
+      : undefined;
 
     return (
       <GameCardBase
@@ -30,6 +27,7 @@ export const GameCardRoundResult = observer(
         className={className}
         front={front}
         back={<LogoSvg />}
+        style={style}
       />
     );
   }
@@ -55,7 +53,9 @@ export const GameCardUserThinking = observer(
         <QuestionCircleOutlined />
       </div>
     );
-    return <GameCardBase className={className} front={side} back={side} />;
+    return (
+      <GameCardBase className={className} front={side} back={<LogoSvg />} />
+    );
   }
 );
 
@@ -66,6 +66,8 @@ export const GameCardUserDecided = observer(
         <CheckCircleOutlined />
       </div>
     );
-    return <GameCardBase className={className} front={side} back={side} />;
+    return (
+      <GameCardBase className={className} front={side} back={<LogoSvg />} />
+    );
   }
 );

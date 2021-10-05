@@ -42,4 +42,16 @@ export interface InitUser {
    * Если игра еще не началась - `undefined`, результаты пройденных раундов.
    */
   gameResult?: GameResults;
+  /**
+   * Активный раунд.
+   */
+  roundRun?: boolean;
+  /**
+   * Активный раунд.
+   */
+  roundIssueId?: string;
+  /**
+   * Прогресс по активному раунду.
+   */
+  roundProgress?: string[];
 }

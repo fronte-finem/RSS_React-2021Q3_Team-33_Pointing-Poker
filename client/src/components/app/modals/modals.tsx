@@ -7,10 +7,15 @@ import { ModalIssueCreate } from '@client/components/shared/modal-issue/modal-is
 import { ModalIssueEdit } from '@client/components/shared/modal-issue/modal-issue-edit';
 import { ModalIssueDelete } from '@client/components/shared/modal-issue/modal-issue-delete';
 import { ModalChat } from '@client/components/shared/modal-chat/modal-chat';
+import { ModalAllowJoin } from '@client/components/shared/modal-allow-join/modal-allow-join';
 
 export const Modals = observer(() => {
   return (
     <div>
+      <Alert.ErrorBoundary>
+        <ModalAllowJoin />
+      </Alert.ErrorBoundary>
+
       <Alert.ErrorBoundary>
         <ModalKickInit />
       </Alert.ErrorBoundary>

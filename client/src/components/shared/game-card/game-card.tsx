@@ -21,6 +21,7 @@ export interface GameCardBaseProps {
   invisible?: boolean;
   interactive?: boolean;
   className?: string;
+  style?: React.CSSProperties;
   onClick?: () => void;
 }
 
@@ -31,11 +32,13 @@ export const GameCardBase = observer(
     invisible,
     interactive,
     className,
+    style,
     onClick,
   }: GameCardBaseProps) => {
     return (
       <CardContainer
         className={className}
+        style={style}
         invisible={invisible}
         interactive={interactive}
         onClick={onClick}>

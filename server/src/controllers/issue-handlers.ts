@@ -3,11 +3,12 @@ import { ApiFailMessage } from '@shared/api-validation/api-fail-message';
 import { ApiServerEvents } from '@shared/api-types/api-events';
 import { PointingPokerServerSocket } from 'types/server-socket';
 import { AckCallback, setFail, setOk } from '@shared/api-types/api-events-maps';
-import { Issue, IssueBase, Priority } from '@shared/api-types/issue';
+import { Issue, IssueBase } from '@shared/api-types/issue';
 import { CardScore } from '@shared/api-types/game-card-settings';
-import { ISSUE_TITLE_MAX_LENGTH } from '@shared/api-validation/api-constants';
-
-const getPriorities = () => Object.values(Priority).join(', ');
+import {
+  validateIssuePriority,
+  validateIssueTitle,
+} from '@shared/api-validation/issue';
 
 const conditionalEmit = (
   event: ApiServerEvents,
@@ -21,19 +22,18 @@ const conditionalEmit = (
   }
 };
 
-const validateAddIssue = ({ title, priority }: IssueBase) => {
-  if (!title) return ApiFailMessage.ISSUE_NEED_TITLE;
-  if (title.length > ISSUE_TITLE_MAX_LENGTH)
-    return `${ApiFailMessage.ISSUE_TITLE_TO_LONG}${ISSUE_TITLE_MAX_LENGTH}`;
-  if (!priority)
-    return `${ApiFailMessage.ISSUE_NEED_PRIORITY}${getPriorities()}`;
-  return null;
-};
-
 export const getAddIssueHandler =
   (socket: PointingPokerServerSocket, game: GameService) =>
   (issueData: IssueBase, ackCallback: AckCallback<Issue>) => {
-    const failMessage = validateAddIssue(issueData);
+    let failMessage = validateIssueTitle(
+      issueData,
+      game.issueService.getIssues()
+    );
+    if (failMessage) {
+      ackCallback(setFail(failMessage));
+      return;
+    }
+    failMessage = validateIssuePriority(issueData);
     if (failMessage) {
       ackCallback(setFail(failMessage));
       return;
@@ -43,6 +43,10 @@ export const getAddIssueHandler =
       return;
     }
     const issue = game.issueService.add(issueData);
+    if (!issue) {
+      ackCallback(setFail('Issue adding failed'));
+      return;
+    }
     ackCallback(setOk(issue));
     conditionalEmit(ApiServerEvents.ISSUE_ADDED, issue, game);
   };
@@ -66,12 +70,21 @@ export const getModifyIssueHandler =
       ackCallback(setFail(ApiFailMessage.ISSUE_NOT_FOUND));
       return;
     }
-    const failMessage = validateAddIssue(issue);
+    let failMessage = validateIssueTitle(issue, game.issueService.getIssues());
+    if (failMessage) {
+      ackCallback(setFail(failMessage));
+      return;
+    }
+    failMessage = validateIssuePriority(issue);
     if (failMessage) {
       ackCallback(setFail(failMessage));
       return;
     }
     const modifiedIssue = game.issueService.modify(issue);
+    if (!modifiedIssue) {
+      ackCallback(setFail('Issue modifying failed'));
+      return;
+    }
     ackCallback(setOk(modifiedIssue));
     conditionalEmit(ApiServerEvents.ISSUE_EDITED, modifiedIssue, game);
   };
@@ -79,7 +92,7 @@ export const getModifyIssueHandler =
 export const getRoundStartHandler =
   (socket: PointingPokerServerSocket, game: GameService) =>
   (issueId: string, ackCallback: AckCallback<string>) => {
-    if (game.issueService.isRoundActive) {
+    if (game.issueService.isRoundActiveRun) {
       ackCallback(setFail(ApiFailMessage.ACTIVE_ROUND));
       return;
     }
@@ -94,8 +107,9 @@ export const getRoundStartHandler =
     if (game.gameSettings.timeout) {
       timerId = global.setTimeout(() => {
         if (!game.issueService.isRoundActive) return;
-        const results = game.issueService.end();
-        game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, results);
+        const result = game.issueService.end();
+        if (!result) return;
+        game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, result);
       }, 1000 * game.gameSettings.timeout);
     }
 
@@ -111,32 +125,55 @@ export const getRoundEndHandler =
       return;
     }
     ackCallback(setOk(true));
-    const results = game.issueService.end();
-    game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, results);
+    const result = game.issueService.end();
+    if (!result) return;
+    game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, result);
   };
 
 export const getScoreAddHandler =
   (socket: PointingPokerServerSocket, game: GameService) =>
   (score: CardScore, ackCallback: AckCallback<CardScore>) => {
-    if (!game.issueService.isRoundActive) {
+    const isNoRound = !game.issueService.isRoundActive;
+    const isRoundStopped = !game.issueService.isRoundActiveRun;
+    const isAfterRoundForbidden = !game.gameSettings.changeAfterRoundEnd;
+
+    if (isNoRound) {
       ackCallback(setFail(ApiFailMessage.NO_ACTIVE_ROUND));
       return;
     }
+    if (isRoundStopped && isAfterRoundForbidden) {
+      ackCallback(setFail(ApiFailMessage.ADD_SCORE_AFTER_ROUND_UNSET));
+      return;
+    }
+
     const userId = socket.id;
     if (!game.gameSettings.dealerGamer && userId === game.dealerSocket.id) {
       ackCallback(setFail(ApiFailMessage.DEALER_NOT_GAMER));
       return;
     }
+
     game.issueService.addScore({ userId, score });
     ackCallback(setOk(score));
     game.server.to(game.room).emit(ApiServerEvents.SCORE_ADDED, userId);
 
+    if (isRoundStopped && !isAfterRoundForbidden) {
+      const result = game.issueService.getRoundScore();
+      if (!result) return;
+      game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, result);
+      return;
+    }
+
     if (game.gameSettings.autoOpenCards) {
-      const plusDealer = game.gameSettings.dealerGamer ? 1 : 0;
-      const gamersNum = game.userService.getGamers().length + plusDealer;
-      const scoresNum = game.issueService.getRoundScore()!.scores.length;
-      if (scoresNum < gamersNum) return;
-      const results = game.issueService.end();
-      game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, results);
+      autoOpenCards(game);
     }
   };
+
+function autoOpenCards(game: GameService) {
+  const plusDealer = game.gameSettings.dealerGamer ? 1 : 0;
+  const gamersNum = game.userService.getGamers().length + plusDealer;
+  const scoresNum = game.issueService.getRoundScore()!.scores.length;
+  if (scoresNum < gamersNum) return;
+  const results = game.issueService.end();
+  if (!results) return;
+  game.server.to(game.room).emit(ApiServerEvents.ROUND_ENDED, results);
+}

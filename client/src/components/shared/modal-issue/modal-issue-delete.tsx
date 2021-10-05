@@ -1,8 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { message } from 'antd';
 import { Modal } from '@client/components/shared/modal/modal';
 import { useStateService } from '@client/providers/state-service';
+import { IssueCard } from '@client/components/shared/issue/issue-card';
+import { Center } from './modal-issue.styles';
 
 export const ModalIssueDelete: React.FC = observer(() => {
   const { gameState, modalState, socketState } = useStateService();
@@ -19,9 +20,7 @@ export const ModalIssueDelete: React.FC = observer(() => {
       return;
     }
     await socketState.deleteIssue(modalState.deleteIssue.id);
-    if (socketState.isFail) {
-      message.error(socketState.failMessage);
-    } else {
+    if (!socketState.isFail) {
       onCancel();
     }
   };
@@ -35,9 +34,9 @@ export const ModalIssueDelete: React.FC = observer(() => {
       onOk={onOk}
       onCancel={onCancel}>
       <p>Are you really want to delete issue:</p>
-      <pre style={{ textAlign: 'left' }}>
-        {JSON.stringify(modalState.deleteIssue, null, 2)}
-      </pre>
+      <Center>
+        <IssueCard issue={modalState.deleteIssue!} />
+      </Center>
     </Modal>
   );
 });

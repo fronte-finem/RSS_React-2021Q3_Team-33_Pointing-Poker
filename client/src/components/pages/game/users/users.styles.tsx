@@ -8,7 +8,10 @@ export const StyledUsers = styled.div`
 
 export const Settings = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
 `;
 
 export const Grid = styled.div`

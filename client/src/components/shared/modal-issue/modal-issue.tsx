@@ -12,9 +12,9 @@ import {
   StyledWrapper,
 } from './modal-issue.styles';
 
-const options: IOption[] = Object.entries(Priority).map(([value, label]) => ({
+const options: IOption[] = Object.values(Priority).map((value) => ({
+  label: value,
   value,
-  label,
 }));
 
 interface Props {
@@ -22,7 +22,7 @@ interface Props {
   title: string;
   initFieldsHook: (form: FormInstance) => void;
   onReset: () => void;
-  onSubmit: (issue: IssueBase) => Promise<void>;
+  onSubmit: (issue: IssueBase) => Promise<boolean>;
 }
 
 export const ModalIssue: React.FC<Props> = observer(
@@ -42,8 +42,8 @@ export const ModalIssue: React.FC<Props> = observer(
     };
 
     const onFinish = async (issue: IssueBase) => {
-      await onSubmit(issue);
-      if (socketState.isFail) return;
+      const ok = await onSubmit(issue);
+      if (!ok) return;
       resetForm();
     };
 
@@ -63,7 +63,10 @@ export const ModalIssue: React.FC<Props> = observer(
           labelCol={{ span: 6 }}
           labelAlign="left">
           <StyledWrapper>
-            <StyledFormItem label="Title" name="title">
+            <StyledFormItem
+              label="Title"
+              name="title"
+              rules={[{ required: true }]}>
               <StyledInput />
             </StyledFormItem>
             <StyledFormItem label="Link" name="link">

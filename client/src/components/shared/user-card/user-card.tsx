@@ -27,6 +27,8 @@ interface UserCardProps {
   avatarSize?: number;
 }
 
+export const USER_ALLOW_JOIN_ID = 'allow user join 🙂';
+
 export const UserCard: React.FC<UserCardProps> = observer(
   ({ user, className, style, avatarSize = 50 }) => {
     const { modalState, gameState } = useStateService();
@@ -39,7 +41,11 @@ export const UserCard: React.FC<UserCardProps> = observer(
 
     const isOwner = gameState.selfUserId === id;
     const isKickPossible =
-      !isDisconnected && !isKicked && !isOwner && role !== Role.DEALER;
+      id !== USER_ALLOW_JOIN_ID &&
+      !isDisconnected &&
+      !isKicked &&
+      !isOwner &&
+      role !== Role.DEALER;
 
     const onKick = async () => {
       modalState.initKickUser(id);

@@ -19,7 +19,11 @@ export const LobbyIssueSection: React.FC = observer(() => {
       <IssuesLoadControl />
       <StyleLobbyIssueGrid>
         {gameState.issues.map((issue) => (
-          <IssueCard key={issue.id} issue={issue} />
+          <IssueCard
+            key={issue.id}
+            issue={issue}
+            controls={gameState.isDealer}
+          />
         ))}
         <IssueButton />
       </StyleLobbyIssueGrid>

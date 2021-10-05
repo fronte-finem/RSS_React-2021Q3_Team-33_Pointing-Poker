@@ -1,9 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Tooltip } from 'antd';
+import { Tooltip, TooltipProps } from 'antd';
 import { useStateService } from '@client/providers/state-service';
 import { Issue } from '@shared/api-types/issue';
 import {
+  StyledButtonText,
   StyledCancelIcon,
   StyledDangerButton,
   StyledDefaultButton,
@@ -20,15 +21,25 @@ import {
   StyleIssueCard,
 } from './issue-card-styles';
 
+const ZeroDelayTooltip: React.FC<TooltipProps> = ({ children, ...props }) => {
+  return (
+    <Tooltip {...props} placement="top" mouseEnterDelay={0} mouseLeaveDelay={0}>
+      {children}
+    </Tooltip>
+  );
+};
+
 export interface IssueProps {
   issue?: Issue;
   className?: string;
+  controls?: boolean;
 }
 
-export const IssueCard: React.FC<IssueProps> = observer(function IssueCard({
+export const IssueCard = observer(function IssueCard({
   issue,
   className,
-}) {
+  controls,
+}: IssueProps) {
   const { gameState, modalState, socketState } = useStateService();
 
   if (!issue) return null;
@@ -77,29 +88,24 @@ export const IssueCard: React.FC<IssueProps> = observer(function IssueCard({
   const mark = isCurrent ? <StyledMark>Current</StyledMark> : null;
 
   const editBtn = gameState.isModeLobbyDealer ? (
-    <Tooltip placement="top" title="Edit">
-      <StyledDefaultButton type="link" icon={editIcon} onClick={editIssue} />
-    </Tooltip>
+    <StyledDefaultButton type="link" icon={editIcon} onClick={editIssue}>
+      <StyledButtonText>Edit</StyledButtonText>
+    </StyledDefaultButton>
   ) : null;
 
   const deleteBtn = isStop ? null : (
-    <Tooltip placement="top" title="Delete">
-      <StyledDangerButton
-        type="link"
-        icon={gameState.isModeGame ? cancelIcon : deleteIcon}
-        onClick={deleteIssue}
-      />
-    </Tooltip>
+    <StyledDangerButton
+      type="link"
+      icon={gameState.isModeGame ? cancelIcon : deleteIcon}
+      onClick={deleteIssue}>
+      <StyledButtonText>Delete</StyledButtonText>
+    </StyledDangerButton>
   );
 
   const processBtn = gameState.isModeGameDealer ? (
-    <Tooltip placement="top" title={processTitle}>
-      <StyledDefaultButton
-        type="link"
-        icon={processIcon}
-        onClick={processRound}
-      />
-    </Tooltip>
+    <StyledDefaultButton type="link" icon={processIcon} onClick={processRound}>
+      <StyledButtonText>{processTitle}</StyledButtonText>
+    </StyledDefaultButton>
   ) : null;
 
   return (
@@ -110,12 +116,12 @@ export const IssueCard: React.FC<IssueProps> = observer(function IssueCard({
       className={className}>
       <StyledIssueCardInfo>
         {mark}
-        <Tooltip placement="top" title={issue.title}>
+        <ZeroDelayTooltip title={issue.title}>
           <StyledIssueTitle>{issue.title}</StyledIssueTitle>
-        </Tooltip>
+        </ZeroDelayTooltip>
         <StyledIssuePriority>{issue.priority}</StyledIssuePriority>
       </StyledIssueCardInfo>
-      {gameState.isDealer ? (
+      {controls ? (
         <StyledIssueCardControls>
           {processBtn}
           {editBtn}

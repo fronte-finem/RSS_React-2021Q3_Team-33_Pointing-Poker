@@ -56,21 +56,39 @@ export const darkSelectTheme: SelectTheme = {
 };
 
 export const lightGameCardTheme: GameCardTheme = {
-  ...lightDefaultTheme,
-  bg: '#fafafa',
-  fg: LightThemeColor.FONT_TITLE,
-  hover: LightThemeColor.WHITE,
-  active: {
+  default: {
     fg: LightThemeColor.WHITE,
-    bg: LightThemeColor.PRIMARY,
+    bg: LightThemeColor.PRIMARY_LIGHT,
+  },
+  hover: {
+    fg: LightThemeColor.FONT_TITLE,
+    bg: LightThemeColor.ACCENT_DARK,
+  },
+  active: {
+    fg: LightThemeColor.BLACK,
+    bg: LightThemeColor.ACCENT_LIGHT,
+  },
+  cover: {
+    fg: LightThemeColor.WHITE,
+    bg: LightThemeColor.FONT_SUBTITLE,
   },
 };
 export const darkGameCardTheme: GameCardTheme = {
-  ...darkDefaultTheme,
-  hover: DarkThemeColor.PRIMARY_LIGHT,
-  active: {
+  default: {
     fg: DarkThemeColor.WHITE,
-    bg: DarkThemeColor.ACCENT,
+    bg: DarkThemeColor.PRIMARY_LIGHT,
+  },
+  hover: {
+    fg: DarkThemeColor.BLACK,
+    bg: DarkThemeColor.ACCENT_DARK,
+  },
+  active: {
+    fg: DarkThemeColor.BLACK,
+    bg: DarkThemeColor.ACCENT_LIGHT,
+  },
+  cover: {
+    fg: DarkThemeColor.FONT_TEXT,
+    bg: DarkThemeColor.PRIMARY_DARK,
   },
 };
 

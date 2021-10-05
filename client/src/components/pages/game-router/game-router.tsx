@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { observer } from 'mobx-react-lite';
-import { useStateService } from '@client/providers/state-service';
-import { MainPage } from '@client/components/pages/main-page/main-page';
-import { PageLobby } from '@client/components/pages/lobby/lobby';
 import { useHistory, useParams } from 'react-router-dom';
-import { PageGame } from '@client/components/pages/game/game';
-import { GameResultsPage } from '@client/components/pages/game-result/game-results-page';
+import { useStateService } from '@client/providers/state-service';
+import { Spinner } from '@client/components/pages/game-router/spinner';
+
+const PageEntry = lazy(() => import('./routes/entry'));
+const PageLobby = lazy(() => import('./routes/lobby'));
+const PageGame = lazy(() => import('./routes/game'));
+const PageResults = lazy(() => import('./routes/results'));
 
 export const PageGameRouter: React.FC = observer(() => {
   const { gameState } = useStateService();
@@ -18,11 +20,13 @@ export const PageGameRouter: React.FC = observer(() => {
   }
 
   return (
-    <div>
-      {gameState.isModeEntry ? <MainPage /> : null}
-      {gameState.isModeLobby ? <PageLobby /> : null}
-      {gameState.isModeGame ? <PageGame /> : null}
-      {gameState.isModeResults ? <GameResultsPage /> : null}
-    </div>
+    <Suspense fallback={<Spinner />}>
+      <div>
+        {gameState.isModeEntry ? <PageEntry /> : null}
+        {gameState.isModeLobby ? <PageLobby /> : null}
+        {gameState.isModeGame ? <PageGame /> : null}
+        {gameState.isModeResults ? <PageResults /> : null}
+      </div>
+    </Suspense>
   );
 });

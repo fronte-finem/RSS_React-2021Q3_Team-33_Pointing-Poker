@@ -1,10 +1,12 @@
 import {
   CardScore,
+  cardScoreToNum,
   isNoneScore,
   isRealScore,
 } from '@shared/api-types/game-card-settings';
 import { countItems } from '@shared/utils/array';
 import { Issue, UserScore } from '@shared/api-types/issue';
+import { calcAverage, calcMedian } from '@shared/utils/statistic';
 
 export interface IssueStatsMap {
   issueId: string;
@@ -26,6 +28,25 @@ export function countScores(scores: UserScore[]): Map<CardScore, number> {
     scores.filter(({ score }) => isRealScore(score)),
     ({ score }) => score
   );
+}
+
+function filterNumCards(scores: UserScore[]): number[] {
+  return scores
+    .map(({ score }) => cardScoreToNum(score))
+    .filter((score): score is number => score !== undefined);
+}
+
+type StatsParams = {
+  average: number;
+  median: number;
+};
+
+export function calcStatsParams(userScores: UserScore[]): StatsParams {
+  const scores = filterNumCards(userScores);
+  return {
+    average: calcAverage(scores),
+    median: calcMedian(scores),
+  };
 }
 
 export function calcStats(statsMap: Map<CardScore, number>): CardStats[] {

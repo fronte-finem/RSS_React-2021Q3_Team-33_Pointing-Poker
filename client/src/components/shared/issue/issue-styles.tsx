@@ -28,6 +28,6 @@ export const issueCardControlsStyle = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   padding: 10px;
 `;

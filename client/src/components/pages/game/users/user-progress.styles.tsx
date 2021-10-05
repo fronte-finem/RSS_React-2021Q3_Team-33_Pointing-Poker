@@ -55,7 +55,7 @@ export const StyledGameCardRoundResult = styled(GameCardRoundResult)`
 
 export const StyledGameCardUserDecided = styled(GameCardUserDecided)`
   ${customGameCard};
-  --game-card-flip: 180deg;
+  //--game-card-flip: 180deg;
 `;
 
 export const StyledGameCardUserThinking = styled(GameCardUserThinking)`

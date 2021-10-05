@@ -9,7 +9,7 @@ import {
   GameResults,
   Issue,
   IssueScore,
-  RoundResults,
+  UserScore,
 } from '@shared/api-types/issue';
 import {
   calcStats,
@@ -24,6 +24,11 @@ import {
   CardScore,
   ExtraScoreKind,
 } from '@shared/api-types/game-card-settings';
+import { ModalState } from '@client/services/modal-state';
+import { validateIssueTitle } from '@shared/api-validation/issue';
+import { Store } from '@client/utils/store';
+
+const SETTINGS_STORE_KEY = 't33-pp:settings';
 
 export const enum AppMode {
   ENTRY = 'entry',
@@ -43,6 +48,8 @@ export interface UserFE extends User {
 }
 
 export class GameState {
+  private store = new Store<GameSettings>(SETTINGS_STORE_KEY);
+
   @observable public appMode!: AppMode;
   @observable public id!: string;
   @observable public title!: string;
@@ -53,7 +60,7 @@ export class GameState {
   @observable public settings!: GameSettings;
   @observable public results!: GameResults;
   @observable public roundRun!: boolean;
-  @observable public roundIssueId!: null | string;
+  @observable public roundIssueId?: string;
   @observable public roundProgress!: string[];
 
   private init() {
@@ -67,11 +74,11 @@ export class GameState {
     this.settings = getDefaultGameSettings();
     this.results = [];
     this.roundRun = false;
-    this.roundIssueId = null;
+    this.roundIssueId = undefined;
     this.roundProgress = [];
   }
 
-  constructor() {
+  constructor(private modalState: ModalState) {
     this.init();
     makeObservable(this);
   }
@@ -172,11 +179,13 @@ export class GameState {
     this.title = initDealer.gameTitle;
     this.selfUserId = selfUserId;
     this.settings = initDealer.gameSettings;
+    this.settings = this.store.load(initDealer.gameSettings);
     this.users = initDealer.users;
   }
 
   @action public initUser(initUser: InitUser, selfUserId: string) {
-    this.appMode = AppMode.LOBBY;
+    const isGameRun = Boolean(initUser.gameSettings);
+    this.appMode = isGameRun ? AppMode.GAME : AppMode.LOBBY;
     this.isDealer = false;
     this.id = initUser.gameId;
     this.title = initUser.gameTitle;
@@ -185,6 +194,9 @@ export class GameState {
     this.issues = initUser.issues || [];
     this.results = initUser.gameResult || [];
     this.settings = initUser.gameSettings || this.settings;
+    this.roundRun = initUser.roundRun || false;
+    this.roundIssueId = initUser.roundIssueId || this.issues[0]?.id;
+    this.roundProgress = initUser.roundProgress || [];
   }
 
   @action public addUser(user: User) {
@@ -203,6 +215,16 @@ export class GameState {
     this.issues.push(issue);
   }
 
+  @action public addIssueValidate(issue: Issue): boolean {
+    const message = validateIssueTitle(issue, this.issues);
+    if (message) {
+      this.modalState.initSystemMessage(message);
+      return false;
+    }
+    this.addIssue(issue);
+    return true;
+  }
+
   @action public deleteIssue(issueId: string) {
     this.issues = this.issues.filter(({ id }) => id !== issueId);
   }
@@ -216,6 +238,16 @@ export class GameState {
     }
   }
 
+  @action public modifyIssueValidate(issue: Issue): boolean {
+    const message = validateIssueTitle(issue, this.issues);
+    if (message) {
+      this.modalState.initSystemMessage(message);
+      return false;
+    }
+    this.modifyIssue(issue);
+    return true;
+  }
+
   public getIssues(withCurrent = false): Issue[] {
     if (withCurrent) return this.issues;
     return this.issues.filter(({ id }) => id !== this.roundIssueId);
@@ -225,7 +257,7 @@ export class GameState {
     return this.issues.find(({ id }) => id === issueId);
   }
 
-  public get currentIssue(): Issue | undefined {
+  public getRoundIssue(): Issue | undefined {
     if (!this.roundIssueId) return undefined;
     return this.getIssue(this.roundIssueId);
   }
@@ -254,10 +286,11 @@ export class GameState {
   }
 
   public isHaveStats(issueId: string): boolean {
-    return this.results.some((results) => results.issueId === issueId);
+    const results = this.getIssueScores(issueId);
+    return results.length > 0;
   }
 
-  public getIssueScores(issueId: string): RoundResults {
+  public getIssueScores(issueId: string): UserScore[] {
     return (
       this.results.find((results) => results.issueId === issueId)?.scores || []
     );
@@ -270,7 +303,9 @@ export class GameState {
   @action public startGame({ issues, settings }: GameStartPayload) {
     this.appMode = AppMode.GAME;
     this.issues = issues;
+    this.roundIssueId = this.issues[0]?.id;
     this.settings = settings;
+    this.store.save(settings);
   }
 
   @action public endGame(results: GameResults) {
@@ -295,34 +330,42 @@ export class GameState {
 
   @action public setCardsDeck(cardsSet: number[]) {
     this.settings.cardsDeck = cardsSet;
+    this.store.save(this.settings);
   }
 
   @action public setCardsDeckExtras(cardsSet: ExtraScoreKind[]) {
     this.settings.cardsDeckExtras = cardsSet;
+    this.store.save(this.settings);
   }
 
   @action public setScoreType(scoreType: string) {
     this.settings.cardsScoreType = scoreType;
+    this.store.save(this.settings);
   }
 
   @action public setAutoJoinToGame(autoJoinToGame: boolean) {
     this.settings.autoJoinToGame = autoJoinToGame;
+    this.store.save(this.settings);
   }
 
   @action public setAutoOpenCards(autoOpenCards: boolean) {
     this.settings.autoOpenCards = autoOpenCards;
+    this.store.save(this.settings);
   }
 
   @action public setChangeAfterRoundEnd(changeAfterRoundEnd: boolean) {
     this.settings.changeAfterRoundEnd = changeAfterRoundEnd;
+    this.store.save(this.settings);
   }
 
   @action public setDealerGamer(dealerGamer: boolean) {
     this.settings.dealerGamer = dealerGamer;
+    this.store.save(this.settings);
   }
 
   @action public setTimeout(timeout?: number) {
     this.settings.timeout = timeout;
+    this.store.save(this.settings);
   }
 
   @computed public get cardsDeck(): CardScore[] {
@@ -356,8 +399,8 @@ export class GameState {
   }
 
   public getScore(userId: string): CardScore {
-    if (!this.currentIssue) return undefined;
-    return this.getIssueScores(this.currentIssue.id).find(
+    if (!this.roundIssueId) return undefined;
+    return this.getIssueScores(this.roundIssueId).find(
       (userScore) => userScore.userId === userId
     )?.score;
   }
