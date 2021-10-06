@@ -4,6 +4,7 @@ import { Logo } from '@client/components/app/header/logo';
 import { useStateService } from '@client/providers/state-service';
 import { ChatToggleButton } from '@client/components/shared/chat/chat-toggle-button';
 import { ThemeToggle } from '@client/components/shared/toggle-theme/toggle-theme';
+import { NotificationButton } from '@client/components/shared/chat/notifiaction-button';
 import {
   HeaderLayoutContainer,
   LogoPosition,
@@ -13,7 +14,7 @@ import {
 } from './header.styles';
 
 export const Header = observer(() => {
-  const { gameState } = useStateService();
+  const { gameState, modalState } = useStateService();
 
   return (
     <StyledHeader>
@@ -26,6 +27,10 @@ export const Header = observer(() => {
         <StyledControlsWrapper>
           <ThemeToggle />
           {gameState.isModeEntry ? null : <ChatToggleButton />}
+          {gameState.isModeEntry ||
+          modalState.isNotificationRequested ? null : (
+            <NotificationButton />
+          )}
         </StyledControlsWrapper>
       </HeaderLayoutContainer>
     </StyledHeader>
