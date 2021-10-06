@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { MessageOutlined } from '@ant-design/icons';
+import { MessageOutlined, NotificationOutlined } from '@ant-design/icons';
 import { Button as AntButton } from 'antd';
 
 export const StyledChatButton = styled(AntButton)`
@@ -26,6 +26,10 @@ export const StyledChatButton = styled(AntButton)`
 `;
 
 export const StyledChatButtonIcon = styled(MessageOutlined)`
+  font-size: var(--size);
+`;
+
+export const StyledNotificationIcon = styled(NotificationOutlined)`
   font-size: var(--size);
 `;
 

@@ -7,6 +7,7 @@ import {
 } from '@shared/api-types/chat';
 import { AllowUserToJoin } from '@client/services/game-state';
 import { CardScore } from '@shared/api-types/game-card-settings';
+import { getLast } from '@shared/utils/array';
 
 export interface ChatMessageFE extends ChatMessage {
   system?: boolean;
@@ -15,6 +16,7 @@ export interface ChatMessageFE extends ChatMessage {
 export class ModalState {
   @observable public systemMessage?: null | string = null;
   @observable public messages: ChatMessageFE[] = [];
+  @observable public lastChatMessage?: null | ChatMessageFE = null;
   @observable public chatIsOpen: boolean = false;
   @observable public chatOldMessages: number = 0;
   @observable public createIssue: boolean = false;
@@ -29,9 +31,22 @@ export class ModalState {
   @observable public activeScore?: CardScore;
   @observable public usersCompact: boolean = false;
   @observable public cardsCompact: boolean = false;
+  @observable public notificationPermission: NotificationPermission = 'default';
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  @computed public get isNotificationRequested(): boolean {
+    return this.notificationPermission !== 'default';
+  }
+
+  @computed public get isNotificationAllowed(): boolean {
+    return this.notificationPermission === 'granted';
+  }
+
+  @action public setNotificationPermission(permission: NotificationPermission) {
+    this.notificationPermission = permission;
   }
 
   @computed public get isSystemMessageActive(): boolean {
@@ -56,20 +71,23 @@ export class ModalState {
   }
 
   @action public initMessages(messages: ChatMessagesList) {
+    this.lastChatMessage = getLast(messages);
     this.messages = messages;
   }
 
   @action public addMessage(message: ChatMessageFE) {
+    this.lastChatMessage = message;
     this.messages.push(message);
   }
 
   @action public addChatSystemMessage(userId: string, message: string) {
-    this.messages.push({
+    this.lastChatMessage = {
       system: true,
       userId,
       message,
       date: new Date().toISOString(),
-    });
+    };
+    this.messages.push(this.lastChatMessage);
   }
 
   @action public openChat() {

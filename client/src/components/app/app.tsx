@@ -12,17 +12,33 @@ import {
   ContentLayoutContainer,
 } from '@client/components/app/layout/layout.style';
 import { DemoPagesRouter } from '@client/components/pages/demo/demo-router';
-import { message } from 'antd';
+import { message as antdMessage } from 'antd';
 import { Modals } from '@client/components/app/modals/modals';
+import { spawnNotification } from '@client/utils/notification/notification';
+import userPng from '@client/assets/user.png';
 
 export const App: React.FC = observer(() => {
-  const { themeState, modalState } = useStateService();
+  const { themeState, modalState, gameState } = useStateService();
 
   useEffect(() => {
     if (!modalState.systemMessage) return;
-    message.info(modalState.systemMessage).then(null);
+    antdMessage.info(modalState.systemMessage).then(null);
     modalState.resetSystemMessage();
   }, [modalState.systemMessage]);
+
+  useEffect(() => {
+    if (!modalState.isNotificationAllowed) return;
+    if (modalState.chatIsOpen) return;
+    if (!modalState.lastChatMessage) return;
+    const { userId, message, system } = modalState.lastChatMessage;
+    const maybeUser = gameState.getUser(userId);
+    if (!maybeUser) return;
+    spawnNotification(
+      `${maybeUser.firstName} ${maybeUser.lastName || ''}`,
+      system ? `🔵 ${message} 🔵` : message,
+      maybeUser.avatar || userPng
+    );
+  }, [modalState.lastChatMessage]);
 
   return (
     <ThemeProvider theme={themeState.theme}>
