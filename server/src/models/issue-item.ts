@@ -69,4 +69,8 @@ export class IssueItem {
       this._scores[index] = score;
     }
   }
+
+  public reset() {
+    this._scores = [];
+  }
 }

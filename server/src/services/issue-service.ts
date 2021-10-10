@@ -65,6 +65,7 @@ export class IssueService {
     this._isActiveRun = true;
     this._activeIssueItem = item;
     this._timerId = timerId;
+    this.resetScores();
   }
 
   public get isRoundActive(): boolean {
@@ -97,6 +98,11 @@ export class IssueService {
   public addScore(score: UserScore): void {
     if (!this._activeIssueItem) return;
     this._activeIssueItem.addScore(score);
+  }
+
+  public resetScores(): void {
+    if (!this._activeIssueItem) return;
+    this._activeIssueItem.reset();
   }
 
   public get activeProgress(): string[] | undefined {

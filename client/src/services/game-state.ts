@@ -317,6 +317,7 @@ export class GameState {
     this.roundRun = true;
     this.roundProgress = [];
     this.roundIssueId = issueId;
+    this.modifyResult({ issueId, scores: [] });
   }
 
   @action public endRound(issueScore: IssueScore) {
