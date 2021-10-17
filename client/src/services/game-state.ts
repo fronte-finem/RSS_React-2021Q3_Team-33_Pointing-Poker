@@ -239,7 +239,10 @@ export class GameState {
   }
 
   @action public modifyIssueValidate(issue: Issue): boolean {
-    const message = validateIssueTitle(issue, this.issues);
+    const message = validateIssueTitle(
+      issue,
+      this.issues.filter(({ id }) => id !== issue.id)
+    );
     if (message) {
       this.modalState.initSystemMessage(message);
       return false;
