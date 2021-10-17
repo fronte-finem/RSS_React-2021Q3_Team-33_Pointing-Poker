@@ -17,6 +17,10 @@ export const LobbyInfoControl = observer(() => {
       modalState.initSystemMessage(ApiFailMessage.CARDS_DECK_NEED_CARDS);
       return;
     }
+    if (!gameState.settings.cardsScoreType?.trim()) {
+      modalState.initSystemMessage(ApiFailMessage.SCORE_TYPE_EMPTY);
+      return;
+    }
     socketState.startGame().then(null);
   };
 

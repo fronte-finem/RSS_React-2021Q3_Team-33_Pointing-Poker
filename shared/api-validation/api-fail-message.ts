@@ -28,4 +28,5 @@ export const enum ApiFailMessage {
   GAME_NEED_ISSUES = 'Game need issues for start, please add some!',
   CARDS_DECK_NEED_CARDS = 'Cards deck is empty, please add some cards!',
   ADD_SCORE_AFTER_ROUND_UNSET = 'Add score after round forbidden by dealer settings!',
+  SCORE_TYPE_EMPTY = 'Score Type cannot be empty',
 }
