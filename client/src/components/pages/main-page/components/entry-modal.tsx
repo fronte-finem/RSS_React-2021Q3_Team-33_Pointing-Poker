@@ -61,7 +61,8 @@ export const EntryModal: React.FC<Props> = observer(
       <StyledFormItem
         name="gameTitle"
         label="Game title:"
-        rules={[{ required: true }]}>
+        rules={[{ required: true, whitespace: true }]}
+        messageVariables={{ name: 'Game title' }}>
         <Input />
       </StyledFormItem>
     ) : null;
@@ -87,15 +88,24 @@ export const EntryModal: React.FC<Props> = observer(
               <StyledFormItem
                 name="firstName"
                 label="Your first name:"
-                rules={[{ required: true }]}>
+                rules={[{ required: true, whitespace: true }]}
+                messageVariables={{ name: 'First name' }}>
                 <Input onChange={onChangeFirstName} />
               </StyledFormItem>
 
-              <StyledFormItem name="lastName" label="Your last name:">
+              <StyledFormItem
+                name="lastName"
+                label="Your last name:"
+                rules={[{ whitespace: true }]}
+                messageVariables={{ name: 'Last name' }}>
                 <Input onChange={onChangeLastName} />
               </StyledFormItem>
 
-              <StyledFormItem name="jobPosition" label="Your job position:">
+              <StyledFormItem
+                name="jobPosition"
+                label="Your job position:"
+                rules={[{ whitespace: true }]}
+                messageVariables={{ name: 'Job position' }}>
                 <Input />
               </StyledFormItem>
 

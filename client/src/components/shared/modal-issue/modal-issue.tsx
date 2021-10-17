@@ -66,10 +66,15 @@ export const ModalIssue: React.FC<Props> = observer(
             <StyledFormItem
               label="Title"
               name="title"
-              rules={[{ required: true }]}>
+              rules={[{ required: true, whitespace: true }]}
+              messageVariables={{ name: 'Issue title' }}>
               <StyledInput />
             </StyledFormItem>
-            <StyledFormItem label="Link" name="link">
+            <StyledFormItem
+              label="Link"
+              name="link"
+              rules={[{ type: 'url' }]}
+              messageVariables={{ name: 'Issue link' }}>
               <StyledInput />
             </StyledFormItem>
             <StyledFormItem label="Priority" name="priority">

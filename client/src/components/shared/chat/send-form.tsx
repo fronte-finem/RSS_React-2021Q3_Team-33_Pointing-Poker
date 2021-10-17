@@ -33,6 +33,7 @@ export const SendForm = observer(() => {
           rules={[
             {
               required: true,
+              whitespace: true,
               message: ApiFailMessage.MESSAGE_EMPTY,
             },
             {

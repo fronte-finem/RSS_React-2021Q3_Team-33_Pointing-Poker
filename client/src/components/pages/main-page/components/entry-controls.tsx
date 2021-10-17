@@ -71,7 +71,10 @@ export const EntryControls = observer(() => {
           Connect to lobby by <Highlight>ID</Highlight>:
         </StyledLabel>
         <StyledCustomRow>
-          <StyledFormItem name="gameId" rules={[{ required: true }]}>
+          <StyledFormItem
+            name="gameId"
+            rules={[{ required: true, whitespace: true }]}
+            messageVariables={{ name: 'Game id' }}>
             <StyledInput />
           </StyledFormItem>
           <StyledButtonInput htmlType="submit" loading={socketState.isLoading}>

@@ -10,12 +10,16 @@ import {
 
 const ajv = new Ajv();
 addFormats(ajv, { mode: 'fast' });
+ajv.addFormat('name', {
+  type: 'string',
+  validate: (name: string) => name.length > 0 && name.trim().length > 0,
+});
 
 const userBaseSchema: JSONSchemaType<UserBase> = {
   type: 'object',
   properties: {
-    firstName: { type: 'string', minLength: 1 },
-    lastName: { type: 'string', nullable: true },
+    firstName: { type: 'string', format: 'name' },
+    lastName: { type: 'string', format: 'name', nullable: true },
     jobPosition: { type: 'string', nullable: true },
     avatar: { type: 'string', nullable: true },
   },
@@ -26,8 +30,8 @@ const userBaseSchema: JSONSchemaType<UserBase> = {
 const dealerToJoinSchema: JSONSchemaType<DealerToJoin> = {
   type: 'object',
   properties: {
-    firstName: { type: 'string', minLength: 1 },
-    lastName: { type: 'string', nullable: true },
+    firstName: { type: 'string', format: 'name' },
+    lastName: { type: 'string', format: 'name', nullable: true },
     jobPosition: { type: 'string', nullable: true },
     avatar: { type: 'string', nullable: true },
     gameTitle: { type: 'string', minLength: 1 },
@@ -38,8 +42,8 @@ const dealerToJoinSchema: JSONSchemaType<DealerToJoin> = {
 const userToJoinSchema: JSONSchemaType<UserToJoin> = {
   type: 'object',
   properties: {
-    firstName: { type: 'string', minLength: 1 },
-    lastName: { type: 'string', nullable: true },
+    firstName: { type: 'string', format: 'name' },
+    lastName: { type: 'string', format: 'name', nullable: true },
     jobPosition: { type: 'string', nullable: true },
     avatar: { type: 'string', nullable: true },
     role: { type: 'string', enum: [Role.GAMER, Role.SPECTATOR] },
@@ -51,8 +55,8 @@ const userSchema: JSONSchemaType<User> = {
   type: 'object',
   properties: {
     id: { type: 'string', minLength: 1 },
-    firstName: { type: 'string', minLength: 1 },
-    lastName: { type: 'string', nullable: true },
+    firstName: { type: 'string', format: 'name', minLength: 1 },
+    lastName: { type: 'string', format: 'name', nullable: true },
     jobPosition: { type: 'string', nullable: true },
     avatar: { type: 'string', nullable: true },
     role: { type: 'string', enum: [Role.DEALER, Role.GAMER, Role.SPECTATOR] },
